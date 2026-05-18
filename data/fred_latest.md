@@ -1,7 +1,7 @@
 # FRED 거시경제 지표 보고서
 
-Generated at: 2026-05-17 09:15:47 UTC
-Data range: 2023-05-18 ~ 2026-05-17
+Generated at: 2026-05-18 01:28:31 UTC
+Data range: 2023-05-19 ~ 2026-05-18
 
 ## Purpose
 
@@ -92,7 +92,7 @@ Data range: 2023-05-18 ~ 2026-05-17
 | 78 | COPPER_GOLD_RATIO | 파생지표 | 구리/금 비율 | Copper/Gold Ratio | M | Ratio |
 
 # 📊 거시경제 팩트 테이블
-**기준일**: 2026-05-17
+**기준일**: 2026-05-18
 
 
 ## 금리채권
