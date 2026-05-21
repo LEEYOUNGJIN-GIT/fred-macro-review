@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Archives
+*.zip
+
+# Generated data (tracked in repo via Actions; ignore local test runs optional)
+# data/fred_latest.csv
+# data/fred_latest.md
