@@ -245,21 +245,21 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
              'note': '재무부 일반계좌(TGA). TGA↑=유동성 흡수(국채 발행). TGA↓=유동성 공급'},
  'TOTRESNS': {'cat': '11_Fed유동성', 'kr': '은행 지급준비금', 'en': 'Total Reserves', 'freq': 'M', 'unit': 'Bil.USD', 'src': 'Fed', 'tf': 'level', 'note': '은행 지급준비금. $3T↓ 유동성 긴장 시작. 은행간 금리 변동성 확대'},
  'BOGMBASE': {'cat': '11_Fed유동성', 'kr': '본원통화', 'en': 'Monetary Base', 'freq': 'M', 'unit': 'Bil.USD', 'src': 'Fed', 'tf': 'yoy_pct', 'note': '본원통화 YoY. 통화 공급 기초. YoY 음수=긴축 기조. 인플레 장기 추세'},
- 'GOLDPMGBD228NLBM': {'cat': '12_원자재',
-                      'kr': '금 가격',
-                      'en': 'Gold(London PM Fix)',
-                      'freq': 'D',
-                      'unit': 'USD/Troy Oz',
-                      'src': 'LBMA',
-                      'tf': 'level',
-                      'note': '금 PM Fix. 안전자산. 실질금리 역상관. 지정학 리스크 프리미엄 반영'},
+ 'NASDAQQGLDI': {'cat': '12_원자재',
+                 'kr': '금 가격',
+                 'en': 'Gold Price Index (NASDAQ Gold FLOWS103)',
+                 'freq': 'D',
+                 'unit': 'Index',
+                 'src': 'Nasdaq',
+                 'tf': 'level',
+                 'note': 'LBMA PM/AM Fix(2022.01 FRED 폐기) 대체. NASDAQ Gold 지수. 안전자산·실질금리 역상관'},
  'DCOILWTICO': {'cat': '12_원자재', 'kr': 'WTI 원유', 'en': 'WTI Crude Oil', 'freq': 'D', 'unit': 'USD/Barrel', 'src': 'EIA', 'tf': 'level', 'note': 'WTI 원유. $60↓ 수요위축 우려. $80↑ 인플레 압력. $100↑ 스태그 리스크'},
  'DHHNGSP': {'cat': '12_원자재', 'kr': '천연가스 현물', 'en': 'Henry Hub Natural Gas', 'freq': 'D', 'unit': '$/MMBTU', 'src': 'EIA', 'tf': 'level', 'note': '천연가스. 에너지 보조. 계절성 강함. $4↑ 유틸리티 비용 전가→CPI 영향'},
  'PCOPPUSDM': {'cat': '12_원자재', 'kr': '구리 가격', 'en': 'Copper Price', 'freq': 'M', 'unit': 'USD/MT', 'src': 'IMF', 'tf': 'level', 'note': '구리(Dr.Copper). 글로벌 경기 선행. 중국 수요 프록시. YoY↑=확장 기대'},
  'PIORECRUSDM': {'cat': '12_원자재', 'kr': '철광석 가격', 'en': 'Iron Ore Price', 'freq': 'M', 'unit': 'USD/DMT', 'src': 'IMF', 'tf': 'level', 'note': '철광석. 중국 부동산·인프라 경기 프록시. 구리와 교차 확인'},
  'PSOYBUSDM': {'cat': '12_원자재', 'kr': '대두 가격', 'en': 'Soybean Price', 'freq': 'M', 'unit': 'USD/MT', 'src': 'IMF', 'tf': 'level', 'note': '대두. 브라질 수출 핵심. 라니냐/엘니뇨 공급 충격. 식량 인플레 기여'},
  'PALUMUSDM': {'cat': '12_원자재', 'kr': '알루미늄', 'en': 'Aluminum Price', 'freq': 'M', 'unit': 'USD/MT', 'src': 'IMF', 'tf': 'level', 'note': '알루미늄. 에너지 집약 산업재. 전력비용·중국 생산 영향. 건설 수요 반영'},
- 'PNBRLTDUSDM': {'cat': '12_원자재', 'kr': '니켈', 'en': 'Nickel Price', 'freq': 'M', 'unit': 'USD/MT', 'src': 'IMF', 'tf': 'level', 'note': '니켈. 배터리·스테인리스 원재료. EV 수요 구조적 증가. 인니 공급 집중'},
+ 'PNICKUSDM': {'cat': '12_원자재', 'kr': '니켈', 'en': 'Nickel Price', 'freq': 'M', 'unit': 'USD/MT', 'src': 'IMF', 'tf': 'level', 'note': '니켈(IMF). 배터리·스테인리스 원재료. EV 수요 구조적 증가. 인니 공급 집중'},
  'PWHEAMTUSDM': {'cat': '12_원자재', 'kr': '밀', 'en': 'Wheat Price', 'freq': 'M', 'unit': 'USD/MT', 'src': 'IMF', 'tf': 'level', 'note': '밀. 식량 안보 핵심. 흑해 지정학 민감. CPI 식품 구성요소'},
  'PMAIZMTUSDM': {'cat': '12_원자재', 'kr': '옥수수', 'en': 'Corn Price', 'freq': 'M', 'unit': 'USD/MT', 'src': 'IMF', 'tf': 'level', 'note': '옥수수. 식량/사료/바이오연료. 에탄올 수요=유가 연동. 기후 민감'},
  'PALLFNFINDEXM': {'cat': '12_원자재',
@@ -294,7 +294,7 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
                        'unit': 'Ratio',
                        'src': 'Calculated',
                        'tf': 'calculated',
-                       'note': '구리÷금(PM Fix). 경기낙관↑·위험회피↓. 장기금리 방향성과 높은 상관'},
+                       'note': '구리÷금(NASDAQ Gold 지수 월평균). 경기낙관↑·위험회피↓. 장기금리 방향성과 높은 상관'},
  'KOR_US_POLICY_SPREAD': {'cat': '15_파생지표',
                           'kr': '한미 정책금리 스프레드(한-미)',
                           'en': 'KOR-US Policy Rate Spread',
@@ -567,7 +567,7 @@ def calc_change(cur, prev, tf):
 def calc_copper_gold_ratio(all_data):
     """구리/금 비율을 계산한다(금은 월평균으로 집계)."""
     cu = all_data.get("PCOPPUSDM", [])
-    au = all_data.get("GOLDPMGBD228NLBM", [])
+    au = all_data.get("NASDAQQGLDI", [])
     if not cu or not au:
         return []
     # 금 가격을 월별 평균으로 집계
