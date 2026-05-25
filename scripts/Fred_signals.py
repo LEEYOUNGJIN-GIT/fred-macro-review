@@ -376,18 +376,10 @@ def calc_trade_fiscal(df):
 
 # ═══ 17. Korea Cross (NEW) ═══
 def calc_korea_cross(df):
-    ps = safe_val(df, "KOR_US_POLICY_SPREAD")
     ts = safe_val(df, "KOR_US_10Y_SPREAD")
     cli = safe_val(df, "KORLOLITOAASTSAM")
     krw = safe_val(df, "DEXKOUS")
     score = 5.0; d = []
-    if ps is not None:
-        # 주의: INTDSRKRM193N은 한국 할인율(1.00%)이며 BOK 기준금리(~2.50%)와 상이.
-        # 실제 BOK 기준금리 기준 금리차는 약 +1.5%p 더 높음(덜 부정적).
-        d.append(f"정책금리차={ps:+.2f}%p(할인율기준,BOK기준금리와상이)")
-        if ps < -1.5: score -= 1.5
-        elif ps < -0.5: score -= 0.5
-        elif ps > 0.5: score += 0.5
     if ts is not None:
         d.append(f"10Y금리차={ts:+.2f}%p")
         if ts < -1.5: score -= 1.0
@@ -404,14 +396,14 @@ def calc_korea_cross(df):
         elif krw >= 1350: score -= 0.5
         elif krw <= 1150: score += 0.5
     score = max(0, min(10, score))
-    if not d: return {"status":"N/A","value":None,"detail":"데이터 없음","series":["KOR_US_POLICY_SPREAD","KOR_US_10Y_SPREAD","KORLOLITOAASTSAM","DEXKOUS"]}
+    if not d: return {"status":"N/A","value":None,"detail":"데이터 없음","series":["KOR_US_10Y_SPREAD","KORLOLITOAASTSAM","DEXKOUS"]}
     if score >= 7: st = "양호"
     elif score >= 5.5: st = "중립"
     elif score >= 4: st = "주의"
     elif score >= 2.5: st = "경계"
     else: st = "위기(한국)"
     d.append(f"점수={score:.1f}")
-    return {"status":st,"value":score,"detail":", ".join(d),"series":["KOR_US_POLICY_SPREAD","KOR_US_10Y_SPREAD","KORLOLITOAASTSAM","DEXKOUS"]}
+    return {"status":st,"value":score,"detail":", ".join(d),"series":["KOR_US_10Y_SPREAD","KORLOLITOAASTSAM","DEXKOUS"]}
 
 # ═══ 18. Consumption (NEW) ═══
 def calc_consumption(df):

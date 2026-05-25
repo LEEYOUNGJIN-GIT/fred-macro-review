@@ -44,7 +44,7 @@ DATA_DIR    = BASE_DIR / "data"
 HISTORY_DIR = DATA_DIR / "fred_history"
 
 # ═══════════════════════════════════════════════════════════
-# 2. 시리즈 레지스트리 (102개)
+# 2. 시리즈 레지스트리 (100개)
 # ═══════════════════════════════════════════════════════════
 # tf 필드: level=원값, yoy_pct=YoY% 변환, mom_pct=MoM%,
 #          mom_diff=전월차, calculated=파생
@@ -245,14 +245,14 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
              'note': '재무부 일반계좌(TGA). TGA↑=유동성 흡수(국채 발행). TGA↓=유동성 공급'},
  'TOTRESNS': {'cat': '11_Fed유동성', 'kr': '은행 지급준비금', 'en': 'Total Reserves', 'freq': 'M', 'unit': 'Bil.USD', 'src': 'Fed', 'tf': 'level', 'note': '은행 지급준비금. $3T↓ 유동성 긴장 시작. 은행간 금리 변동성 확대'},
  'BOGMBASE': {'cat': '11_Fed유동성', 'kr': '본원통화', 'en': 'Monetary Base', 'freq': 'M', 'unit': 'Bil.USD', 'src': 'Fed', 'tf': 'yoy_pct', 'note': '본원통화 YoY. 통화 공급 기초. YoY 음수=긴축 기조. 인플레 장기 추세'},
- 'NASDAQQGLDI': {'cat': '12_원자재',
-                 'kr': '금 가격',
-                 'en': 'Gold Price Index (NASDAQ Gold FLOWS103)',
-                 'freq': 'D',
-                 'unit': 'Index',
-                 'src': 'Nasdaq',
-                 'tf': 'level',
-                 'note': 'LBMA PM/AM Fix(2022.01 FRED 폐기) 대체. NASDAQ Gold 지수. 안전자산·실질금리 역상관'},
+ 'GOLDAMGBD228NLBM': {'cat': '12_원자재',
+                     'kr': '금 가격',
+                     'en': 'Gold (London AM Fix)',
+                     'freq': 'D',
+                     'unit': 'USD/Troy Oz',
+                     'src': 'LBMA',
+                     'tf': 'level',
+                     'note': 'LBMA 런던 AM Fix. 국제 금 기준가격. 안전자산·실질금리 역상관'},
  'DCOILWTICO': {'cat': '12_원자재', 'kr': 'WTI 원유', 'en': 'WTI Crude Oil', 'freq': 'D', 'unit': 'USD/Barrel', 'src': 'EIA', 'tf': 'level', 'note': 'WTI 원유. $60↓ 수요위축 우려. $80↑ 인플레 압력. $100↑ 스태그 리스크'},
  'DHHNGSP': {'cat': '12_원자재', 'kr': '천연가스 현물', 'en': 'Henry Hub Natural Gas', 'freq': 'D', 'unit': '$/MMBTU', 'src': 'EIA', 'tf': 'level', 'note': '천연가스. 에너지 보조. 계절성 강함. $4↑ 유틸리티 비용 전가→CPI 영향'},
  'PCOPPUSDM': {'cat': '12_원자재', 'kr': '구리 가격', 'en': 'Copper Price', 'freq': 'M', 'unit': 'USD/MT', 'src': 'IMF', 'tf': 'level', 'note': '구리(Dr.Copper). 글로벌 경기 선행. 중국 수요 프록시. YoY↑=확장 기대'},
@@ -294,15 +294,7 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
                        'unit': 'Ratio',
                        'src': 'Calculated',
                        'tf': 'calculated',
-                       'note': '구리÷금(NASDAQ Gold 지수 월평균). 경기낙관↑·위험회피↓. 장기금리 방향성과 높은 상관'},
- 'KOR_US_POLICY_SPREAD': {'cat': '15_파생지표',
-                          'kr': '한미 정책금리 스프레드(한-미)',
-                          'en': 'KOR-US Policy Rate Spread',
-                          'freq': 'M',
-                          'unit': '%p',
-                          'src': 'Calculated',
-                          'tf': 'calculated',
-                          'note': '한국 할인율(INTDSRKRM193N) - 미국 Fed Funds(FEDFUNDS, 월평균). (+) 확대=한 금리우위'},
+                       'note': '구리÷금(LBMA AM Fix 월평균). 경기낙관↑·위험회피↓. 장기금리 방향성과 높은 상관'},
  'KOR_US_10Y_SPREAD': {'cat': '15_파생지표',
                        'kr': '한미 10년물 금리차(한-미)',
                        'en': 'KOR-US 10Y Yield Spread',
@@ -418,14 +410,6 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
               'src': 'Fed',
               'tf': 'yoy_pct',
               'note': '소비자 대출 YoY. 가계 레버리지 추세. 급감=소비 위축. 급증=과열 경계'},
- 'INTDSRKRM193N': {'cat': '20_한국거시',
-                   'kr': '한국 기준금리(할인율)',
-                   'en': 'Interest Rates, Discount Rate for Republic of Korea',
-                   'freq': 'M',
-                   'unit': '%',
-                   'src': 'IMF',
-                   'tf': 'level',
-                   'note': '한국 정책금리 프록시(할인율). 통화정책 방향성 확인. 한미 정책금리 스프레드(파생)와 함께 해석'},
  'IRSTCI01KRM156N': {'cat': '20_한국거시',
                      'kr': '한국 콜/인터뱅크 금리(익일)',
                      'en': 'Call Money/Interbank Rate: Total for Korea',
@@ -567,7 +551,7 @@ def calc_change(cur, prev, tf):
 def calc_copper_gold_ratio(all_data):
     """구리/금 비율을 계산한다(금은 월평균으로 집계)."""
     cu = all_data.get("PCOPPUSDM", [])
-    au = all_data.get("NASDAQQGLDI", [])
+    au = all_data.get("GOLDAMGBD228NLBM", [])
     if not cu or not au:
         return []
     # 금 가격을 월별 평균으로 집계
@@ -590,14 +574,6 @@ def _monthly_avg_map(obs):
     return {ym: sum(vs) / len(vs) for ym, vs in m.items() if vs}
 
 
-def calc_kor_us_policy_spread(all_data):
-    """한미 정책금리 스프레드(한국 할인율 - 미국 Fed Funds 월평균)"""
-    kor = _monthly_avg_map(all_data.get('INTDSRKRM193N', []))
-    us  = _monthly_avg_map(all_data.get('FEDFUNDS', []))
-    common = sorted(set(kor.keys()) & set(us.keys()), reverse=True)
-    return [{'date': f"{ym}-01", 'value': round(kor[ym] - us[ym], 4)} for ym in common]
-
-
 def calc_kor_us_10y_spread(all_data):
     """한미 10년물 금리차(한국 10Y - 미국 10Y, 미국은 일간→월평균)"""
     kor = _monthly_avg_map(all_data.get('IRLTLT01KRM156N', []))
@@ -609,7 +585,6 @@ def calc_kor_us_10y_spread(all_data):
 # calculated 시리즈별 계산 함수 매핑
 CALC_FUNCS = {
     'COPPER_GOLD_RATIO': calc_copper_gold_ratio,
-    'KOR_US_POLICY_SPREAD': calc_kor_us_policy_spread,
     'KOR_US_10Y_SPREAD': calc_kor_us_10y_spread,
 }
 
