@@ -218,7 +218,15 @@ def calc_labor_market(df):
 # ═══ 11. Liquidity (W-01: WALCL YoY %) ═══
 def calc_liquidity(df):
     rrp = safe_val(df, "RRPONTSYD"); res = safe_val(df, "TOTRESNS")
-    walcl_y = safe_val(df, "WALCL", "chg_yoy"); base_y = safe_val(df, "BOGMBASE", "chg_yoy")
+    # WALCL chg_yoy는 절대 변화(Mil.USD). 전년 수준으로 나눠 YoY% 환산 필요.
+    walcl_level = safe_val(df, "WALCL")
+    walcl_abs = safe_val(df, "WALCL", "chg_yoy")
+    base_y = safe_val(df, "BOGMBASE", "chg_yoy")
+    walcl_y = None
+    if walcl_level is not None and walcl_abs is not None:
+        prev = walcl_level - walcl_abs
+        if prev and prev != 0:
+            walcl_y = round(walcl_abs / abs(prev) * 100, 2)
     score = 5.0
     d = []
     if rrp is not None:
@@ -374,7 +382,9 @@ def calc_korea_cross(df):
     krw = safe_val(df, "DEXKOUS")
     score = 5.0; d = []
     if ps is not None:
-        d.append(f"정책금리차={ps:+.2f}%p")
+        # 주의: INTDSRKRM193N은 한국 할인율(1.00%)이며 BOK 기준금리(~2.50%)와 상이.
+        # 실제 BOK 기준금리 기준 금리차는 약 +1.5%p 더 높음(덜 부정적).
+        d.append(f"정책금리차={ps:+.2f}%p(할인율기준,BOK기준금리와상이)")
         if ps < -1.5: score -= 1.5
         elif ps < -0.5: score -= 0.5
         elif ps > 0.5: score += 0.5
