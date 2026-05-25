@@ -245,14 +245,19 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
              'note': '재무부 일반계좌(TGA). TGA↑=유동성 흡수(국채 발행). TGA↓=유동성 공급'},
  'TOTRESNS': {'cat': '11_Fed유동성', 'kr': '은행 지급준비금', 'en': 'Total Reserves', 'freq': 'M', 'unit': 'Bil.USD', 'src': 'Fed', 'tf': 'level', 'note': '은행 지급준비금. $3T↓ 유동성 긴장 시작. 은행간 금리 변동성 확대'},
  'BOGMBASE': {'cat': '11_Fed유동성', 'kr': '본원통화', 'en': 'Monetary Base', 'freq': 'M', 'unit': 'Bil.USD', 'src': 'Fed', 'tf': 'yoy_pct', 'note': '본원통화 YoY. 통화 공급 기초. YoY 음수=긴축 기조. 인플레 장기 추세'},
- 'GOLDAMGBD228NLBM': {'cat': '12_원자재',
-                     'kr': '금 가격',
-                     'en': 'Gold (London AM Fix)',
-                     'freq': 'D',
-                     'unit': 'USD/Troy Oz',
-                     'src': 'LBMA',
-                     'tf': 'level',
-                     'note': 'LBMA 런던 AM Fix. 국제 금 기준가격. 안전자산·실질금리 역상관'},
+ # GOLDAMGBD228NLBM(LBMA AM Fix)은 FRED API 호출 오류로 사용 불가.
+ # NASDAQQGLDI(NASDAQ Gold FLOWS103 지수)로 대체 운용.
+ # ※ 주의: 단위는 지수(Index)이며 USD/oz가 아님. 절대값(예: 2886)은 달러 현물가가 아니므로
+ #   WTI·구리 등 다른 원자재(USD 기준)와 직접 비교 불가. 추세·방향성 해석만 유효.
+ #   구리/금 비율(COPPER_GOLD_RATIO)도 절대값이 아닌 방향성으로만 해석할 것.
+ 'NASDAQQGLDI': {'cat': '12_원자재',
+                 'kr': '금 가격(NASDAQ 지수, USD/oz 아님)',
+                 'en': 'Gold Price Index (NASDAQ Gold FLOWS103)',
+                 'freq': 'D',
+                 'unit': 'Index (not USD/oz)',
+                 'src': 'Nasdaq',
+                 'tf': 'level',
+                 'note': '⚠ LBMA Fix(GOLDAMGBD228NLBM) API 오류로 대체. 지수단위(Index)이며 달러 현물가 아님. 절대값 비교 불가 — 추세·방향성만 참고'},
  'DCOILWTICO': {'cat': '12_원자재', 'kr': 'WTI 원유', 'en': 'WTI Crude Oil', 'freq': 'D', 'unit': 'USD/Barrel', 'src': 'EIA', 'tf': 'level', 'note': 'WTI 원유. $60↓ 수요위축 우려. $80↑ 인플레 압력. $100↑ 스태그 리스크'},
  'DHHNGSP': {'cat': '12_원자재', 'kr': '천연가스 현물', 'en': 'Henry Hub Natural Gas', 'freq': 'D', 'unit': '$/MMBTU', 'src': 'EIA', 'tf': 'level', 'note': '천연가스. 에너지 보조. 계절성 강함. $4↑ 유틸리티 비용 전가→CPI 영향'},
  'PCOPPUSDM': {'cat': '12_원자재', 'kr': '구리 가격', 'en': 'Copper Price', 'freq': 'M', 'unit': 'USD/MT', 'src': 'IMF', 'tf': 'level', 'note': '구리(Dr.Copper). 글로벌 경기 선행. 중국 수요 프록시. YoY↑=확장 기대'},
@@ -294,7 +299,7 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
                        'unit': 'Ratio',
                        'src': 'Calculated',
                        'tf': 'calculated',
-                       'note': '구리÷금(LBMA AM Fix 월평균). 경기낙관↑·위험회피↓. 장기금리 방향성과 높은 상관'},
+                       'note': '⚠ 구리(USD/MT)÷금NASDAQ지수(Index). 금이 지수단위이므로 비율 절대값 무의미 — 방향성(상승=경기낙관·위험선호, 하락=위험회피)만 유효. 장기금리 방향성과 높은 상관'},
  'KOR_US_10Y_SPREAD': {'cat': '15_파생지표',
                        'kr': '한미 10년물 금리차(한-미)',
                        'en': 'KOR-US 10Y Yield Spread',
@@ -549,9 +554,11 @@ def calc_change(cur, prev, tf):
 
 
 def calc_copper_gold_ratio(all_data):
-    """구리/금 비율을 계산한다(금은 월평균으로 집계)."""
+    """구리/금 비율을 계산한다(금은 월평균으로 집계).
+    금은 NASDAQQGLDI(지수단위, USD/oz 아님)를 사용하므로 비율 절대값은 무의미.
+    방향성(상승=경기낙관, 하락=위험회피)만 유효하게 해석할 것."""
     cu = all_data.get("PCOPPUSDM", [])
-    au = all_data.get("GOLDAMGBD228NLBM", [])
+    au = all_data.get("NASDAQQGLDI", [])
     if not cu or not au:
         return []
     # 금 가격을 월별 평균으로 집계

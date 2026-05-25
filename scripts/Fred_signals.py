@@ -259,6 +259,8 @@ def calc_liquidity(df):
     return {"status":st,"value":score,"detail":", ".join(d),"series":["RRPONTSYD","TOTRESNS","WALCL","BOGMBASE"]}
 
 # ═══ 12. Commodity Pressure ═══
+# 금 가격(NASDAQQGLDI)은 지수단위(Index)이므로 이 신호에서 직접 사용하지 않음.
+# 원자재 압력은 WTI(USD), 전체 원자재지수 YoY, 구리(USD/MT) 기준으로만 판단.
 def calc_commodity_pressure(df):
     wti = safe_val(df, "DCOILWTICO"); cy = safe_val(df, "PALLFNFINDEXM", "chg_yoy")
     cu = safe_val(df, "PCOPPUSDM")
