@@ -1,6 +1,6 @@
 # 📊 FRED Macro Review — 거시경제 자동 모니터링
 
-> **FRED API → 102개 지표 수집 → 18개 파생 신호 → 2×2 레짐 분류 → claude.ai 자동 분석**
+> **FRED API → 95개 지표 수집 → 18개 파생 신호 → 2×2 레짐 분류 → claude.ai 자동 분석**
 
 [![FRED Daily Fetch](https://github.com/LEEYOUNGJIN-GIT/fred-macro-review/actions/workflows/fred_daily.yml/badge.svg)](https://github.com/LEEYOUNGJIN-GIT/fred-macro-review/actions/workflows/fred_daily.yml)
 
@@ -9,10 +9,10 @@
 ## 📐 아키텍처
 
 ```
-┌─────────────┐     99 API calls     ┌──────────────────────┐
+┌─────────────┐     92 API calls     ┌──────────────────────┐
 │  FRED API   │ ──────────────────►  │  fred_fetch.py       │
-│ (stlouisfed)│                      │  99 시리즈 + 3 파생  │
-└─────────────┘                      │  = 102개 지표        │
+│ (stlouisfed)│                      │  92 시리즈 + 3 파생  │
+└─────────────┘                      │  = 95개 지표         │
                                      └──────┬───────────────┘
                                             │
                                  ┌──────────▼──────────┐
@@ -57,7 +57,7 @@ fred-macro-review/
 │   ├── .gitkeep
 │   ├── fred_latest.csv             ← 최신 원천 데이터 (자동 생성)
 │   ├── fred_latest.md              ← Claude용 팩트 테이블 (자동 생성)
-│   ├── fred_signals.md             ← 14개 신호 보고서 (자동 생성)
+│   ├── fred_signals.md             ← 18개 신호 보고서 (자동 생성)
 │   ├── fred_regime.md              ← 레짐 분류 보고서 (자동 생성)
 │   └── fred_history/
 │       └── fred_YYYYMMDD_HHMMSS.csv  ← 일별 히스토리 (자동)
@@ -69,11 +69,11 @@ fred-macro-review/
 
 ---
 
-## 📊 시리즈 레지스트리 (102개 = 99 API + 3 파생)
+## 📊 시리즈 레지스트리 (95개 = 92 API + 3 파생)
 
 | # | 카테고리 | 시리즈 수 | 주요 시리즈 |
 |---|----------|-----------|-------------|
-| 01 | 금리·채권 | 15 | T10Y2Y, DFII10, T10YIE, DGS2, DGS10, DFF, FEDFUNDS, SOFR, BAA10Y |
+| 01 | 금리·채권 | 14 | T10Y2Y, DFII10, T10YIE, DGS2, DGS10, DFF, FEDFUNDS, SOFR, BAA10Y |
 | 02 | 리스크·신용 | 3 | VIXCLS, BAMLH0A0HYM2, TOTBKCR |
 | 03 | 금융 스트레스 | 4 | NFCI, STLFSI4, KCFSI, CFNAI |
 | 04 | 노동시장 | 7 | UNRATE, PAYEMS, ICSA, CCSA, JTSJOL, CIVPART, CES0500000003 |
@@ -82,17 +82,16 @@ fred-macro-review/
 | 07 | 소비심리·통화 | 2 | UMCSENT, M2SL |
 | 08 | 주택시장 | 5 | CSUSHPINSA, HOUST, PERMIT, MORTGAGE30US, EXHOSLUSM495S |
 | 09 | 무역·국제수지 | 5 | NETFI, FYFSD, BOPGSTB, EXPGS, IMPGS |
-| 10 | 환율·달러 | 5 | DEXKOUS, DEXBZUS, DTWEXBGS, DTWEXAFEGS, DTWEXEMEGS |
+| 10 | 환율·달러 | 4 | DEXKOUS, DTWEXBGS, DTWEXAFEGS, DTWEXEMEGS |
 | 11 | Fed 유동성 | 5 | WALCL, RRPONTSYD, WTREGEN, TOTRESNS, BOGMBASE |
 | 12 | 원자재 | 11 | NASDAQQGLDI, DCOILWTICO, PCOPPUSDM, PNICKUSDM, PALLFNFINDEXM 등 |
 | 13 | 주가지수 | 1 | SP500 |
-| 14 | 브라질 | 2 | INTDSRBRM193N, GGNLBABRA188N |
 | 15 | 파생지표 | 3 | COPPER_GOLD_RATIO, KOR_US_POLICY_SPREAD, KOR_US_10Y_SPREAD |
-| 16 | 침체 조기 경보 | 4 | T10Y3M, SAHMREALTIME, RECPROUSM156N, USSLIND |
+| 16 | 침체 조기 경보 | 2 | T10Y3M, SAHMREALTIME |
 | 17 | 생산·경기 | 4 | TCU, ISRATIO, AMTMNO, MANEMP |
 | 18 | 소비·가계 | 4 | PSAVERT, TOTALSA, DSPIC96, PCEC96 |
 | 19 | 신용·연체 | 4 | DRCCLACBS, DRSFRMACBS, BUSLOANS, CONSUMER |
-| 20 | 한국 거시 | 6 | INTDSRKRM193N, IRSTCI01KRM156N, IRLTLT01KRM156N, LRHUTTTTKRM156S, KORLOLITOAASTSAM, NGDPRSAXDCKRQ |
+| 20 | 한국 거시 | 5 | IRSTCI01KRM156N, IRLTLT01KRM156N, LRHUTTTTKRM156S, KORLOLITOAASTSAM, NGDPRSAXDCKRQ |
 
 ---
 
@@ -148,7 +147,7 @@ fred-macro-review/
 | ⚠️ Stagflation | ≤5 | >5 | 정책 딜레마, 방어적 포지셔닝 |
 | ❄️ Recession Risk | ≤5 | ≤5 | 부양 기대, 안전자산 선호 |
 
-**성장 점수** (10요소): GDP, 산업생산, 소매판매, 고용, CFNAI, 소비자심리, 선행지수, 설비가동률, S&P500, 실질소비
+**성장 점수** (10요소): GDP, 산업생산, 소매판매, 고용, CFNAI, 소비자심리, 제조업신규주문, 설비가동률, S&P500, 실질소비
 **인플레 점수** (10요소): Core PCE, CPI, PPI, 인플레기대, 5Y5Y선도, 임금, 원자재, 유가, 주택가격, 모기지
 
 ---
@@ -190,7 +189,7 @@ fred-macro-review/
 1. [claude.ai](https://claude.ai) → Settings → Integrations → **GitHub** 연결
 2. `LEEYOUNGJIN-GIT/fred-macro-review` 레포 선택
 3. 대화 시작 시 자동으로 `data/` 폴더의 4개 파일 참조:
-   - `fred_latest.md` — 102개 원천 팩트 테이블
+   - `fred_latest.md` — 95개 원천 팩트 테이블
    - `fred_signals.md` — 18개 신호 대시보드
    - `fred_regime.md` — 레짐 분류 보고서
    - `fred_latest.csv` — 상세 데이터 (필요 시)
@@ -214,7 +213,7 @@ fred-macro-review/
 | 항목 | 값 |
 |------|-----|
 | 실행 주기 | 매일 KST 08:30 (UTC 23:30) |
-| API 호출 수 | 99회 (시리즈당 1회, 0.5초 간격) |
+| API 호출 수 | 92회 (시리즈당 1회, 0.5초 간격) |
 | 금일 데이터 포함 여부 | FRED 발표 시점 의존 (D: 당일·전일, M/Q: 전월·전분기) |
 | 히스토리 보관 | data/fred_history/ 에 일별 CSV 자동 저장 |
 | 수동 실행 | Actions → `Run workflow` |

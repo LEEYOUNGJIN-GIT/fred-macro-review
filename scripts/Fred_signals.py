@@ -160,22 +160,29 @@ def calc_credit_stress(df):
     return {"status":st,"value":hy,"detail":", ".join(d),"series":["BAMLH0A0HYM2","BAA10Y","DRCCLACBS"]}
 
 # ═══ 9. Financial Stress ═══
+# KCFSI는 월별(M) 데이터로 주별(W) NFCI·STLFSI4 대비 최대 4주 지연 → 가중치 0.2로 축소
 def calc_financial_stress(df):
     nf = safe_val(df, "NFCI"); st4 = safe_val(df, "STLFSI4"); kc = safe_val(df, "KCFSI")
-    vals = [v for v in [nf, st4, kc] if v is not None]
-    if not vals: return {"status":"N/A","value":None,"detail":"데이터 없음","series":["NFCI","STLFSI4","KCFSI"]}
-    avg = sum(vals)/len(vals)
+    if nf is None and st4 is None and kc is None:
+        return {"status":"N/A","value":None,"detail":"데이터 없음","series":["NFCI","STLFSI4","KCFSI"]}
+    weighted_sum = 0.0; total_w = 0.0; d = []
+    if nf is not None:
+        weighted_sum += nf * 0.4; total_w += 0.4
+        d.append(f"NFCI={nf:.3f}")
+    if st4 is not None:
+        weighted_sum += st4 * 0.4; total_w += 0.4
+        d.append(f"STLFSI={st4:.3f}")
+    if kc is not None:
+        weighted_sum += kc * 0.2; total_w += 0.2
+        d.append(f"KCFSI={kc:.3f}(월별·0.2w)")
+    avg = round(weighted_sum / total_w, 3) if total_w > 0 else 0.0
     if avg >= 1.0: st = "심각한 스트레스"
     elif avg >= 0.5: st = "스트레스"
     elif avg >= 0: st = "주의"
     elif avg >= -0.5: st = "양호"
     else: st = "완화"
-    d = []
-    if nf is not None: d.append(f"NFCI={nf:.3f}")
-    if st4 is not None: d.append(f"STLFSI={st4:.3f}")
-    if kc is not None: d.append(f"KCFSI={kc:.3f}")
-    d.append(f"평균={avg:.3f}")
-    return {"status":st,"value":round(avg,3),"detail":", ".join(d),"series":["NFCI","STLFSI4","KCFSI"]}
+    d.append(f"가중평균={avg:.3f}")
+    return {"status":st,"value":avg,"detail":", ".join(d),"series":["NFCI","STLFSI4","KCFSI"]}
 
 # ═══ 10. Labor Market (W-05: 천명 표시) ═══
 def calc_labor_market(df):
@@ -283,7 +290,7 @@ def calc_commodity_pressure(df):
     if not d: return {"status":"N/A","value":None,"detail":"데이터 없음","series":["DCOILWTICO","PALLFNFINDEXM","PCOPPUSDM"]}
     if pressure >= 3: st = "강한 압력"
     elif pressure >= 1: st = "상방 압력"
-    elif pressure <= -3: st = "하방 압력"
+    elif pressure <= -3: st = "강한 하방 압력"
     elif pressure <= -1: st = "하방 압력"
     else: st = "중립"
     d.append(f"압력={pressure:+.0f}")
@@ -308,8 +315,8 @@ def calc_dollar_trend(df):
 
 # ═══ 14. Consumer Sentiment (W-06: MICH 보조) ═══
 def calc_consumer_sentiment(df):
-    umcs = safe_val(df, "UMCSENT"); uy = safe_val(df, "UMCSENT", "chg_yoy"); mich = safe_val(df, "MICH")
-    if umcs is None: return {"status":"N/A","value":None,"detail":"데이터 없음","series":["UMCSENT","MICH"]}
+    umcs = safe_val(df, "UMCSENT"); uy = safe_val(df, "UMCSENT", "chg_yoy")
+    if umcs is None: return {"status":"N/A","value":None,"detail":"데이터 없음","series":["UMCSENT"]}
     if umcs >= 80: st = "견조"
     elif umcs >= 70: st = "양호"
     elif umcs >= 60: st = "냉각"
@@ -317,9 +324,7 @@ def calc_consumer_sentiment(df):
     else: st = "심각한 위축"
     d = [f"UMCS={umcs:.1f}"]
     if uy is not None: d.append(f"YoY={uy:+.1f}pt")
-    if mich is not None: d.append(f"인플레기대={mich:.1f}%")
-    if mich is not None and mich >= 4.0 and umcs < 60: d.append("⚠️심리↓+기대↑ 괴리")
-    return {"status":st,"value":umcs,"detail":", ".join(d),"series":["UMCSENT","MICH"]}
+    return {"status":st,"value":umcs,"detail":", ".join(d),"series":["UMCSENT"]}
 
 # ═══ 15. Housing Market (NEW) ═══
 def calc_housing_market(df):
@@ -379,6 +384,7 @@ def calc_trade_fiscal(df):
 # ═══ 17. Korea Cross (NEW) ═══
 def calc_korea_cross(df):
     ts = safe_val(df, "KOR_US_10Y_SPREAD")
+    ps = safe_val(df, "KOR_US_POLICY_SPREAD")
     cli = safe_val(df, "KORLOLITOAASTSAM")
     krw = safe_val(df, "DEXKOUS")
     score = 5.0; d = []
@@ -386,6 +392,11 @@ def calc_korea_cross(df):
         d.append(f"10Y금리차={ts:+.2f}%p")
         if ts < -1.5: score -= 1.0
         elif ts < -0.5: score -= 0.5
+    if ps is not None:
+        d.append(f"정책금리차={ps:+.2f}%p")
+        if ps < -2.0: score -= 0.5
+        elif ps < -0.5: score -= 0.25
+        elif ps >= 0.5: score += 0.25
     if cli is not None:
         d.append(f"CLI={cli:.1f}")
         if cli >= 101: score += 1.0
@@ -398,14 +409,14 @@ def calc_korea_cross(df):
         elif krw >= 1350: score -= 0.5
         elif krw <= 1150: score += 0.5
     score = max(0, min(10, score))
-    if not d: return {"status":"N/A","value":None,"detail":"데이터 없음","series":["KOR_US_10Y_SPREAD","KORLOLITOAASTSAM","DEXKOUS"]}
+    if not d: return {"status":"N/A","value":None,"detail":"데이터 없음","series":["KOR_US_10Y_SPREAD","KOR_US_POLICY_SPREAD","KORLOLITOAASTSAM","DEXKOUS"]}
     if score >= 7: st = "양호"
     elif score >= 5.5: st = "중립"
     elif score >= 4: st = "주의"
     elif score >= 2.5: st = "경계"
     else: st = "위기(한국)"
     d.append(f"점수={score:.1f}")
-    return {"status":st,"value":score,"detail":", ".join(d),"series":["KOR_US_10Y_SPREAD","KORLOLITOAASTSAM","DEXKOUS"]}
+    return {"status":st,"value":score,"detail":", ".join(d),"series":["KOR_US_10Y_SPREAD","KOR_US_POLICY_SPREAD","KORLOLITOAASTSAM","DEXKOUS"]}
 
 # ═══ 18. Consumption (NEW) ═══
 def calc_consumption(df):
@@ -453,6 +464,7 @@ _STATUS_LEVEL = {
     "가파름": 1, "안정": 1, "완화적": 1, "강한 완화": 1,
     "목표 하회": 1, "과도 낙관": 1, "과도 완화": 1, "과잉": 1,
     "하방 압력": 1, "낙관": 1, "견조": 1, "디플레": 1,
+    "강한 하방 압력": 2,
 }
 _LEVEL_LABEL = {5: "위험 (Critical)", 4: "경계 (High)", 3: "주의 (Elevated)", 2: "관심 (Guarded)", 1: "안정 (Low)"}
 _LEVEL_EMOJI = {5: "🔴", 4: "🟠", 3: "🟡", 2: "🔵", 1: "🟢", 0: "⚪"}
@@ -528,7 +540,7 @@ def generate_markdown(signals, risk, generated_at):
         L.append(f"- **상세**: {sig.get('detail', '')}")
         L.append(f"- **시리즈**: {', '.join(sig.get('series', []))}\n")
     L.append("---")
-    L.append(f"*v3 — 18개 신호, W-01~W-06 수정, 주택/무역/한국/소비 확장*")
+    L.append(f"*v4 — 미사용 시리즈 제거, KCFSI 가중, MICH 이중반영 해소, KOR_US_POLICY_SPREAD 복원*")
     return "\n".join(L)
 
 def main():

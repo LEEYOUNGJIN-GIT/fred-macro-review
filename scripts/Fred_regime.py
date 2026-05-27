@@ -142,29 +142,30 @@ def calc_growth_score(df) -> dict:
     components.append({"name": "CFNAI 경기활동", "series": "CFNAI",
                         "value": cfnai, "contrib": contrib})
 
-    # ── 6) 소비자심리
+    # ── 6) 소비자심리 (레짐·신호 정합성 강화)
     umcs = safe_val(df, "UMCSENT")
     contrib = 0.0
     if umcs is not None:
         if   umcs >= 80: contrib = +0.5
         elif umcs >= 70: contrib = +0.25
-        elif umcs <= 50: contrib = -1.0
-        elif umcs <= 60: contrib = -0.5
+        elif umcs <= 50: contrib = -2.0
+        elif umcs <= 55: contrib = -1.5
+        elif umcs <= 60: contrib = -1.0
     score += contrib
     components.append({"name": "소비자심리", "series": "UMCSENT",
                         "value": umcs, "contrib": contrib})
 
-    # ── 7) Philly Fed 선행지수
-    usslind = safe_val(df, "USSLIND")
+    # ── 7) 제조업 신규주문 MoM% (USSLIND 폐기 → AMTMNO 대체)
+    amt_mom = safe_val(df, "AMTMNO", "chg_prev")
     contrib = 0.0
-    if usslind is not None:
-        if   usslind >= 1.0:  contrib = +0.5
-        elif usslind >= 0.0:  contrib = +0.25
-        elif usslind <= -2.0: contrib = -1.0
-        elif usslind <= 0.0:  contrib = -0.5
+    if amt_mom is not None:
+        if   amt_mom >= 1.0:  contrib = +0.5
+        elif amt_mom >= 0.3:  contrib = +0.25
+        elif amt_mom <= -1.0: contrib = -1.0
+        elif amt_mom <= 0.0:  contrib = -0.5
     score += contrib
-    components.append({"name": "선행지수(Philly)", "series": "USSLIND",
-                        "value": usslind, "contrib": contrib})
+    components.append({"name": "제조업 신규주문 MoM%", "series": "AMTMNO",
+                        "value": amt_mom, "contrib": contrib})
 
     # ── 8) 설비가동률
     tcu = safe_val(df, "TCU")
@@ -178,14 +179,23 @@ def calc_growth_score(df) -> dict:
     components.append({"name": "설비가동률", "series": "TCU",
                         "value": tcu, "contrib": contrib})
 
-    # ── 9) [3순위 확장] S&P 500 YoY%
-    sp_yoy = safe_val(df, "SP500", "chg_yoy")
+    # ── 9) S&P 500 YoY% (level → % 환산)
+    sp_level   = safe_val(df, "SP500")
+    sp_yoy_abs = safe_val(df, "SP500", "chg_yoy")
+    sp_yoy = None
+    if sp_level is not None and sp_yoy_abs is not None:
+        prev_level = sp_level - sp_yoy_abs
+        if prev_level and prev_level != 0:
+            sp_yoy = round(sp_yoy_abs / abs(prev_level) * 100, 2)
     contrib = 0.0
     if sp_yoy is not None:
         if   sp_yoy >= 20.0:  contrib = +0.5
         elif sp_yoy >= 10.0:  contrib = +0.25
         elif sp_yoy <= -20.0: contrib = -1.5
         elif sp_yoy <= -10.0: contrib = -0.5
+        # 자산가격만 견조·심리 위축 시 주가 기여 축소
+        if umcs is not None and umcs < 60 and contrib > 0:
+            contrib = round(contrib * 0.5, 2)
     score += contrib
     components.append({"name": "S&P 500 YoY%", "series": "SP500",
                         "value": sp_yoy, "contrib": contrib})
@@ -329,14 +339,14 @@ def calc_inflation_score(df) -> dict:
     components.append({"name": "주택가격 YoY%", "series": "CSUSHPINSA",
                         "value": house_yoy, "contrib": contrib})
 
-    # ── 10) [3순위 확장] 30년 모기지 금리 (간접 인플레 압력)
+    # ── 10) 30년 모기지 금리 — 높을수록 인플레 억제(음기여)
     mort = safe_val(df, "MORTGAGE30US")
     contrib = 0.0
     if mort is not None:
-        if   mort >= 7.5: contrib = +0.5
-        elif mort >= 7.0: contrib = +0.25
-        elif mort <= 5.0: contrib = -0.5
-        elif mort <= 5.5: contrib = -0.25
+        if   mort >= 7.5: contrib = -0.5
+        elif mort >= 7.0: contrib = -0.25
+        elif mort <= 5.0: contrib = +0.5
+        elif mort <= 5.5: contrib = +0.25
     score += contrib
     components.append({"name": "30Y 모기지(%)", "series": "MORTGAGE30US",
                         "value": mort, "contrib": contrib})
@@ -391,8 +401,34 @@ def _confidence_pct(g_score, i_score):
     raw = (g_dist + i_dist) / 2.0  # 0~5.0
     return min(100.0, raw / 5.0 * 100.0)
 
-def classify_regime(growth_score: float, inflation_score: float) -> dict:
+def _effective_growth_for_regime(raw_score: float, df) -> tuple:
+    """소비자심리 기반 성장 점수 조정 — 레짐·SIG14(소비자 심리) 정합성."""
+    umcs = safe_val(df, "UMCSENT")
+    if umcs is None:
+        return raw_score, ""
+    if umcs < 50:
+        cap = 4.5
+    elif umcs < 55:
+        cap = 5.0
+    elif umcs < 60:
+        cap = 5.5
+    else:
+        return raw_score, ""
+    if raw_score <= cap:
+        return raw_score, ""
+    return cap, (
+        f"⚠️ 소비자심리 veto(UMCS={umcs:.1f}): "
+        f"레짐 판정용 성장 {raw_score:.1f}→{cap:.1f} (자산·고용 vs 심리 괴리 보정)"
+    )
+
+
+def classify_regime(growth_score: float, inflation_score: float, df=None) -> dict:
     "성장·인플레 점수를 기반으로 4개 레짐 중 하나를 반환."
+    raw_growth = growth_score
+    sentiment_note = ""
+    if df is not None:
+        growth_score, sentiment_note = _effective_growth_for_regime(growth_score, df)
+
     g_high = growth_score > 5.0
     i_high = inflation_score > 5.0
 
@@ -407,6 +443,8 @@ def classify_regime(growth_score: float, inflation_score: float) -> dict:
 
     regime = _REGIME_TABLE[key].copy()
     regime["key"] = key
+    regime["raw_growth_score"] = raw_growth
+    regime["growth_score"] = growth_score
     label_kr, label_en = _strength_label(growth_score, inflation_score)
     regime["strength_kr"] = label_kr
     regime["strength_en"] = label_en
@@ -417,15 +455,16 @@ def classify_regime(growth_score: float, inflation_score: float) -> dict:
     i_margin = abs(inflation_score - 5.0)
     regime["g_margin"] = g_margin
     regime["i_margin"] = i_margin
+    notes = []
+    if sentiment_note:
+        notes.append(sentiment_note)
     if g_margin < 0.5 or i_margin < 0.5:
-        regime["boundary_warning"] = True
-        regime["boundary_note"] = (
+        notes.append(
             f"⚠️ 경계 근접: 성장={g_margin:.1f}pt, 인플레={i_margin:.1f}pt 차이. "
             f"소폭 데이터 변동으로 레짐 전환 가능."
         )
-    else:
-        regime["boundary_warning"] = False
-        regime["boundary_note"] = ""
+    regime["boundary_warning"] = bool(notes)
+    regime["boundary_note"] = "\n".join(notes)
 
     return regime
 
@@ -487,7 +526,8 @@ def _component_table(title, result):
 
 def generate_markdown(growth: dict, inflation: dict, regime: dict,
                       transitions: list, generated_at: str) -> str:
-    g = growth["score"]
+    g = regime.get("growth_score", growth["score"])
+    raw_g = regime.get("raw_growth_score", growth["score"])
     i = inflation["score"]
 
     lines = []
@@ -500,6 +540,8 @@ def generate_markdown(growth: dict, inflation: dict, regime: dict,
     lines.append(f"- **강도**: {regime['strength_kr']} ({regime['strength_en']})")
     lines.append(f"- **신뢰도**: {regime['confidence']:.0f}%")
     lines.append(f"- **성장 점수**: {g:.1f} / 10")
+    if raw_g != g:
+        lines.append(f"- **성장 점수(원본)**: {raw_g:.1f} / 10")
     lines.append(f"- **인플레 점수**: {i:.1f} / 10")
     lines.append(f"- **시사점**: {regime['description']}")
     if regime.get("boundary_warning"):
@@ -535,7 +577,7 @@ def generate_markdown(growth: dict, inflation: dict, regime: dict,
 
     # 메타데이터
     lines.append("---")
-    lines.append(f"*v3 — 성장 10요소, 인플레 10요소, ±1.5pt cap, 신뢰도 포함*")
+    lines.append(f"*v4 — USSLIND→AMTMNO, 소비자심리 veto, SP500 %환산, 모기지 방향 정정*")
 
     return "\n".join(lines)
 
@@ -544,7 +586,7 @@ def generate_markdown(growth: dict, inflation: dict, regime: dict,
 # ═══════════════════════════════════════════════════════════
 
 def main():
-    print("🏛️  Fred_regime.py 시작 (v3)")
+    print("🏛️  Fred_regime.py 시작 (v4)")
     df = load_data()
     print(f"  ✅ {len(df)}개 시리즈 로드 완료")
 
@@ -553,14 +595,15 @@ def main():
     print(f"  📊 성장 점수: {growth['score']:.1f} / 10")
     print(f"  📊 인플레 점수: {inflation['score']:.1f} / 10")
 
-    regime = classify_regime(growth["score"], inflation["score"])
+    regime = classify_regime(growth["score"], inflation["score"], df)
+    eff_g = regime.get("growth_score", growth["score"])
     print(f"  📊 레짐: {regime['emoji']} {regime['regime']} "
-          f"({regime['strength_kr']}, 신뢰도 {regime['confidence']:.0f}%)")
+          f"({regime['strength_kr']}, 신뢰도 {regime['confidence']:.0f}%, 성장={eff_g:.1f})")
     if regime.get("boundary_warning"):
         print(f"  {regime['boundary_note']}")
 
     transitions = get_transition_conditions(
-        regime["key"], growth["score"], inflation["score"], df)
+        regime["key"], eff_g, inflation["score"], df)
 
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     md = generate_markdown(growth, inflation, regime, transitions, generated_at)

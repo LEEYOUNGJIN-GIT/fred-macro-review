@@ -3,7 +3,7 @@
 """
 FRED API 거시경제 팩트 테이블 자동 생성 스크립트 (풀 버전)
 ──────────────────────────────────────────────────────────
-• 99개 FRED 시리즈 + 3개 파생지표 = 102개 매크로 지표
+• 92개 FRED 시리즈 + 3개 파생지표 = 95개 매크로 지표
 • 20개 카테고리별 팩트 테이블을 Markdown + CSV로 저장
 • GitHub Actions + claude.ai GitHub Integration 연동 목적
 
@@ -44,7 +44,7 @@ DATA_DIR    = BASE_DIR / "data"
 HISTORY_DIR = DATA_DIR / "fred_history"
 
 # ═══════════════════════════════════════════════════════════
-# 2. 시리즈 레지스트리 (100개)
+# 2. 시리즈 레지스트리 (95개)
 # ═══════════════════════════════════════════════════════════
 # tf 필드: level=원값, yoy_pct=YoY% 변환, mom_pct=MoM%,
 #          mom_diff=전월차, calculated=파생
@@ -56,7 +56,6 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
  'T5YIFR': {'cat': '01_금리채권', 'kr': '5Y5Y 선도 인플레 기대', 'en': '5Y5Y Forward Inflation', 'freq': 'D', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': 'Fed 최중시 장기 인플레 앵커링. 2~2.5% 정상. 2.5%↑ 신뢰 훼손'},
  'DGS2': {'cat': '01_금리채권', 'kr': '미국채 2년물', 'en': '2Y Treasury Yield', 'freq': 'D', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': '단기 금리 기대. Fed 정책 선반영. DFF 대비 괴리=인하/인상 기대 내재'},
  'DGS10': {'cat': '01_금리채권', 'kr': '미국채 10년물', 'en': '10Y Treasury Yield', 'freq': 'D', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': '글로벌 벤치마크. 모기지·회사채 기준. 5%↑ 재정·기업 부담 가중'},
- 'DGS30': {'cat': '01_금리채권', 'kr': '미국채 30년물', 'en': '30Y Treasury Yield', 'freq': 'D', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': '초장기 금리. 연금/보험 할인율. 기간 프리미엄 반영. 5%↑ 재정 우려'},
  'TB3MS': {'cat': '01_금리채권', 'kr': '3개월 T-Bill', 'en': '3M Treasury Bill', 'freq': 'M', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': '단기 무위험 금리. DFF와 동행. T10Y3M 산출 기준'},
  'DFF': {'cat': '01_금리채권', 'kr': '연방기금 실효금리(일간)', 'en': 'Fed Funds Effective Rate', 'freq': 'D', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': 'Fed 기준금리 실시간. Core PCE 차감→실질금리 갭 산출. 중립금리 약 2.5%'},
  'FEDFUNDS': {'cat': '01_금리채권', 'kr': '연방기금금리(월간)', 'en': 'Fed Funds Rate(Monthly)', 'freq': 'M', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': '기준금리 월간 평균. FOMC 결정 직후 변동. DFF의 월간 스무딩'},
@@ -215,7 +214,6 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
  'EXPGS': {'cat': '09_무역국제수지', 'kr': '실질 수출', 'en': 'Real Exports', 'freq': 'Q', 'unit': 'Bil.USD', 'src': 'BEA', 'tf': 'yoy_pct', 'note': '실질 수출 YoY. 글로벌 수요·달러 강도 반영. 수출↓+달러↑=교역 위축'},
  'IMPGS': {'cat': '09_무역국제수지', 'kr': '실질 수입', 'en': 'Real Imports', 'freq': 'Q', 'unit': 'Bil.USD', 'src': 'BEA', 'tf': 'yoy_pct', 'note': '실질 수입 YoY. 내수 강도 반영. 수입 급증=관세 전 선구매(frontloading) 가능'},
  'DEXKOUS': {'cat': '10_환율달러', 'kr': '원/달러 환율', 'en': 'USD/KRW', 'freq': 'D', 'unit': 'KRW/USD', 'src': 'Fed', 'tf': 'level', 'note': '원/달러. 상승=원화약세(수입물가↑). 급등 시 외화부채·자본유출 리스크, 변동성 확대 주의'},
- 'DEXBZUS': {'cat': '10_환율달러', 'kr': '헤알/달러 환율', 'en': 'USD/BRL', 'freq': 'D', 'unit': 'BRL/USD', 'src': 'Fed', 'tf': 'level', 'note': '헤알/달러. 5.0↓ 안정. 5.5↑ EM 스트레스. 브라질 재정·금리 민감'},
  'DTWEXBGS': {'cat': '10_환율달러',
               'kr': '무역가중 달러지수(광범위)',
               'en': 'Trade-Weighted Dollar(Broad)',
@@ -276,22 +274,6 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
                    'tf': 'yoy_pct',
                    'note': '원자재 종합지수 YoY. 전체 원자재 동향. 30%↑ 인플레 경고. 음수=디플레 압력'},
  'SP500': {'cat': '13_주가지수', 'kr': 'S&P 500', 'en': 'S&P 500 Index', 'freq': 'D', 'unit': 'Index', 'src': 'S&P', 'tf': 'level', 'note': '미국 대표 주가. 200일선 하회→기술적 약세. 고점 대비 -10%=조정. -20%=약세장'},
- 'INTDSRBRM193N': {'cat': '14_브라질',
-                   'kr': '브라질 기준금리(SELIC 프록시)',
-                   'en': 'Brazil Discount Rate',
-                   'freq': 'M',
-                   'unit': '%',
-                   'src': 'IMF IFS',
-                   'tf': 'level',
-                   'note': '브라질 SELIC 프록시. 신흥국 최고 금리 그룹. 인플레 타겟 3%±1.5%'},
- 'GGNLBABRA188N': {'cat': '14_브라질',
-                   'kr': '브라질 재정수지',
-                   'en': 'Brazil Net Lending/Borrowing',
-                   'freq': 'A',
-                   'unit': '%GDP',
-                   'src': 'IMF WEO',
-                   'tf': 'level',
-                   'note': '브라질 재정수지(%GDP). 적자 확대→헤알 약세·CDS 상승. -6%↑ 경계'},
  'COPPER_GOLD_RATIO': {'cat': '15_파생지표',
                        'kr': '구리/금 비율',
                        'en': 'Copper/Gold Ratio',
@@ -308,6 +290,14 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
                        'src': 'Calculated',
                        'tf': 'calculated',
                        'note': '한국 10Y(IRLTLT01KRM156N) - 미국 10Y(DGS10, 일간→월평균). 스프레드 축소/역전은 환율 압력 점검'},
+ 'KOR_US_POLICY_SPREAD': {'cat': '15_파생지표',
+                          'kr': '한미 기준금리 스프레드(한-미)',
+                          'en': 'KOR-US Policy Rate Spread',
+                          'freq': 'M',
+                          'unit': '%p',
+                          'src': 'Calculated',
+                          'tf': 'calculated',
+                          'note': '한국 콜금리(IRSTCI01KRM156N) - 미국 FFR(DFF, 일간→월평균). SIG17 한국 크로스 신호 입력'},
  'T10Y3M': {'cat': '16_침체조기경보',
             'kr': '10Y-3M 스프레드',
             'en': '10Y-3M Treasury Spread',
@@ -324,22 +314,6 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
                   'src': 'STL Fed',
                   'tf': 'level',
                   'note': 'Sahm Rule 실시간. 0.5↑=실업률 상승 기반 침체 신호. 전환점 조기경보로 활용'},
- 'RECPROUSM156N': {'cat': '16_침체조기경보',
-                   'kr': '침체확률(Smoothed)',
-                   'en': 'Smoothed Recession Probabilities',
-                   'freq': 'M',
-                   'unit': '%',
-                   'src': 'STL Fed',
-                   'tf': 'level',
-                   'note': 'GDP 기반 침체확률. 20%↑ 주의. 50%↑ 경계. 80%↑ 침체 확정. 후행적 확인'},
- 'USSLIND': {'cat': '16_침체조기경보',
-             'kr': '필라델피아 선행지수',
-             'en': 'Leading Index for the US',
-             'freq': 'M',
-             'unit': '%',
-             'src': 'Philly Fed',
-             'tf': 'level',
-             'note': 'Philly Fed 선행지수. 6M 선행. 3개월 연속 음수=둔화 경고. -2%↓ 침체 시그널'},
  'TCU': {'cat': '17_생산경기', 'kr': '설비가동률', 'en': 'Capacity Utilization Total', 'freq': 'M', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': '설비가동률. 장기평균 79.6%. 80%↑ 인플레 압력. 75%↓ 경기 둔화. 70%↓ 심각 위축'},
  'ISRATIO': {'cat': '17_생산경기',
              'kr': '재고/판매 비율',
@@ -589,10 +563,19 @@ def calc_kor_us_10y_spread(all_data):
     return [{'date': f"{ym}-01", 'value': round(kor[ym] - us[ym], 4)} for ym in common]
 
 
+def calc_kor_us_policy_spread(all_data):
+    """한미 기준금리 스프레드(한국 콜금리 - 미국 FFR, 미국은 일간→월평균)"""
+    kor = _monthly_avg_map(all_data.get('IRSTCI01KRM156N', []))
+    us  = _monthly_avg_map(all_data.get('DFF', []))
+    common = sorted(set(kor.keys()) & set(us.keys()), reverse=True)
+    return [{'date': f"{ym}-01", 'value': round(kor[ym] - us[ym], 4)} for ym in common]
+
+
 # calculated 시리즈별 계산 함수 매핑
 CALC_FUNCS = {
-    'COPPER_GOLD_RATIO': calc_copper_gold_ratio,
-    'KOR_US_10Y_SPREAD': calc_kor_us_10y_spread,
+    'COPPER_GOLD_RATIO':    calc_copper_gold_ratio,
+    'KOR_US_10Y_SPREAD':    calc_kor_us_10y_spread,
+    'KOR_US_POLICY_SPREAD': calc_kor_us_policy_spread,
 }
 
 
