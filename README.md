@@ -49,7 +49,7 @@
 fred-macro-review/
 ├── .github/
 │   └── workflows/
-│       └── fred_daily.yml          ← GitHub Actions (매일 KST 08:30)
+│       └── fred_daily.yml          ← GitHub Actions (매일 KST 06:10)
 ├── scripts/
 │   ├── Fred_signals.py             ← 18개 파생 신호 대시보드
 │   └── Fred_regime.py              ← 2×2 레짐 분류 엔진
@@ -168,7 +168,7 @@ fred-macro-review/
 
 ### 3단계: 워크플로우 확인
 
-`.github/workflows/fred_daily.yml`이 매일 **KST 08:30** (UTC 23:30)에 실행.
+`.github/workflows/fred_daily.yml`이 매일 **KST 06:10** (UTC 21:10)에 실행.
 
 ```yaml
 # 실행 순서
@@ -212,7 +212,7 @@ fred-macro-review/
 
 | 항목 | 값 |
 |------|-----|
-| 실행 주기 | 매일 KST 08:30 (UTC 23:30) |
+| 실행 주기 | 매일 KST 06:10 (UTC 21:10, GitHub 부하 시 지연 가능) |
 | API 호출 수 | 92회 (시리즈당 1회, 0.5초 간격) |
 | 금일 데이터 포함 여부 | FRED 발표 시점 의존 (D: 당일·전일, M/Q: 전월·전분기) |
 | 히스토리 보관 | data/fred_history/ 에 일별 CSV 자동 저장 |
