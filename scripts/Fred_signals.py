@@ -188,6 +188,7 @@ def calc_financial_stress(df):
 def calc_labor_market(df):
     ur = safe_val(df, "UNRATE"); nfp = safe_val(df, "PAYEMS", "chg_prev")
     icsa = safe_val(df, "ICSA"); jolt = safe_val(df, "JTSJOL"); civ = safe_val(df, "CIVPART")
+    quits = safe_val(df, "JTSQUR"); prime_lfpr = safe_val(df, "LNS11300060")
     score = 5.0
     d = []
     if ur is not None:
@@ -211,8 +212,14 @@ def calc_labor_market(df):
         d.append(f"구인={jolt:,.0f}K")
         if jolt >= 10000: score += 0.5
         elif jolt <= 5000: score -= 1.0
+    if quits is not None:
+        d.append(f"이직률={quits:.1f}%")
+        if quits >= 2.3: score += 0.5
+        elif quits <= 1.7: score -= 0.5
     if civ is not None:
         d.append(f"경활={civ:.1f}%")
+    if prime_lfpr is not None:
+        d.append(f"핵심연령LFPR={prime_lfpr:.1f}%")
     score = max(0, min(10, score))
     if score >= 7: st = "견조"
     elif score >= 5.5: st = "양호"
@@ -220,7 +227,7 @@ def calc_labor_market(df):
     elif score >= 2.5: st = "약화"
     else: st = "심각한 위축"
     d.append(f"점수={score:.1f}")
-    return {"status":st,"value":score,"detail":", ".join(d),"series":["UNRATE","PAYEMS","ICSA","JTSJOL","CIVPART"]}
+    return {"status":st,"value":score,"detail":", ".join(d),"series":["UNRATE","PAYEMS","ICSA","JTSJOL","JTSQUR","CIVPART","LNS11300060"]}
 
 # ═══ 11. Liquidity (W-01: WALCL YoY %) ═══
 def calc_liquidity(df):
@@ -256,6 +263,22 @@ def calc_liquidity(df):
         d.append(f"본원통화YoY={base_y:+.1f}%")
         if base_y < -5: score -= 0.5
         elif base_y > 10: score += 0.5
+    treast = safe_val(df, "TREAST"); treast_p = safe_val(df, "TREAST", "chg_prev")
+    treast_m = safe_val(df, "TREAST", "chg_mid")
+    mbs = safe_val(df, "WSHOMCB"); mbs_p = safe_val(df, "WSHOMCB", "chg_prev")
+    mbs_m = safe_val(df, "WSHOMCB", "chg_mid")
+    if treast is not None:
+        parts = [f"Fed국채=${treast/1e6:.2f}T"]
+        if treast_p is not None: parts.append(f"1W={treast_p:+,.0f}M")
+        if treast_m is not None: parts.append(f"4W={treast_m:+,.0f}M")
+        d.append(", ".join(parts))
+    if mbs is not None:
+        parts = [f"FedMBS=${mbs/1e6:.2f}T"]
+        if mbs_p is not None: parts.append(f"1W={mbs_p:+,.0f}M")
+        if mbs_m is not None: parts.append(f"4W={mbs_m:+,.0f}M")
+        d.append(", ".join(parts))
+    if treast_m is not None and mbs_m is not None and treast_m < 0 and mbs_m < 0:
+        score -= 0.25
     score = max(0, min(10, score))
     if score >= 7: st = "과잉"
     elif score >= 5.5: st = "양호"
@@ -263,7 +286,7 @@ def calc_liquidity(df):
     elif score >= 2.5: st = "위축"
     else: st = "소진"
     d.append(f"점수={score:.1f}")
-    return {"status":st,"value":score,"detail":", ".join(d),"series":["RRPONTSYD","TOTRESNS","WALCL","BOGMBASE"]}
+    return {"status":st,"value":score,"detail":", ".join(d),"series":["RRPONTSYD","TOTRESNS","WALCL","BOGMBASE","TREAST","WSHOMCB"]}
 
 # ═══ 12. Commodity Pressure ═══
 # 금 가격(NASDAQQGLDI)은 지수단위(Index)이므로 이 신호에서 직접 사용하지 않음.
@@ -298,8 +321,12 @@ def calc_commodity_pressure(df):
 
 # ═══ 13. Dollar Trend ═══
 def calc_dollar_trend(df):
-    dxy_y = safe_val(df, "DTWEXBGS", "chg_yoy"); dxy = safe_val(df, "DTWEXBGS"); krw = safe_val(df, "DEXKOUS")
-    if dxy is None: return {"status":"N/A","value":None,"detail":"데이터 없음","series":["DTWEXBGS","DEXKOUS"]}
+    fx_series = ["DTWEXBGS", "DEXKOUS", "DEXJPUS", "DEXCHUS"]
+    dxy_y = safe_val(df, "DTWEXBGS", "chg_yoy"); dxy = safe_val(df, "DTWEXBGS")
+    krw = safe_val(df, "DEXKOUS"); jpy = safe_val(df, "DEXJPUS"); cny = safe_val(df, "DEXCHUS")
+    jpy_m = safe_val(df, "DEXJPUS", "chg_mid")
+    if dxy is None:
+        return {"status":"N/A","value":None,"detail":"데이터 없음","series":fx_series}
     d = [f"DXY={dxy:.1f}"]
     if dxy_y is not None:
         d.append(f"YoY={dxy_y:+.1f}pt")
@@ -311,7 +338,15 @@ def calc_dollar_trend(df):
     else:
         st = "중립"
     if krw is not None: d.append(f"USD/KRW={krw:,.0f}")
-    return {"status":st,"value":dxy_y,"detail":", ".join(d),"series":["DTWEXBGS","DEXKOUS"]}
+    if jpy is not None:
+        jpy_part = f"USD/JPY={jpy:.2f}"
+        if jpy_m is not None:
+            jpy_part += f", 4W={jpy_m:+.2f}"
+            if jpy_m <= -5:
+                jpy_part += " [엔 급강세/캐리 경보]"
+        d.append(jpy_part)
+    if cny is not None: d.append(f"USD/CNY={cny:.4f}")
+    return {"status":st,"value":dxy_y,"detail":", ".join(d),"series":fx_series}
 
 # ═══ 14. Consumer Sentiment (W-06: MICH 보조) ═══
 def calc_consumer_sentiment(df):
@@ -387,6 +422,7 @@ def calc_korea_cross(df):
     ps = safe_val(df, "KOR_US_POLICY_SPREAD")
     cli = safe_val(df, "KORLOLITOAASTSAM")
     krw = safe_val(df, "DEXKOUS")
+    cny = safe_val(df, "DEXCHUS"); cny_m = safe_val(df, "DEXCHUS", "chg_mid")
     score = 5.0; d = []
     if ts is not None:
         d.append(f"10Y금리차={ts:+.2f}%p")
@@ -408,15 +444,22 @@ def calc_korea_cross(df):
         if krw >= 1450: score -= 1.0
         elif krw >= 1350: score -= 0.5
         elif krw <= 1150: score += 0.5
+    if cny is not None:
+        cny_part = f"USD/CNY={cny:.4f}"
+        if cny_m is not None:
+            cny_part += f", 4W={cny_m:+.3f}"
+            if cny_m >= 0.15:
+                score -= 0.25
+        d.append(cny_part)
     score = max(0, min(10, score))
-    if not d: return {"status":"N/A","value":None,"detail":"데이터 없음","series":["KOR_US_10Y_SPREAD","KOR_US_POLICY_SPREAD","KORLOLITOAASTSAM","DEXKOUS"]}
+    if not d: return {"status":"N/A","value":None,"detail":"데이터 없음","series":["KOR_US_10Y_SPREAD","KOR_US_POLICY_SPREAD","KORLOLITOAASTSAM","DEXKOUS","DEXCHUS"]}
     if score >= 7: st = "양호"
     elif score >= 5.5: st = "중립"
     elif score >= 4: st = "주의"
     elif score >= 2.5: st = "경계"
     else: st = "위기(한국)"
     d.append(f"점수={score:.1f}")
-    return {"status":st,"value":score,"detail":", ".join(d),"series":["KOR_US_10Y_SPREAD","KOR_US_POLICY_SPREAD","KORLOLITOAASTSAM","DEXKOUS"]}
+    return {"status":st,"value":score,"detail":", ".join(d),"series":["KOR_US_10Y_SPREAD","KOR_US_POLICY_SPREAD","KORLOLITOAASTSAM","DEXKOUS","DEXCHUS"]}
 
 # ═══ 18. Consumption (NEW) ═══
 def calc_consumption(df):
@@ -540,7 +583,7 @@ def generate_markdown(signals, risk, generated_at):
         L.append(f"- **상세**: {sig.get('detail', '')}")
         L.append(f"- **시리즈**: {', '.join(sig.get('series', []))}\n")
     L.append("---")
-    L.append(f"*v4 — 미사용 시리즈 제거, KCFSI 가중, MICH 이중반영 해소, KOR_US_POLICY_SPREAD 복원*")
+    L.append(f"*v5 — JTSQUR 노동, TREAST/WSHOMCB QT detail, DEXJPUS/DEXCHUS FX detail*")
     return "\n".join(L)
 
 def main():

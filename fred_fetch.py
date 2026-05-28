@@ -3,7 +3,7 @@
 """
 FRED API 거시경제 팩트 테이블 자동 생성 스크립트 (풀 버전)
 ──────────────────────────────────────────────────────────
-• 92개 FRED 시리즈 + 3개 파생지표 = 95개 매크로 지표
+• 98개 FRED 시리즈 + 3개 파생지표 = 101개 매크로 지표
 • 20개 카테고리별 팩트 테이블을 Markdown + CSV로 저장
 • GitHub Actions + claude.ai GitHub Integration 연동 목적
 
@@ -44,7 +44,7 @@ DATA_DIR    = BASE_DIR / "data"
 HISTORY_DIR = DATA_DIR / "fred_history"
 
 # ═══════════════════════════════════════════════════════════
-# 2. 시리즈 레지스트리 (95개)
+# 2. 시리즈 레지스트리 (101개)
 # ═══════════════════════════════════════════════════════════
 # tf 필드: level=원값, yoy_pct=YoY% 변환, mom_pct=MoM%,
 #          mom_diff=전월차, calculated=파생
@@ -117,7 +117,23 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
             'src': 'BLS',
             'tf': 'level',
             'note': 'JOLTS 구인. V/U ratio(구인/실업) 1.0↓=노동 수급 균형. 0.8↓=고용 위축'},
- 'CIVPART': {'cat': '04_노동시장', 'kr': '경제활동 참가율', 'en': 'Labor Force Participation', 'freq': 'M', 'unit': '%', 'src': 'BLS', 'tf': 'level', 'note': '경활률. 구조적 변화(고령화 등) 반영. 상승=노동공급 확대, 하락=잠재성장 제약'},
+ 'JTSQUR': {'cat': '04_노동시장',
+            'kr': 'JOLTS 이직률',
+            'en': 'JOLTS Quits Rate',
+            'freq': 'M',
+            'unit': 'Rate (%)',
+            'src': 'BLS',
+            'tf': 'level',
+            'note': 'JOLTS 이직률(Rate). JTSJOL(Thousands)과 단위·의미 다름. 2.0%↑ 타이트. JTSJOL과 동일 월간 릴리스'},
+ 'CIVPART': {'cat': '04_노동시장', 'kr': '경제활동 참가율', 'en': 'Labor Force Participation', 'freq': 'M', 'unit': '%', 'src': 'BLS', 'tf': 'level', 'note': '전체 경활률(~62%). 구조적 변화(고령화 등) 반영. LNS11300060(25-54세)과 연령대·수준 다름'},
+ 'LNS11300060': {'cat': '04_노동시장',
+                 'kr': '핵심연령(25-54) 참가율',
+                 'en': 'LFPR 25-54 Years',
+                 'freq': 'M',
+                 'unit': '%',
+                 'src': 'BLS',
+                 'tf': 'level',
+                 'note': '25-54세 경활률(~84%). CIVPART(전체)과 혼동 금지. 구조적 노이즈 적은 경기 지표'},
  'CES0500000003': {'cat': '04_노동시장',
                    'kr': '시간당 평균 임금(민간)',
                    'en': 'Avg Hourly Earnings',
@@ -224,7 +240,39 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
               'note': '무역가중 달러(광범위). DXY 대용. 26개국 대비. YoY↑=EM 자본유출 압력'},
  'DTWEXAFEGS': {'cat': '10_환율달러', 'kr': '선진국 대비 달러', 'en': 'Dollar vs Advanced Econ.', 'freq': 'D', 'unit': 'Index', 'src': 'Fed', 'tf': 'level', 'note': '선진국 대비 달러. EUR·JPY·GBP 중심. 통화정책 차별화 반영'},
  'DTWEXEMEGS': {'cat': '10_환율달러', 'kr': '신흥국 대비 달러', 'en': 'Dollar vs Emerging Mkts', 'freq': 'D', 'unit': 'Index', 'src': 'Fed', 'tf': 'level', 'note': '신흥국 대비 달러. 상승=EM 자본유출·외채 부담 증가. 원자재 역상관'},
+ 'DEXJPUS': {'cat': '10_환율달러',
+             'kr': 'USD/JPY 환율',
+             'en': 'USD/JPY',
+             'freq': 'D',
+             'unit': 'JPY/USD',
+             'src': 'Fed',
+             'tf': 'level',
+             'note': 'H.10 공식. 상승=엔약세·캐리 유리. 급락=엔강세·글로벌 risk-off. DTWEXAFEGS(지수)와 혼동 금지'},
+ 'DEXCHUS': {'cat': '10_환율달러',
+             'kr': 'USD/CNY 환율',
+             'en': 'USD/CNY',
+             'freq': 'D',
+             'unit': 'CNY/USD',
+             'src': 'Fed',
+             'tf': 'level',
+             'note': 'H.10 공식. 상승=위안 약세·EM·원화 압력. ^HSI(홍콩 주식)와 다른 지표'},
  'WALCL': {'cat': '11_Fed유동성', 'kr': 'Fed 총자산', 'en': 'Fed Total Assets', 'freq': 'W', 'unit': 'Mil.USD', 'src': 'Fed', 'tf': 'level', 'note': 'Fed 총자산. QE 확대/QT 축소의 결과값. 감소=유동성 흡수(긴축), 증가=유동성 공급'},
+ 'TREAST': {'cat': '11_Fed유동성',
+            'kr': 'Fed 국채 보유',
+            'en': 'Fed Treasury Holdings',
+            'freq': 'W',
+            'unit': 'Mil.USD',
+            'src': 'Fed',
+            'tf': 'level',
+            'note': 'WALCL 세부(국채). TREAST+WSHOMCB≠WALCL(기타자산 포함). QT 국채 축소 속도'},
+ 'WSHOMCB': {'cat': '11_Fed유동성',
+             'kr': 'Fed MBS 보유',
+             'en': 'Fed MBS Holdings',
+             'freq': 'W',
+             'unit': 'Mil.USD',
+             'src': 'Fed',
+             'tf': 'level',
+             'note': 'WALCL 세부(MBS). MBST 폐기→WSHOMCB 사용. TREAST+WSHOMCB≠WALCL'},
  'RRPONTSYD': {'cat': '11_Fed유동성',
                'kr': '역레포 잔액(ON RRP)',
                'en': 'Overnight Reverse Repo',

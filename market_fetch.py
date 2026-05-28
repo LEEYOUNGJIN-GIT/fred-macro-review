@@ -394,7 +394,7 @@ def write_markdown(fact_table_md: str, path: Path) -> None:
         "> - 공식 거시경제 기준: `fred_latest.md` (FRED API)",
         "> - 본 파일: Yahoo Finance 일봉 — 시장·한국·breadth 보조",
         "> - 단위: Index=지수 종가 | USD=ETF adjusted close | Ratio=무차원(절대값 해석 금지)",
-        "> - 미포함(FRED 사용): 금리, VIX, SP500, WTI, USD/KRW, CPI/PCE, 고용",
+        "> - 미포함(FRED 사용): 금리, VIX, SP500, WTI, USD/KRW, USD/JPY, USD/CNY, CPI/PCE, 고용",
         "> - fetch 1건이라도 실패 시 본 파일은 갱신되지 않음\n",
         f"Generated at: {generated_at}",
         f"Source: Yahoo Finance (unofficial) | Rows: {EXPECTED_ROWS} (fixed)\n",
