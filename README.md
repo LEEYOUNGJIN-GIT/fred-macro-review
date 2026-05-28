@@ -1,8 +1,9 @@
 # 📊 FRED Macro Review — 거시경제 자동 모니터링
 
-> **FRED API → 95개 지표 수집 → 18개 파생 신호 → 2×2 레짐 분류 → claude.ai 자동 분석**
+> **FRED API → 95개 지표 수집 → 18개 파생 신호 → 2×2 레짐 분류 → Yahoo Finance 보조 25지표 → claude.ai 자동 분석**
 
 [![FRED Daily Fetch](https://github.com/LEEYOUNGJIN-GIT/fred-macro-review/actions/workflows/fred_daily.yml/badge.svg)](https://github.com/LEEYOUNGJIN-GIT/fred-macro-review/actions/workflows/fred_daily.yml)
+[![Market Daily Fetch](https://github.com/LEEYOUNGJIN-GIT/fred-macro-review/actions/workflows/market_daily.yml/badge.svg)](https://github.com/LEEYOUNGJIN-GIT/fred-macro-review/actions/workflows/market_daily.yml)
 
 ---
 
@@ -39,6 +40,25 @@
                               │  GitHub 연동   │
                               │  자동 분석     │
                               └───────────────┘
+
+┌──────────────┐                      ┌──────────────────────┐
+│ Yahoo Finance│ ──────────────────►  │  market_fetch.py     │
+│  (yfinance)  │                      │  22 + 3 derived = 25 │
+└──────────────┘                      └──────┬───────────────┘
+                                             │
+                                  ┌──────────▼──────────┐
+                                  │  data/ (보조지표)    │
+                                  │  market_latest.*    │
+                                  └──────────┬───────────┘
+                                             ▼
+                                  ┌──────────────────────┐
+                                  │ Market_signals.py    │
+                                  │ 6개 보조 신호         │
+                                  └──────────┬───────────┘
+                                             ▼
+                                  market_signals.md
+                                             │
+                       (FRED 레이어와 merge 없음 — 충돌 시 FRED 우선)
 ```
 
 ---
@@ -49,23 +69,58 @@
 fred-macro-review/
 ├── .github/
 │   └── workflows/
-│       └── fred_daily.yml          ← GitHub Actions (매일 KST 06:10)
+│       ├── fred_daily.yml          ← FRED (매일 KST 06:10)
+│       ├── market_daily.yml        ← Market 보조 (KST 화~토 06:00)
+│       └── sync_claude_project.yml ← Claude Project 5파일 sync
 ├── scripts/
 │   ├── Fred_signals.py             ← 18개 파생 신호 대시보드
-│   └── Fred_regime.py              ← 2×2 레짐 분류 엔진
+│   ├── Fred_regime.py              ← 2×2 레짐 분류 엔진
+│   └── Market_signals.py           ← 6개 보조 신호
 ├── data/
 │   ├── .gitkeep
-│   ├── fred_latest.csv             ← 최신 원천 데이터 (자동 생성)
-│   ├── fred_latest.md              ← Claude용 팩트 테이블 (자동 생성)
-│   ├── fred_signals.md             ← 18개 신호 보고서 (자동 생성)
-│   ├── fred_regime.md              ← 레짐 분류 보고서 (자동 생성)
-│   └── fred_history/
-│       └── fred_YYYYMMDD_HHMMSS.csv  ← 일별 히스토리 (자동)
-├── fred_fetch.py                   ← FRED API 수집 + 팩트 테이블 생성
-├── requirements.txt                ← pandas, requests
+│   ├── fred_latest.csv             ← FRED 원천 (공식)
+│   ├── fred_latest.md
+│   ├── fred_signals.md
+│   ├── fred_regime.md
+│   ├── market_latest.csv           ← Yahoo 보조 (25 row 고정)
+│   ├── market_latest.md
+│   ├── market_signals.md
+│   ├── fred_history/
+│   └── market_history/
+├── fred_fetch.py
+├── market_fetch.py                 ← Yahoo Finance 보조 수집
+├── requirements.txt
 ├── .gitignore
 └── README.md
 ```
+
+---
+
+## Market 보조 레이어 (v1)
+
+**공식 거시 = FRED** / **보조 = Yahoo Finance** (merge 없음)
+
+| 항목 | 내용 |
+|------|------|
+| 지표 수 | 25 row 고정 (22 raw + 3 Ratio) |
+| fetch 정책 | 100% 성공 아니면 파일 미갱신 |
+| 단위 | Index / USD(ETF) / Ratio(무차원) — md·note에 명시 |
+| 미포함 | 금리, VIX, SP500, WTI, USD/KRW 등 FRED 담당 |
+| 신호 | 6개 (`Market_signals.py`) — fred_signals 보완 |
+
+### 보조 지표 manifest (25)
+
+| cat | series | unit |
+|-----|--------|------|
+| 한국 | ^KS11, ^KQ11 | Index |
+| 미국 | ^NDX, ^RUT | Index |
+| 변동성 | ^VIX3M | Index |
+| breadth/risk | RSP, SPY, SPHB, SPLV | USD |
+| 섹터 | XLK, XLF, XLE, XLP, XLU, XLY | USD |
+| 신용 | KRE, HYG, LQD | USD |
+| 글로벌 | ^N225, ^HSI, EEM | Index/USD |
+| FX | AUDJPY=X | JPY_per_AUD |
+| 파생 | MARKET_BREADTH, MARKET_RISK_ON, HYG_LQD_RATIO | Ratio |
 
 ---
 
@@ -180,6 +235,20 @@ fred-macro-review/
 
 `Actions` 탭 → `Run workflow` 로 수동 실행도 가능.
 
+### 4단계: Market 보조 워크플로우
+
+`.github/workflows/market_daily.yml` — **KST 화~토 06:00** (미국 일봉 확정 후).
+
+```yaml
+# 실행 순서
+1. market_fetch.py           → data/market_latest.csv, data/market_latest.md
+2. scripts/Market_signals.py → data/market_signals.md
+3. git commit & push
+```
+
+- FRED API 키 불필요 (yfinance)
+- 22 ticker 중 1개라도 실패 시 **파일 미갱신** (100% 정책)
+
 ---
 
 ## 🤖 claude.ai 연동
@@ -188,44 +257,44 @@ fred-macro-review/
 
 1. [claude.ai](https://claude.ai) → Settings → Integrations → **GitHub** 연결
 2. `LEEYOUNGJIN-GIT/fred-macro-review` 레포 선택
-3. 대화 시작 시 자동으로 `data/` 폴더의 4개 파일 참조:
-   - `fred_latest.md` — 95개 원천 팩트 테이블
-   - `fred_signals.md` — 18개 신호 대시보드
-   - `fred_regime.md` — 레짐 분류 보고서
-   - `fred_latest.csv` — 상세 데이터 (필요 시)
+3. 대화 시작 시 참조 파일:
+   - **공식 (FRED)**: `fred_latest.md`, `fred_signals.md`, `fred_regime.md`
+   - **보조 (Yahoo)**: `market_latest.md`, `market_signals.md`
+   - 충돌 시 **항상 FRED 우선**
 
 ### 분석 프롬프트 예시
 
 ```
-@fred-macro-review 의 data/fred_signals.md, data/fred_regime.md, data/fred_latest.md 를 읽고
-아래 분석을 수행해 주세요:
+@fred-macro-review 의 fred_latest.md, fred_signals.md, fred_regime.md 를 공식 거시 기준으로,
+market_latest.md, market_signals.md 를 보조(시장·한국·breadth)로 읽고 아래 분석을 수행해 주세요:
 
-1. 현재 매크로 레짐과 18개 신호의 핵심 시사점 요약
-2. 전주 대비 가장 큰 변화를 보인 상위 3개 지표
-3. 향후 1~3개월 리스크 시나리오 (Bull / Base / Bear)
-4. 한국 투자자 관점의 시사점 (원화, 금리, 주식)
+1. FRED 레짐·18신호 핵심 시사점
+2. Market 보조 6신호 (한국/Breadth/섹터 등)
+3. 향후 1~3개월 Bull/Base/Bear
+4. 한국 투자자 관점 시사점
 ```
 
 ---
 
 ## 📅 스케줄
 
-| 항목 | 값 |
-|------|-----|
-| 실행 주기 | 매일 KST 06:10 (UTC 21:10, GitHub 부하 시 지연 가능) |
-| API 호출 수 | 92회 (시리즈당 1회, 0.5초 간격) |
-| 금일 데이터 포함 여부 | FRED 발표 시점 의존 (D: 당일·전일, M/Q: 전월·전분기) |
-| 히스토리 보관 | data/fred_history/ 에 일별 CSV 자동 저장 |
-| 수동 실행 | Actions → `Run workflow` |
+| 항목 | FRED | Market (보조) |
+|------|------|---------------|
+| 실행 주기 | 매일 KST 06:10 | KST 화~토 06:00 |
+| API | FRED 92회 | yfinance 22 ticker |
+| fetch 정책 | 50% 미만 실패 시 중단 | **100% 실패 시 미갱신** |
+| 히스토리 | data/fred_history/ | data/market_history/ |
+| 수동 실행 | Actions → FRED Daily Fetch | Actions → Market Daily Fetch |
 
 ---
 
 ## 📦 requirements.txt
 
 ```
-pandas>=2.0
-requests>=2.28
+pandas>=2.1
+requests>=2.31
 numpy>=1.24
+yfinance>=0.2
 ```
 
 ---
