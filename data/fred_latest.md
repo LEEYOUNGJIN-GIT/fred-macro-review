@@ -1,6 +1,6 @@
 # FRED 거시경제 지표 보고서
 
-Generated at: 2026-05-28 07:57:23 UTC
+Generated at: 2026-05-28 08:12:47 UTC
 Data range: 2023-05-29 ~ 2026-05-28
 
 ### Purpose
