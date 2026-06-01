@@ -2,7 +2,7 @@ name: Sync Macro to Claude Project
 
 on:
   workflow_run:
-    workflows: ["FRED Daily Fetch", "Market Daily Fetch"]
+    workflows: ["FRED Daily Fetch", "Market Daily Fetch", "Global Daily Fetch"]
     types: [completed]
     branches: [main]
   workflow_dispatch:
@@ -42,11 +42,13 @@ jobs:
           }
 
           FILES = [
-              ("fred_latest.md",   "data/fred_latest.md"),
-              ("fred_regime.md",   "data/fred_regime.md"),
-              ("fred_signals.md",  "data/fred_signals.md"),
-              ("market_latest.md", "data/market_latest.md"),
-              ("market_signals.md","data/market_signals.md"),
+              ("fred_latest.md",    "data/fred_latest.md"),
+              ("fred_regime.md",    "data/fred_regime.md"),
+              ("fred_signals.md",   "data/fred_signals.md"),
+              ("market_latest.md",  "data/market_latest.md"),
+              ("market_signals.md", "data/market_signals.md"),
+              ("global_latest.md",  "data/global_latest.md"),
+              ("global_signals.md", "data/global_signals.md"),
           ]
           target_names = {f[0] for f in FILES}
 
