@@ -7,7 +7,7 @@
 > - 일 12 API calls / 12 series | Rate limit 5/min·25/day·1/sec 준수
 > - fetch 1 call이라도 실패 시 본 파일은 갱신되지 않음
 
-Generated at: 2026-06-02 05:43:52 UTC
+Generated at: 2026-06-02 23:15:41 UTC
 Source: Alpha Vantage | Rows: 12 (fixed)
 
 ### Included Series (12개)
@@ -36,8 +36,8 @@ Source: Alpha Vantage | Rows: 12 (fixed)
 
 | 지표 | 주기 | 최신값 | 기준일 | 전기비 | 4W전비 | YoY비 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 금 프록시(GLD ETF) | D | 411.26 | 2026-06-01 | -5.86 | -11.92 | - |
-| 은 프록시(SLV ETF) | D | 67.67 | 2026-06-01 | -0.66 | -0.62 | - |
+| 금 프록시(GLD ETF) | D | 411.95 | 2026-06-02 | +0.69 | -2.76 | - |
+| 은 프록시(SLV ETF) | D | 67.99 | 2026-06-02 | +0.32 | +2.05 | - |
 
 ### 원자재
 
