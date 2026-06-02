@@ -1,0 +1,13 @@
+﻿series_id,category,korean_name,english_name,frequency,unit,source,transform,latest_date,latest_value,chg_prev,chg_mid,chg_yoy,note
+AV_GOLD_SPOT,AV01_금속,금 프록시(GLD ETF),Gold Proxy GLD ETF,D,USD/oz,Alpha Vantage,level,2026-06-01,411.26,-5.86,-11.92,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. GLD ETF daily (금 프록시). FRED NASDAQQGLDI 교차확인. 현물 아님 ETF.
+AV_SILVER_SPOT,AV01_금속,은 프록시(SLV ETF),Silver Proxy SLV ETF,D,USD,Alpha Vantage,level,2026-06-01,67.67,-0.66,-0.62,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. SLV ETF daily. 귀금속 보조 ETF.
+AV_COPPER,AV02_원자재,구리,Copper,M,USD/MT,Alpha Vantage,yoy_pct,2026-03-01,12528.70954545455,-3.26,6.26,28.69,⚠ AV 보조지표. 공식 거시는 fred_latest.md. COPPER monthly. FRED PCOPPUSDM 교차확인.
+AV_ALUMINUM,AV02_원자재,알루미늄,Aluminum,M,USD/MT,Alpha Vantage,yoy_pct,2026-03-01,3372.952727272727,10.04,17.28,27.2,⚠ AV 보조지표. 공식 거시는 fred_latest.md. ALUMINUM monthly. FRED PALUMUSDM 교차확인.
+AV_WHEAT,AV02_원자재,밀,Wheat,M,USD/MT,Alpha Vantage,yoy_pct,2026-03-01,193.8771220833334,10.94,17.06,7.95,⚠ AV 보조지표. 공식 거시는 fred_latest.md. WHEAT monthly. FRED PWHEAMTUSDM 교차확인.
+AV_CORN,AV02_원자재,옥수수,Corn,M,USD/MT,Alpha Vantage,yoy_pct,2026-03-01,213.3041428571428,1.27,3.89,2.67,⚠ AV 보조지표. 공식 거시는 fred_latest.md. CORN monthly. FRED PMAIZMTUSDM 교차확인.
+AV_BRENT,AV02_원자재,브렌트유,Brent Crude,M,USD/Barrel,Alpha Vantage,yoy_pct,2026-04-01,117.29,13.73,76.11,72.16,⚠ AV 보조지표. 공식 거시는 fred_latest.md. BRENT monthly. FRED DCOILWTICO 교차확인. WTI와 괴리 참고.
+AV_USDKRW,AV03_FX,USD/KRW,USD/KRW,D,KRW/USD,Alpha Vantage,level,2026-06-01,1513.5,6.41,37.98,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. FX_DAILY. FRED DEXKOUS 교차확인. 단위·기준일 다를 수 있음.
+AV_USDJPY,AV03_FX,USD/JPY,USD/JPY,D,JPY/USD,Alpha Vantage,level,2026-06-01,159.65,0.39,2.43,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. FX_DAILY. FRED DEXJPUS 교차확인.
+AV_USDCNY,AV03_FX,USD/CNY,USD/CNY,D,CNY/USD,Alpha Vantage,level,2026-06-02,6.763,-0.003,-0.067,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. FX_DAILY. FRED DEXCHUS 교차확인.
+AV_BTCUSD,AV04_크립토,비트코인(USD),Bitcoin USD,D,USD,Alpha Vantage,yoy_pct,2026-06-02,71100.65,-0.3,-10.33,-36.53,⚠ AV 보조지표. 공식 거시는 fred_latest.md. DIGITAL_CURRENCY_DAILY BTC. 공식 거시 아님 risk-on/off 보조.
+AV_ETHUSD,AV04_크립토,이더리움(USD),Ethereum USD,D,USD,Alpha Vantage,yoy_pct,2026-06-02,1999.44,-0.23,-11.44,-52.0,⚠ AV 보조지표. 공식 거시는 fred_latest.md. DIGITAL_CURRENCY_DAILY ETH. 공식 거시 아님 risk-on/off 보조.

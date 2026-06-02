@@ -1,0 +1,60 @@
+# ═══════════════════════════════════════════════════════════
+# Alpha Vantage Supplementary Layer v2
+# ═══════════════════════════════════════════════════════════
+# Schedule: KST 매일 06:25 (UTC 21:25) — Global 06:20 직후
+# Flow: av_fetch.py → Av_signals.py → git push
+# Rate limit: 11 API calls/run (free tier 25/day, 5/min)
+
+name: AV Daily Fetch
+
+on:
+  schedule:
+    - cron: "25 21 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Fetch Alpha Vantage data
+        env:
+          ALPHAVANTAGE_API_KEY: ${{ secrets.ALPHAVANTAGE_API_KEY }}
+        run: python av_fetch.py
+
+      - name: Run AV signals
+        run: python scripts/Av_signals.py
+
+      - name: Commit and push results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data/av_latest.csv data/av_latest.md
+          git add data/av_signals.md
+          git add data/av_history/av_*.csv || true
+
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+
+          TIMESTAMP=$(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M KST')
+          git commit -m "AV daily update — ${TIMESTAMP}"
+          git push

@@ -1,0 +1,304 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Av_signals.py — Alpha Vantage 보조 신호 5개 (v2)
+입력: av_latest.csv
+"""
+from __future__ import annotations
+
+import pandas as pd
+from collections import OrderedDict
+from datetime import datetime, timezone
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+CSV_PATH = BASE_DIR / "data" / "av_latest.csv"
+OUTPUT_PATH = BASE_DIR / "data" / "av_signals.md"
+
+_STATUS_LEVEL = {
+    "risk-on": 1, "강세": 1, "완화": 1, "디플레": 1, "달러약세": 1,
+    "중립": 2, "혼조": 2, "균형": 2,
+    "주의": 3, "압력": 3,
+    "경계": 4, "고인플레": 4, "약세": 4, "risk-off": 4, "달러강세": 4,
+    "위험": 5, "위기": 5,
+}
+_LEVEL_EMOJI = {5: "🔴", 4: "🟠", 3: "🟡", 2: "🔵", 1: "🟢", 0: "⚪"}
+
+
+def load_data() -> pd.DataFrame:
+    df = pd.read_csv(CSV_PATH, dtype={"series_id": str})
+    df.set_index("series_id", inplace=True)
+    for c in ["latest_value", "chg_prev", "chg_mid", "chg_yoy"]:
+        if c in df.columns:
+            df[c] = pd.to_numeric(df[c], errors="coerce")
+    return df
+
+
+def safe_val(df: pd.DataFrame, sid: str, col: str = "latest_value"):
+    if sid not in df.index:
+        return None
+    v = df.at[sid, col]
+    if isinstance(v, pd.Series):
+        v = v.iloc[0]
+    if pd.isna(v):
+        return None
+    return float(v)
+
+
+def calc_commodity_pressure(df: pd.DataFrame) -> dict:
+    sids = ["AV_COPPER", "AV_ALUMINUM", "AV_WHEAT", "AV_CORN", "AV_BRENT"]
+    yoys = []
+    d = []
+    for sid in sids:
+        y = safe_val(df, sid, "chg_yoy")
+        if y is not None:
+            yoys.append(y)
+            d.append(f"{sid.replace('AV_', '')} YoY={y:+.1f}%")
+    if not yoys:
+        return {"status": "N/A", "value": None, "detail": "데이터 없음", "series": sids}
+    avg = sum(yoys) / len(yoys)
+    d.append(f"평균 YoY={avg:.1f}%")
+    if avg >= 15:
+        st = "고인플레"
+    elif avg >= 5:
+        st = "압력"
+    elif avg <= -5:
+        st = "디플레"
+    else:
+        st = "중립"
+    return {"status": st, "value": round(avg, 2), "detail": ", ".join(d), "series": sids}
+
+
+def calc_precious_metals(df: pd.DataFrame) -> dict:
+    g_p = safe_val(df, "AV_GOLD_SPOT", "chg_prev")
+    g_m = safe_val(df, "AV_GOLD_SPOT", "chg_mid")
+    s_p = safe_val(df, "AV_SILVER_SPOT", "chg_prev")
+    g = safe_val(df, "AV_GOLD_SPOT")
+    d = []
+    if g is not None:
+        d.append(f"Gold={g:,.0f}")
+    if g_p is not None:
+        d.append(f"G 1D={g_p:+.1f}")
+    if g_m is not None:
+        d.append(f"G 4W={g_m:+.1f}")
+    if s_p is not None:
+        d.append(f"Ag 1D={s_p:+.1f}")
+    if g_p is None and g_m is None:
+        return {
+            "status": "N/A",
+            "value": g,
+            "detail": "데이터 없음",
+            "series": ["AV_GOLD_SPOT", "AV_SILVER_SPOT"],
+        }
+    score = (g_p or 0) + (g_m or 0) * 0.5 + (s_p or 0) * 0.3
+    if score >= 30:
+        st = "risk-off"
+    elif score <= -30:
+        st = "risk-on"
+    else:
+        st = "중립"
+    return {
+        "status": st,
+        "value": round(score, 2),
+        "detail": ", ".join(d),
+        "series": ["AV_GOLD_SPOT", "AV_SILVER_SPOT"],
+    }
+
+
+def calc_fx_korea(df: pd.DataFrame) -> dict:
+    v = safe_val(df, "AV_USDKRW")
+    y = safe_val(df, "AV_USDKRW", "chg_yoy")
+    m = safe_val(df, "AV_USDKRW", "chg_mid")
+    if v is None:
+        return {"status": "N/A", "value": None, "detail": "데이터 없음", "series": ["AV_USDKRW"]}
+    d = [f"USD/KRW={v:,.2f}"]
+    if y is not None:
+        d.append(f"YoY={y:+.2f}")
+    if m is not None:
+        d.append(f"4W={m:+.2f}")
+    ref = y if y is not None else (m if m is not None else 0)
+    if ref >= 50:
+        st = "약세"
+    elif ref >= 15:
+        st = "주의"
+    elif ref <= -15:
+        st = "강세"
+    else:
+        st = "중립"
+    return {"status": st, "value": v, "detail": ", ".join(d), "series": ["AV_USDKRW"]}
+
+
+def calc_fx_asia(df: pd.DataFrame) -> dict:
+    j_y = safe_val(df, "AV_USDJPY", "chg_yoy")
+    c_y = safe_val(df, "AV_USDCNY", "chg_yoy")
+    vals = [v for v in [j_y, c_y] if v is not None]
+    if not vals:
+        return {
+            "status": "N/A",
+            "value": None,
+            "detail": "데이터 없음",
+            "series": ["AV_USDJPY", "AV_USDCNY"],
+        }
+    avg = sum(vals) / len(vals)
+    d = []
+    if j_y is not None:
+        d.append(f"JPY YoY={j_y:+.2f}")
+    if c_y is not None:
+        d.append(f"CNY YoY={c_y:+.2f}")
+    d.append(f"평균={avg:+.2f}")
+    if avg >= 5:
+        st = "달러강세"
+    elif avg <= -5:
+        st = "달러약세"
+    else:
+        st = "중립"
+    return {
+        "status": st,
+        "value": round(avg, 2),
+        "detail": ", ".join(d),
+        "series": ["AV_USDJPY", "AV_USDCNY"],
+    }
+
+
+def calc_crypto_sentiment(df: pd.DataFrame) -> dict:
+    btc_y = safe_val(df, "AV_BTCUSD", "chg_yoy")
+    eth_y = safe_val(df, "AV_ETHUSD", "chg_yoy")
+    btc_m = safe_val(df, "AV_BTCUSD", "chg_mid")
+    eth_m = safe_val(df, "AV_ETHUSD", "chg_mid")
+    btc = safe_val(df, "AV_BTCUSD")
+    eth = safe_val(df, "AV_ETHUSD")
+    if btc is None and eth is None:
+        return {
+            "status": "N/A",
+            "value": None,
+            "detail": "데이터 없음",
+            "series": ["AV_BTCUSD", "AV_ETHUSD"],
+        }
+    d = []
+    if btc is not None:
+        d.append(f"BTC={btc:,.0f}")
+    if eth is not None:
+        d.append(f"ETH={eth:,.0f}")
+
+    def _sign(x):
+        if x is None:
+            return 0
+        if x > 0:
+            return 1
+        if x < 0:
+            return -1
+        return 0
+
+    signs = [_sign(btc_y), _sign(eth_y), _sign(btc_m), _sign(eth_m)]
+    active = [s for s in signs if s != 0]
+    if not active:
+        st = "혼조"
+    elif all(s > 0 for s in active):
+        st = "risk-on"
+    elif all(s < 0 for s in active):
+        st = "risk-off"
+    else:
+        st = "혼조"
+    if btc_y is not None:
+        d.append(f"BTC YoY={btc_y:+.1f}%")
+    if eth_y is not None:
+        d.append(f"ETH YoY={eth_y:+.1f}%")
+    return {
+        "status": st,
+        "value": btc or eth,
+        "detail": ", ".join(d),
+        "series": ["AV_BTCUSD", "AV_ETHUSD"],
+    }
+
+
+def calc_overall_risk(signals: dict) -> dict:
+    levels = []
+    for sig in signals.values():
+        lv = _STATUS_LEVEL.get(sig.get("status", "N/A"))
+        if lv is not None:
+            levels.append(lv)
+    if not levels:
+        return {"level": 0, "label": "N/A", "emoji": "⚪", "score": 0}
+    avg = sum(levels) / len(levels)
+    mx = max(levels)
+    composite = 0.7 * avg + 0.3 * mx
+    risk_lv = max(1, min(5, int(round(composite))))
+    labels = {5: "위험", 4: "경계", 3: "주의", 2: "관심", 1: "안정"}
+    emojis = {5: "🔴", 4: "🟠", 3: "🟡", 2: "🔵", 1: "🟢"}
+    return {
+        "level": risk_lv,
+        "label": labels[risk_lv],
+        "emoji": emojis[risk_lv],
+        "score": round(composite, 2),
+        "count": len(levels),
+    }
+
+
+_SIGNAL_NAMES = OrderedDict([
+    ("commodity_pressure", "원자재 압력"),
+    ("precious_metals", "귀금속"),
+    ("fx_korea", "원달러"),
+    ("fx_asia", "아시아 FX"),
+    ("crypto_sentiment", "크립토 심리"),
+])
+
+_CALC_MAP = OrderedDict([
+    ("commodity_pressure", calc_commodity_pressure),
+    ("precious_metals", calc_precious_metals),
+    ("fx_korea", calc_fx_korea),
+    ("fx_asia", calc_fx_asia),
+    ("crypto_sentiment", calc_crypto_sentiment),
+])
+
+
+def generate_markdown(signals: dict, risk: dict, generated_at: str) -> str:
+    lines = [
+        "# Alpha Vantage Macro Signals (v2)\n",
+        "> **보조 레이어** — 공식 거시는 fred_latest.md 우선\n",
+        f"> Generated: {generated_at}\n",
+        f"## 종합: {risk['emoji']} {risk['label']} (score {risk['score']:.2f})\n",
+        "## 신호 요약\n",
+        "| # | 신호 | 상태 | 값 | 핵심 요약 |",
+        "|---|------|------|----|----------|",
+    ]
+    for i, (key, name) in enumerate(_SIGNAL_NAMES.items(), 1):
+        sig = signals.get(key, {})
+        st = sig.get("status", "N/A")
+        lv = _STATUS_LEVEL.get(st, 0)
+        emoji = _LEVEL_EMOJI.get(lv, "⚪")
+        val = sig.get("value")
+        val_s = f"{val:,.2f}" if val is not None else "N/A"
+        lines.append(f"| {i} | {name} | {emoji} {st} | {val_s} | {sig.get('detail', '')} |")
+    lines.append("\n## 상세\n")
+    for key, name in _SIGNAL_NAMES.items():
+        sig = signals.get(key, {})
+        st = sig.get("status", "N/A")
+        lv = _STATUS_LEVEL.get(st, 0)
+        emoji = _LEVEL_EMOJI.get(lv, "⚪")
+        lines.append(f"### {emoji} {name} — {st}")
+        lines.append(f"- **값**: {sig.get('value')}")
+        lines.append(f"- **상세**: {sig.get('detail', '')}")
+        lines.append(f"- **시리즈**: {', '.join(sig.get('series', []))}\n")
+    return "\n".join(lines)
+
+
+def main() -> None:
+    print("Av_signals.py start")
+    if not CSV_PATH.exists():
+        print(f"ERROR: missing {CSV_PATH}")
+        raise SystemExit(1)
+    df = load_data()
+    print(f"  loaded {len(df)} series")
+    signals = {k: fn(df) for k, fn in _CALC_MAP.items()}
+    risk = calc_overall_risk(signals)
+    for key, name in _SIGNAL_NAMES.items():
+        print(f"  {name}: {signals[key]['status']}")
+    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+    md = generate_markdown(signals, risk, generated_at)
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT_PATH.write_text(md, encoding="utf-8")
+    print(f"  saved {OUTPUT_PATH} ({len(md):,} chars)")
+
+
+if __name__ == "__main__":
+    main()
