@@ -1,0 +1,13 @@
+﻿series_id,category,korean_name,english_name,frequency,unit,source,transform,latest_date,latest_value,chg_prev,chg_mid,chg_yoy,note
+WB_KR_GDP_GROWTH,G01_성장,한국 실질 GDP 성장률,Korea Real GDP Growth,A,%,World Bank,level,2024-01-01,2.00361101838986,0.4206,,,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 연간 YoY. World Bank NY.GDP.MKTP.KD.ZG.
+WB_US_GDP_GROWTH,G01_성장,미국 실질 GDP 성장률,US Real GDP Growth,A,%,World Bank,level,2024-01-01,2.79300127716779,-0.0946,,,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 연간 YoY. World Bank NY.GDP.MKTP.KD.ZG.
+WB_KR_CPI,G02_물가,한국 CPI 인플레이션,Korea CPI Inflation,A,%,World Bank,level,2024-01-01,2.32174328643542,-1.2757,,,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 연간. World Bank FP.CPI.TOTL.ZG.
+WB_US_CPI,G02_물가,미국 CPI 인플레이션,US CPI Inflation,A,%,World Bank,level,2024-01-01,2.94952520485207,-1.1668,,,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 연간. World Bank FP.CPI.TOTL.ZG.
+WB_KR_UNEMP,G03_노동,한국 실업률,Korea Unemployment Rate,A,%,World Bank,level,2025-01-01,2.683,-0.101,0.008,,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 연간. World Bank SL.UEM.TOTL.ZS.
+WB_US_UNEMP,G03_노동,미국 실업률,US Unemployment Rate,A,%,World Bank,level,2025-01-01,4.198,0.176,0.56,,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 연간. World Bank SL.UEM.TOTL.ZS.
+OECD_KR_CLI,G04_선행지수,한국 OECD CLI,OECD CLI Korea,M,Index,OECD,level,2026-04-01,102.502,0.2208,0.8002,2.7122,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 월간 CLI. 100=추세. OECD SDMX DF_CLI.
+OECD_US_CLI,G04_선행지수,미국 OECD CLI,OECD CLI USA,M,Index,OECD,level,2026-04-01,100.8471,0.0668,0.2952,1.1253,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 월간 CLI. 100=추세. OECD SDMX DF_CLI.
+OECD_DEU_CLI,G04_선행지수,독일 OECD CLI,OECD CLI Germany,M,Index,OECD,level,2026-04-01,100.8956,-0.0194,-0.0143,0.8541,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 월간 CLI. 유로존 대용(DEU). OECD SDMX DF_CLI.
+IMF_KR_CURRENT_ACCOUNT,G05_대외,한국 경상수지,Korea Current Account Balance,Q,USD,IMF,level,2025-10-01,39168200000.0,3154800000.0,10782400000.0,7109100000.0,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 분기 USD. IMF BOP CAB. KOR.NETCD_T.CAB.USD.Q.
+ECB_EURUSD,G06_금융,EUR/USD,EUR/USD Exchange Rate,D,USD/EUR,ECB,level,2026-06-05,1.164,,-0.0121,0.0211,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 일간. ECB EXR. FRED DEXUSEU와 단위 확인.
+ECB_POLICY_RATE_MRO,G06_금융,ECB MRO 금리,ECB Main Refinancing Rate,M,%,ECB,level,2025-06-11,2.15,-0.25,-0.75,,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 월간. ECB FM MRR.
