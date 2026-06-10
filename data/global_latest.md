@@ -6,9 +6,9 @@
 > - FRED·Market 레이어와 merge 없음. 충돌 시 **항상 FRED 우선**
 > - 한국 CLI는 FRED `KORLOLITOAASTSAM`과 중복 가능 — 교차 확인용
 
-Generated at: 2026-06-09 22:52:42 UTC
-Data range: 2023-06-10 ~ 2026-06-09
-Series count: 12
+Generated at: 2026-06-10 22:58:54 UTC
+Data range: 2023-06-11 ~ 2026-06-10
+Series count: 11
 
 ### Included Series
 
@@ -25,11 +25,10 @@ Series count: 12
 | 9 | OECD_DEU_CLI | 선행지수 | 독일 OECD CLI | OECD CLI Germany | M | Index | OECD |
 | 10 | IMF_KR_CURRENT_ACCOUNT | 대외 | 한국 경상수지 | Korea Current Account Balance | Q | USD | IMF |
 | 11 | ECB_EURUSD | 금융 | EUR/USD | EUR/USD Exchange Rate | D | USD/EUR | ECB |
-| 12 | ECB_POLICY_RATE_MRO | 금융 | ECB MRO 금리 | ECB Main Refinancing Rate | M | % | ECB |
 
 ## 🌍 글로벌 거시 보조 팩트 테이블
 
-**기준일**: 2026-06-09
+**기준일**: 2026-06-10
 
 
 ### 성장
@@ -71,8 +70,7 @@ Series count: 12
 
 | 지표 | 주기 | 최신값 | 기준일 | 전기비 | 중기비 | YoY비 |
 | --- | --- | --- | --- | --- | --- | --- |
-| EUR/USD | D | 1.16 | 2026-06-09 | +0.00 | -0.02 | -0.00 |
-| ECB MRO 금리 | M | 2.15 | 2025-06-11 | -0.25 | -0.75 | - |
+| EUR/USD | D | 1.15 | 2026-06-10 | -0.00 | -0.02 | +0.00 |
 
 **비교 기간 범례**
 - **전기비**: D=전일, W=전주, M=전월, Q=전분기, A=전년
