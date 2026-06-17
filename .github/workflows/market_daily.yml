@@ -55,4 +55,5 @@ jobs:
 
           TIMESTAMP=$(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M KST')
           git commit -m "Market daily update — ${TIMESTAMP}"
+          git pull --rebase origin main
           git push
