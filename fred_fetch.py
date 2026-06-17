@@ -575,6 +575,11 @@ def calc_change(cur, prev, tf):
     return None
 
 
+def _none_to_empty(v):
+    """None → "" 변환. 0.0은 보존 (or "" 패턴과 달리 0을 소실하지 않음)."""
+    return "" if v is None else v
+
+
 def calc_copper_gold_ratio(all_data):
     """구리/금 비율을 계산한다(금은 월평균으로 집계).
     금은 NASDAQQGLDI(지수단위, USD/oz 아님)를 사용하므로 비율 절대값은 무의미.
@@ -779,9 +784,9 @@ def save_csv(all_data, registry, path):
             "transform":    tf,
             "latest_date":  comp["date"] if comp["date"] else "",
             "latest_value": val if val is not None else "",
-            "chg_prev":     calc_change(val, comp["prev"], tf) or "",
-            "chg_mid":      calc_change(val, comp["mid"],  tf) or "",
-            "chg_yoy":      calc_change(val, comp["yoy"],  tf) or "",
+            "chg_prev":     _none_to_empty(calc_change(val, comp["prev"], tf)),
+            "chg_mid":      _none_to_empty(calc_change(val, comp["mid"],  tf)),
+            "chg_yoy":      _none_to_empty(calc_change(val, comp["yoy"],  tf)),
             "note":         m["note"],
         })
 
