@@ -6,9 +6,9 @@
 > - FRED·Market 레이어와 merge 없음. 충돌 시 **항상 FRED 우선**
 > - 한국 CLI는 FRED `KORLOLITOAASTSAM`과 중복 가능 — 교차 확인용
 
-Generated at: 2026-06-29 22:33:14 UTC
-Data range: 2023-06-30 ~ 2026-06-29
-Series count: 12
+Generated at: 2026-06-30 22:43:02 UTC
+Data range: 2023-07-01 ~ 2026-06-30
+Series count: 11
 
 ### Included Series
 
@@ -25,25 +25,24 @@ Series count: 12
 | 9 | OECD_DEU_CLI | 선행지수 | 독일 OECD CLI | OECD CLI Germany | M | Index | OECD |
 | 10 | IMF_KR_CURRENT_ACCOUNT | 대외 | 한국 경상수지 | Korea Current Account Balance | Q | USD | IMF |
 | 11 | ECB_EURUSD | 금융 | EUR/USD | EUR/USD Exchange Rate | D | USD/EUR | ECB |
-| 12 | ECB_POLICY_RATE_MRO | 금융 | ECB MRO 금리 | ECB Main Refinancing Rate | M | % | ECB |
 
 ## 🌍 글로벌 거시 보조 팩트 테이블
 
-**기준일**: 2026-06-29
+**기준일**: 2026-06-30
 
 
 ### 성장
 
 | 지표 | 주기 | 최신값 | 기준일 | 전기비 | 중기비 | YoY비 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 한국 실질 GDP 성장률 | A | 2.00 | 2024-01-01 | +0.42 | - | - |
-| 미국 실질 GDP 성장률 | A | 2.79 | 2024-01-01 | -0.09 | - | - |
+| 한국 실질 GDP 성장률 | A | 1.01 | 2025-01-01 | -1.00 | -0.58 | - |
+| 미국 실질 GDP 성장률 | A | 2.16 | 2025-01-01 | -0.63 | -0.77 | - |
 
 ### 물가
 
 | 지표 | 주기 | 최신값 | 기준일 | 전기비 | 중기비 | YoY비 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 한국 CPI 인플레이션 | A | 2.32 | 2024-01-01 | -1.28 | - | - |
+| 한국 CPI 인플레이션 | A | 2.12 | 2025-01-01 | -0.20 | -1.47 | - |
 | 미국 CPI 인플레이션 | A | 2.95 | 2024-01-01 | -1.17 | - | - |
 
 ### 노동
@@ -71,8 +70,7 @@ Series count: 12
 
 | 지표 | 주기 | 최신값 | 기준일 | 전기비 | 중기비 | YoY비 |
 | --- | --- | --- | --- | --- | --- | --- |
-| EUR/USD | D | 1.14 | 2026-06-29 | +0.00 | -0.02 | -0.03 |
-| ECB MRO 금리 | M | 2.40 | 2026-06-17 | +0.25 | -0.25 | - |
+| EUR/USD | D | 1.14 | 2026-06-30 | -0.00 | -0.03 | -0.04 |
 
 **비교 기간 범례**
 - **전기비**: D=전일, W=전주, M=전월, Q=전분기, A=전년
