@@ -6,8 +6,8 @@
 > - FRED·Market 레이어와 merge 없음. 충돌 시 **항상 FRED 우선**
 > - 한국 CLI는 FRED `KORLOLITOAASTSAM`과 중복 가능 — 교차 확인용
 
-Generated at: 2026-07-17 22:08:35 UTC
-Data range: 2023-07-18 ~ 2026-07-17
+Generated at: 2026-07-18 22:09:30 UTC
+Data range: 2023-07-19 ~ 2026-07-18
 Series count: 12
 
 ### Included Series
@@ -29,7 +29,7 @@ Series count: 12
 
 ## 🌍 글로벌 거시 보조 팩트 테이블
 
-**기준일**: 2026-07-17
+**기준일**: 2026-07-18
 
 
 ### 성장
