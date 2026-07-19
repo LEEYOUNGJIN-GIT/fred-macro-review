@@ -1,5 +1,5 @@
 # 📡 FRED Macro Signals Dashboard (v3)
-> Generated: 2026-07-18 22:05:48 UTC
+> Generated: 2026-07-19 22:08:10 UTC
 > 18개 신호 종합
 
 ## 종합 위험도: 🟡 주의 (Elevated)
