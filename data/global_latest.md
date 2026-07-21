@@ -6,8 +6,8 @@
 > - FRED·Market 레이어와 merge 없음. 충돌 시 **항상 FRED 우선**
 > - 한국 CLI는 FRED `KORLOLITOAASTSAM`과 중복 가능 — 교차 확인용
 
-Generated at: 2026-07-20 22:18:05 UTC
-Data range: 2023-07-21 ~ 2026-07-20
+Generated at: 2026-07-21 22:14:46 UTC
+Data range: 2023-07-22 ~ 2026-07-21
 Series count: 11
 
 ### Included Series
@@ -19,7 +19,7 @@ Series count: 11
 | 3 | WB_KR_CPI | 물가 | 한국 CPI 인플레이션 | Korea CPI Inflation | A | % | World Bank |
 | 4 | WB_US_CPI | 물가 | 미국 CPI 인플레이션 | US CPI Inflation | A | % | World Bank |
 | 5 | WB_KR_UNEMP | 노동 | 한국 실업률 | Korea Unemployment Rate | A | % | World Bank |
-| 6 | OECD_KR_CLI | 선행지수 | 한국 OECD CLI | OECD CLI Korea | M | Index | OECD |
+| 6 | WB_US_UNEMP | 노동 | 미국 실업률 | US Unemployment Rate | A | % | World Bank |
 | 7 | OECD_US_CLI | 선행지수 | 미국 OECD CLI | OECD CLI USA | M | Index | OECD |
 | 8 | OECD_DEU_CLI | 선행지수 | 독일 OECD CLI | OECD CLI Germany | M | Index | OECD |
 | 9 | IMF_KR_CURRENT_ACCOUNT | 대외 | 한국 경상수지 | Korea Current Account Balance | Q | USD | IMF |
@@ -28,7 +28,7 @@ Series count: 11
 
 ## 🌍 글로벌 거시 보조 팩트 테이블
 
-**기준일**: 2026-07-20
+**기준일**: 2026-07-21
 
 
 ### 성장
@@ -50,12 +50,12 @@ Series count: 11
 | 지표 | 주기 | 최신값 | 기준일 | 전기비 | 중기비 | YoY비 |
 | --- | --- | --- | --- | --- | --- | --- |
 | 한국 실업률 | A | 2.68 | 2025-01-01 | -0.10 | +0.01 | - |
+| 미국 실업률 | A | 4.20 | 2025-01-01 | +0.18 | +0.56 | - |
 
 ### 선행지수
 
 | 지표 | 주기 | 최신값 | 기준일 | 전기비 | 중기비 | YoY비 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 한국 OECD CLI | M | 102.87 | 2026-06-01 | +0.21 | +0.87 | +3.26 |
 | 미국 OECD CLI | M | 100.80 | 2026-06-01 | +0.04 | +0.16 | +1.15 |
 | 독일 OECD CLI | M | 100.72 | 2026-06-01 | -0.04 | -0.17 | +0.40 |
 
@@ -69,7 +69,7 @@ Series count: 11
 
 | 지표 | 주기 | 최신값 | 기준일 | 전기비 | 중기비 | YoY비 |
 | --- | --- | --- | --- | --- | --- | --- |
-| EUR/USD | D | 1.14 | 2026-07-20 | -0.00 | -0.00 | -0.03 |
+| EUR/USD | D | 1.14 | 2026-07-21 | -0.00 | +0.00 | -0.03 |
 | ECB MRO 금리 | M | 2.40 | 2026-06-17 | +0.25 | -0.25 | - |
 
 **비교 기간 범례**
