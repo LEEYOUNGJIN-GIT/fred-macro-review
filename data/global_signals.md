@@ -2,7 +2,7 @@
 
 > **보조 레이어** — 공식 거시는 fred_latest.md 우선
 
-> Generated: 2026-07-25 22:13:39 UTC
+> Generated: 2026-07-26 22:15:22 UTC
 
 ## 종합: 🔵 관심 (score 1.58)
 
