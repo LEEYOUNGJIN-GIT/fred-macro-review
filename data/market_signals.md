@@ -4,51 +4,51 @@
 > - 공식 매크로 신호 18개·2x2 레짐: FRED 레이어만 사용
 > - Ratio 신호: 무차원, 전기/YoY 방향만 해석 (절대값 기준 없음)
 > - market_fetch 실패 시 본 파일 갱신 없음
-> Data as-of: 2026-07-29 (oldest: 2026-07-28 ^KS11)
+> Data as-of: 2026-07-30 (oldest: 2026-07-29 ^KS11)
 > Freshness: OK (oldest 1d ≤ 5d)
-> Generated: 2026-07-29 21:54:05 UTC
+> Generated: 2026-07-30 22:08:12 UTC
 
 ## 신호 요약
 
 | # | 신호 | 상태 | 값 | 핵심 요약 |
 |---|------|------|-----|----------|
-| 1 | 한국 주식 | 🟢 견조 | 37.0900 | KOSPI YoY=+87.34%, KOSDAQ YoY=-13.17%, KOSPI 4W=-28.24% |
-| 2 | Breadth | 🔵 중립 | 0.2957 | RSP/SPY=0.2957 (Ratio, 무차원), 4W Δ=+0.0108, 4W 상승=breadth 개선 |
-| 3 | Risk-on/off | 🟢 risk-on | 1.7364 | SPHB/SPLV=1.7364 (Ratio, 무차원), 4W Δ=-0.3447 |
-| 4 | VIX Term | 🟢 contango | 0.8684 | VIX3M=21.50, VIX/VIX3M=0.8684 (FRED VIXCLS/^VIX3M), VIX3M 4W Δ=+1.93 |
-| 5 | 섹터 로테이션 | 🟠 경계 | -23.0000 | XLK 4W=-12.57%, XLE 4W=+10.43%, XLK-XLE=-23.00%p, XLP 4W=+5.16%, 방어(XLP) > 기술 → risk-off 로테이션 |
-| 6 | 신용 방향 | 🟢 완화 | 0.7460 | HYG/LQD=0.7460 (Ratio, OAS 아님), 4W Δ=+0.0136 |
+| 1 | 한국 주식 | 🟢 견조 | 29.6600 | KOSPI YoY=+77.73%, KOSDAQ YoY=-18.41%, KOSPI 4W=-33.19% |
+| 2 | Breadth | 🔵 중립 | 0.2904 | RSP/SPY=0.2904 (Ratio, 무차원), 4W Δ=+0.0042 |
+| 3 | Risk-on/off | 🟢 risk-on | 1.8301 | SPHB/SPLV=1.8301 (Ratio, 무차원), 4W Δ=-0.1979 |
+| 4 | VIX Term | 🟢 contango | 0.9338 | VIX3M=19.50, VIX/VIX3M=0.9338 (FRED VIXCLS/^VIX3M), VIX3M 4W Δ=-0.07 |
+| 5 | 섹터 로테이션 | 🟠 경계 | -16.9800 | XLK 4W=-5.33%, XLE 4W=+11.65%, XLK-XLE=-16.98%p, XLP 4W=+2.61%, 방어(XLP) > 기술 → risk-off 로테이션 |
+| 6 | 신용 방향 | 🟢 완화 | 0.7468 | HYG/LQD=0.7468 (Ratio, OAS 아님), 4W Δ=+0.0130 |
 
 ## 신호 상세
 
 ### 🟢 한국 주식 — 견조
-- **값**: 37.09
-- **상세**: KOSPI YoY=+87.34%, KOSDAQ YoY=-13.17%, KOSPI 4W=-28.24%
+- **값**: 29.66
+- **상세**: KOSPI YoY=+77.73%, KOSDAQ YoY=-18.41%, KOSPI 4W=-33.19%
 - **시리즈**: ^KS11, ^KQ11
 
 ### 🔵 Breadth — 중립
-- **값**: 0.295739
-- **상세**: RSP/SPY=0.2957 (Ratio, 무차원), 4W Δ=+0.0108, 4W 상승=breadth 개선
+- **값**: 0.290391
+- **상세**: RSP/SPY=0.2904 (Ratio, 무차원), 4W Δ=+0.0042
 - **시리즈**: MARKET_BREADTH, RSP, SPY
 
 ### 🟢 Risk-on/off — risk-on
-- **값**: 1.736394
-- **상세**: SPHB/SPLV=1.7364 (Ratio, 무차원), 4W Δ=-0.3447
+- **값**: 1.83006
+- **상세**: SPHB/SPLV=1.8301 (Ratio, 무차원), 4W Δ=-0.1979
 - **시리즈**: MARKET_RISK_ON, SPHB, SPLV
 
 ### 🟢 VIX Term — contango
-- **값**: 0.8684
-- **상세**: VIX3M=21.50, VIX/VIX3M=0.8684 (FRED VIXCLS/^VIX3M), VIX3M 4W Δ=+1.93
+- **값**: 0.9338
+- **상세**: VIX3M=19.50, VIX/VIX3M=0.9338 (FRED VIXCLS/^VIX3M), VIX3M 4W Δ=-0.07
 - **시리즈**: ^VIX3M, VIXCLS
 
 ### 🟠 섹터 로테이션 — 경계
-- **값**: -23.0
-- **상세**: XLK 4W=-12.57%, XLE 4W=+10.43%, XLK-XLE=-23.00%p, XLP 4W=+5.16%, 방어(XLP) > 기술 → risk-off 로테이션
+- **값**: -16.98
+- **상세**: XLK 4W=-5.33%, XLE 4W=+11.65%, XLK-XLE=-16.98%p, XLP 4W=+2.61%, 방어(XLP) > 기술 → risk-off 로테이션
 - **시리즈**: XLK, XLE, XLP
 
 ### 🟢 신용 방향 — 완화
-- **값**: 0.745999
-- **상세**: HYG/LQD=0.7460 (Ratio, OAS 아님), 4W Δ=+0.0136
+- **값**: 0.746828
+- **상세**: HYG/LQD=0.7468 (Ratio, OAS 아님), 4W Δ=+0.0130
 - **시리즈**: HYG_LQD_RATIO, HYG, LQD
 
 ---
