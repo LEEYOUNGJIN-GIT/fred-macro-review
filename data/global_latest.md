@@ -6,29 +6,38 @@
 > - FRED·Market 레이어와 merge 없음. 충돌 시 **항상 FRED 우선**
 > - 한국 CLI는 FRED `KORLOLITOAASTSAM`과 중복 가능 — 교차 확인용
 
-Generated at: 2026-08-08 21:52:02 UTC
-Data range: 2023-08-09 ~ 2026-08-08
-Series count: 10
+Generated at: 2026-08-09 21:50:21 UTC
+Data range: 2023-08-10 ~ 2026-08-09
+Series count: 12
 
 ### Included Series
 
 | # | Series ID | Category | Korean | English | Freq | Unit | Source |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | WB_KR_CPI | 물가 | 한국 CPI 인플레이션 | Korea CPI Inflation | A | % | World Bank |
-| 2 | WB_US_CPI | 물가 | 미국 CPI 인플레이션 | US CPI Inflation | A | % | World Bank |
-| 3 | WB_KR_UNEMP | 노동 | 한국 실업률 | Korea Unemployment Rate | A | % | World Bank |
-| 4 | WB_US_UNEMP | 노동 | 미국 실업률 | US Unemployment Rate | A | % | World Bank |
-| 5 | OECD_KR_CLI | 선행지수 | 한국 OECD CLI | OECD CLI Korea | M | Index | OECD |
-| 6 | OECD_US_CLI | 선행지수 | 미국 OECD CLI | OECD CLI USA | M | Index | OECD |
-| 7 | OECD_DEU_CLI | 선행지수 | 독일 OECD CLI | OECD CLI Germany | M | Index | OECD |
-| 8 | IMF_KR_CURRENT_ACCOUNT | 대외 | 한국 경상수지 | Korea Current Account Balance | Q | USD | IMF |
-| 9 | ECB_EURUSD | 금융 | EUR/USD | EUR/USD Exchange Rate | D | USD/EUR | ECB |
-| 10 | ECB_POLICY_RATE_MRO | 금융 | ECB MRO 금리 | ECB Main Refinancing Rate | M | % | ECB |
+| 1 | WB_KR_GDP_GROWTH | 성장 | 한국 실질 GDP 성장률 | Korea Real GDP Growth | A | % | World Bank |
+| 2 | WB_US_GDP_GROWTH | 성장 | 미국 실질 GDP 성장률 | US Real GDP Growth | A | % | World Bank |
+| 3 | WB_KR_CPI | 물가 | 한국 CPI 인플레이션 | Korea CPI Inflation | A | % | World Bank |
+| 4 | WB_US_CPI | 물가 | 미국 CPI 인플레이션 | US CPI Inflation | A | % | World Bank |
+| 5 | WB_KR_UNEMP | 노동 | 한국 실업률 | Korea Unemployment Rate | A | % | World Bank |
+| 6 | WB_US_UNEMP | 노동 | 미국 실업률 | US Unemployment Rate | A | % | World Bank |
+| 7 | OECD_KR_CLI | 선행지수 | 한국 OECD CLI | OECD CLI Korea | M | Index | OECD |
+| 8 | OECD_US_CLI | 선행지수 | 미국 OECD CLI | OECD CLI USA | M | Index | OECD |
+| 9 | OECD_DEU_CLI | 선행지수 | 독일 OECD CLI | OECD CLI Germany | M | Index | OECD |
+| 10 | IMF_KR_CURRENT_ACCOUNT | 대외 | 한국 경상수지 | Korea Current Account Balance | Q | USD | IMF |
+| 11 | ECB_EURUSD | 금융 | EUR/USD | EUR/USD Exchange Rate | D | USD/EUR | ECB |
+| 12 | ECB_POLICY_RATE_MRO | 금융 | ECB MRO 금리 | ECB Main Refinancing Rate | M | % | ECB |
 
 ## 🌍 글로벌 거시 보조 팩트 테이블
 
-**기준일**: 2026-08-08
+**기준일**: 2026-08-09
 
+
+### 성장
+
+| 지표 | 주기 | 최신값 | 기준일 | 전기비 | 중기비 | YoY비 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 한국 실질 GDP 성장률 | A | 1.01 | 2025-01-01 | -1.00 | -0.58 | - |
+| 미국 실질 GDP 성장률 | A | 2.16 | 2025-01-01 | -0.63 | -0.77 | - |
 
 ### 물가
 
