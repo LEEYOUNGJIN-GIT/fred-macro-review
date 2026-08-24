@@ -1,5 +1,5 @@
 # 🏛️ FRED Macro Regime Report
-> Generated: 2026-08-23 21:35:11 UTC
+> Generated: 2026-08-24 21:42:34 UTC
 
 ## 📊 현재 레짐
 
@@ -39,7 +39,7 @@
 | 산업생산 YoY% | INDPRO | +1.08 | 0.00 |
 | 소매판매 MoM% | RSAFS | -0.58 | -1.00 |
 | 비농업고용 MoM(천명) | PAYEMS | -23.00 | -1.50 |
-| CFNAI 경기활동 | CFNAI | -0.02 | 0.00 |
+| CFNAI 경기활동 | CFNAI | -0.08 | 0.00 |
 | 소비자심리 | UMCSENT | +49.50 | -2.00 |
 | 제조업 신규주문 MoM% | AMTMNO | -0.35 | -0.50 |
 | 설비가동률 | TCU | +76.29 | 0.00 |
@@ -58,7 +58,7 @@
 | CPI YoY% | CPIAUCSL | +3.54 | +0.50 |
 | PPI YoY% | PPIFIS | +4.66 | +0.50 |
 | 인플레기대(미시간) | MICH | +4.60 | +1.00 |
-| 5Y5Y 선도 인플레 | T5YIFR | +2.34 | 0.00 |
+| 5Y5Y 선도 인플레 | T5YIFR | +2.32 | 0.00 |
 | 임금 YoY% | CES0500000003 | +3.15 | 0.00 |
 | 원자재 YoY% | PALLFNFINDEXM | +16.56 | +0.50 |
 | WTI 유가($/bbl) | DCOILWTICO | +86.48 | +0.25 |
