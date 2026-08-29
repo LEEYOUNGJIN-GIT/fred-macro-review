@@ -7,7 +7,7 @@
 > - 일 12 API calls / 12 series | Rate limit 5/min·25/day·1/sec 준수
 > - fetch 1 call이라도 실패 시 본 파일은 갱신되지 않음
 
-Generated at: 2026-08-29 03:15:22 UTC
+Generated at: 2026-08-29 23:29:40 UTC
 Source: Alpha Vantage | Rows: 12 (fixed)
 
 ### Included Series (12개)
