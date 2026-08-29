@@ -93,7 +93,7 @@ fred-macro-review/
 │       ├── market_daily.yml        ← Market 보조 (KST 화~토 06:00)
 │       ├── global_daily.yml        ← Global 보조 (매일 KST 06:20)
 │       ├── av_daily.yml            ← AV 보조 (매일 KST 06:25)
-│       └── sync_claude_project.yml ← Claude Project 5파일 sync
+│       └── sync_claude_project.yml ← Claude Project 4개 .md sync (signals·csv 제외)
 ├── scripts/
 │   ├── Fred_signals.py             ← 18개 파생 신호 대시보드
 │   ├── Fred_regime.py              ← 2×2 레짐 분류 엔진
@@ -321,18 +321,33 @@ fred-macro-review/
 
 ## 🤖 claude.ai 연동
 
-### GitHub 통합
+자료가 Claude로 전달되는 경로는 2가지다.
+
+### A. Claude Project 자동 sync — `sync_claude_project.yml`
+
+FRED / Market / Global daily 워크플로가 성공하면 아래 **4개 `.md`** 만 Claude Project에 업로드한다.
+
+| 구분 | 파일 |
+|------|------|
+| 공식 (FRED) | `fred_latest.md`, `fred_regime.md` |
+| 보조 (Yahoo) | `market_latest.md` |
+| 보조 (Global) | `global_latest.md` |
+
+- `fred_signals.md`, `market_signals.md`, `global_signals.md`, `fred_latest.csv` 는 **sync 대상에서 제외**.
+  Project에 남아있는 이전 사본은 다음 sync 실행 시 자동 삭제된다 (`EXCLUDED`).
+- `av_*` 파일은 sync 대상이 아니다.
+
+### B. GitHub 통합 (claude.ai Settings → Integrations)
 
 1. [claude.ai](https://claude.ai) → Settings → Integrations → **GitHub** 연결
 2. `LEEYOUNGJIN-GIT/fred-macro-review` 레포 선택
-3. 대화 시작 시 참조 파일:
-   - **공식 (FRED)**: `fred_latest.md`, `fred_signals.md`, `fred_regime.md`
-   - **보조 (Yahoo)**: `market_latest.md`, `market_signals.md`
-   - **보조 (Global)**: `global_latest.md`, `global_signals.md`
-   - **보조 (AV)**: `av_latest.md`, `av_signals.md`
-   - 충돌 시 **FRED > Market/Global > AV**
+3. `@fred-macro-review` 로 저장소에 커밋된 파일을 직접 참조 — signals·csv·history 포함 전체 접근 가능
+
+충돌 시 우선순위: **FRED > Market/Global > AV**
 
 ### 분석 프롬프트 예시
+
+> `*_signals.md` 는 자동 sync에서 빠졌으므로, 필요하면 아래처럼 GitHub 통합(경로 B)으로 명시 참조한다.
 
 ```
 @fred-macro-review 의 fred_latest.md, fred_signals.md, fred_regime.md 를 공식 거시 기준으로,
