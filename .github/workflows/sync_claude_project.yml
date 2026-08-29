@@ -44,12 +44,17 @@ jobs:
           FILES = [
               ("fred_latest.md",    "data/fred_latest.md"),
               ("fred_regime.md",    "data/fred_regime.md"),
-              ("fred_signals.md",   "data/fred_signals.md"),
               ("market_latest.md",  "data/market_latest.md"),
-              ("market_signals.md", "data/market_signals.md"),
               ("global_latest.md",  "data/global_latest.md"),
-              ("global_signals.md", "data/global_signals.md"),
           ]
+          # Claude Project로 보내지 않을 파일.
+          # 이미 업로드된 사본이 있으면 삭제만 하고, 다시 업로드하지 않는다.
+          EXCLUDED = {
+              "fred_signals.md",
+              "market_signals.md",
+              "global_signals.md",
+              "fred_latest.csv",
+          }
           target_names = {f[0] for f in FILES}
 
           r = requests.get(
@@ -66,13 +71,14 @@ jobs:
 
           for doc in existing:
               name = doc.get("file_name", "")
-              if name in target_names:
+              if name in target_names or name in EXCLUDED:
                   uid = doc.get("uuid") or doc.get("id", "")
                   d = requests.delete(
                       f"{base}/organizations/{org}/projects/{proj}/docs/{uid}",
                       headers=headers
                   )
-                  print(f"[DEL] {name}: HTTP {d.status_code}")
+                  tag = "DEL" if name in target_names else "DEL(excluded)"
+                  print(f"[{tag}] {name}: HTTP {d.status_code}")
 
           for fname, fpath in FILES:
               if not os.path.isfile(fpath):
