@@ -3,7 +3,7 @@
 """
 FRED API 거시경제 팩트 테이블 자동 생성 스크립트 (풀 버전)
 ──────────────────────────────────────────────────────────
-• 98개 FRED 시리즈 + 3개 파생지표 = 101개 매크로 지표
+• 99개 FRED 시리즈 + 3개 파생지표 = 102개 매크로 지표
 • 20개 카테고리별 팩트 테이블을 Markdown + CSV로 저장
 • GitHub Actions + claude.ai GitHub Integration 연동 목적
 
@@ -44,7 +44,7 @@ DATA_DIR    = BASE_DIR / "data"
 HISTORY_DIR = DATA_DIR / "fred_history"
 
 # ═══════════════════════════════════════════════════════════
-# 2. 시리즈 레지스트리 (101개)
+# 2. 시리즈 레지스트리 (102개)
 # ═══════════════════════════════════════════════════════════
 # tf 필드: level=원값, yoy_pct=YoY% 변환, mom_pct=MoM%,
 #          mom_diff=전월차, calculated=파생
@@ -56,6 +56,7 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
  'T5YIFR': {'cat': '01_금리채권', 'kr': '5Y5Y 선도 인플레 기대', 'en': '5Y5Y Forward Inflation', 'freq': 'D', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': 'Fed 최중시 장기 인플레 앵커링. 2~2.5% 정상. 2.5%↑ 신뢰 훼손'},
  'DGS2': {'cat': '01_금리채권', 'kr': '미국채 2년물', 'en': '2Y Treasury Yield', 'freq': 'D', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': '단기 금리 기대. Fed 정책 선반영. DFF 대비 괴리=인하/인상 기대 내재'},
  'DGS10': {'cat': '01_금리채권', 'kr': '미국채 10년물', 'en': '10Y Treasury Yield', 'freq': 'D', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': '글로벌 벤치마크. 모기지·회사채 기준. 5%↑ 재정·기업 부담 가중'},
+ 'DGS30': {'cat': '01_금리채권', 'kr': '미국채 30년물', 'en': '30Y Treasury Yield', 'freq': 'D', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': '초장기 금리. 연금·보험 할인율 기준. 재정적자·국채 공급 부담 최선반영. DGS10 대비 확대=텀프리미엄 상승'},
  'TB3MS': {'cat': '01_금리채권', 'kr': '3개월 T-Bill', 'en': '3M Treasury Bill', 'freq': 'M', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': '단기 무위험 금리. DFF와 동행. T10Y3M 산출 기준'},
  'DFF': {'cat': '01_금리채권', 'kr': '연방기금 실효금리(일간)', 'en': 'Fed Funds Effective Rate', 'freq': 'D', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': 'Fed 기준금리 실시간. Core PCE 차감→실질금리 갭 산출. 중립금리 약 2.5%'},
  'FEDFUNDS': {'cat': '01_금리채권', 'kr': '연방기금금리(월간)', 'en': 'Fed Funds Rate(Monthly)', 'freq': 'M', 'unit': '%', 'src': 'Fed', 'tf': 'level', 'note': '기준금리 월간 평균. FOMC 결정 직후 변동. DFF의 월간 스무딩'},

@@ -1,6 +1,6 @@
 # 📊 FRED Macro Review — 거시경제 자동 모니터링
 
-> **FRED API → 101개 지표 수집 → 18개 파생 신호 → 2×2 레짐 분류 → Yahoo Finance 보조 25지표 → claude.ai 자동 분석**
+> **FRED API → 102개 지표 수집 → 18개 파생 신호 → 2×2 레짐 분류 → Yahoo Finance 보조 25지표 → claude.ai 자동 분석**
 
 [![FRED Daily Fetch](https://github.com/LEEYOUNGJIN-GIT/fred-macro-review/actions/workflows/fred_daily.yml/badge.svg)](https://github.com/LEEYOUNGJIN-GIT/fred-macro-review/actions/workflows/fred_daily.yml)
 [![Market Daily Fetch](https://github.com/LEEYOUNGJIN-GIT/fred-macro-review/actions/workflows/market_daily.yml/badge.svg)](https://github.com/LEEYOUNGJIN-GIT/fred-macro-review/actions/workflows/market_daily.yml)
@@ -11,10 +11,10 @@
 ## 📐 아키텍처
 
 ```
-┌─────────────┐     98 API calls     ┌──────────────────────┐
+┌─────────────┐     99 API calls     ┌──────────────────────┐
 │  FRED API   │ ──────────────────►  │  fred_fetch.py       │
-│ (stlouisfed)│                      │  98 시리즈 + 3 파생  │
-└─────────────┘                      │  = 101개 지표        │
+│ (stlouisfed)│                      │  99 시리즈 + 3 파생  │
+└─────────────┘                      │  = 102개 지표        │
                                      └──────┬───────────────┘
                                             │
                                  ┌──────────▼──────────┐
@@ -158,11 +158,11 @@ fred-macro-review/
 
 ---
 
-## 📊 시리즈 레지스트리 (101개 = 98 API + 3 파생)
+## 📊 시리즈 레지스트리 (102개 = 99 API + 3 파생)
 
 | # | 카테고리 | 시리즈 수 | 주요 시리즈 |
 |---|----------|-----------|-------------|
-| 01 | 금리·채권 | 14 | T10Y2Y, DFII10, T10YIE, DGS2, DGS10, DFF, FEDFUNDS, SOFR, BAA10Y |
+| 01 | 금리·채권 | 15 | T10Y2Y, DFII10, T10YIE, DGS2, DGS10, DGS30, DFF, FEDFUNDS, SOFR, BAA10Y |
 | 02 | 리스크·신용 | 3 | VIXCLS, BAMLH0A0HYM2, TOTBKCR |
 | 03 | 금융 스트레스 | 4 | NFCI, STLFSI4, KCFSI, CFNAI |
 | 04 | 노동시장 | 9 | UNRATE, PAYEMS, ICSA, CCSA, JTSJOL, JTSQUR, CIVPART, LNS11300060, CES0500000003 |
@@ -325,15 +325,16 @@ fred-macro-review/
 
 ### A. Claude Project 자동 sync — `sync_claude_project.yml`
 
-FRED / Market / Global daily 워크플로가 성공하면 아래 **4개 `.md`** 만 Claude Project에 업로드한다.
+FRED / Market / Global daily 워크플로가 성공하면 아래 **5개 파일**을 Claude Project에 업로드한다.
 
 | 구분 | 파일 |
 |------|------|
-| 공식 (FRED) | `fred_latest.md`, `fred_regime.md` |
+| 공식 (FRED) | `fred_latest.md`, `fred_latest.csv`, `fred_regime.md` |
 | 보조 (Yahoo) | `market_latest.md` |
 | 보조 (Global) | `global_latest.md` |
 
-- `fred_signals.md`, `market_signals.md`, `global_signals.md`, `fred_latest.csv` 는 **sync 대상에서 제외**.
+- `fred_latest.csv`는 팩트 테이블(`fred_latest.md`)의 원천 데이터로, Claude Project가 원시 수치를 직접 참조할 수 있도록 함께 업로드된다.
+- `fred_signals.md`, `market_signals.md`, `global_signals.md` 는 **sync 대상에서 제외**.
   Project에 남아있는 이전 사본은 다음 sync 실행 시 자동 삭제된다 (`EXCLUDED`).
 - `av_*` 파일은 sync 대상이 아니다.
 
@@ -366,7 +367,7 @@ market_latest.md, market_signals.md 를 보조(시장·한국·breadth)로 읽�
 | 항목 | FRED | Market | Global | AV |
 |------|------|--------|--------|-----|
 | 실행 주기 | 매일 KST 06:10 | 화~토 06:00 | 매일 06:20 | 매일 06:25 |
-| API | FRED 98회 | yfinance 22 | WB/OECD/IMF/ECB | AV 12 calls |
+| API | FRED 99회 | yfinance 22 | WB/OECD/IMF/ECB | AV 12 calls |
 | fetch 정책 | 50% 미만 중단 | 100% strict | 50% 미만 | **100% strict** |
 | 히스토리 | fred_history/ | market_history/ | global_history/ | av_history/ |
 | 수동 실행 | FRED Daily Fetch | Market Daily Fetch | Global Daily Fetch | AV Daily Fetch |
