@@ -123,6 +123,7 @@ fred-macro-review/
 ├── market_fetch.py                 ← Yahoo Finance 보조 수집
 ├── global_fetch.py
 ├── av_fetch.py                     ← Alpha Vantage 보조 수집
+├── backfill_history.py             ← 10년 히스토리 백필 (일회성, daily와 분리)
 ├── requirements.txt
 ├── .gitignore
 └── README.md
@@ -316,6 +317,33 @@ fred-macro-review/
 | 크립토 | BTC, ETH (일간, risk sentiment 보조) |
 | 금속 | GLD/SLV ETF daily (AV gold/silver spot API 미지원) |
 | 신호 | 5개 (`Av_signals.py`) |
+
+---
+
+## 10년 히스토리 백필 (일회성)
+
+`backfill_history.py` — daily fetch(`fred_fetch.py`/`market_fetch.py`)와 완전히 분리된 1회성 스크립트.
+9개 시리즈에 대해 최근 10년 구간을 백필한다.
+
+| 구분 | 시리즈 |
+|------|--------|
+| FRED (4) | DGS30, DFII10, BAMLH0A0HYM2(HY OAS), DEXKOUS(USD/KRW) |
+| Yahoo Finance (5) | ^SOX, TIP, VTIP, DBMF, KMLM |
+
+**daily fetch(100% strict, 1건 실패 시 파일 미갱신)와 다른 정책**:
+
+- 시리즈별 독립 fetch — 일부(예: 9개 중 6개)가 실패해도 나머지는 저장하고 프로세스는 완료된다.
+- 실패한 시리즈는 결측 처리(빈 데이터, `FAILED` 상태 + 사유)되며 전체 실행을 막지 않는다.
+- ETF 상장일이 10년 이내인 경우(DBMF 2019-05, KMLM 2020-12 등) 10년 미달을 오류로 보지 않고
+  상장 이후 확보 가능한 구간만 받아 `PARTIAL`로 표기한다.
+- 저장할 데이터가 하나도 없을 때(전체 실패)만 비정상 종료(`exit 1`)한다.
+
+```bash
+export FRED_API_KEY="your-api-key"
+python backfill_history.py
+# → data/backfill_10y/<SERIES>.csv        (시리즈별 원천 데이터, 오름차순)
+# → data/backfill_10y/backfill_summary.md (OK/PARTIAL/FAILED 상태 요약)
+```
 
 ---
 
