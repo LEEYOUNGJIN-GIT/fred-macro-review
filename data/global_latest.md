@@ -6,9 +6,9 @@
 > - FRED·Market 레이어와 merge 없음. 충돌 시 **항상 FRED 우선**
 > - 한국 CLI는 FRED `KORLOLITOAASTSAM`과 중복 가능 — 교차 확인용
 
-Generated at: 2026-09-09 23:18:36 UTC
-Data range: 2023-09-10 ~ 2026-09-09
-Series count: 12
+Generated at: 2026-09-10 23:13:00 UTC
+Data range: 2023-09-11 ~ 2026-09-10
+Series count: 9
 
 ### Included Series
 
@@ -20,16 +20,13 @@ Series count: 12
 | 4 | WB_US_CPI | 물가 | 미국 CPI 인플레이션 | US CPI Inflation | A | % | World Bank |
 | 5 | WB_KR_UNEMP | 노동 | 한국 실업률 | Korea Unemployment Rate | A | % | World Bank |
 | 6 | WB_US_UNEMP | 노동 | 미국 실업률 | US Unemployment Rate | A | % | World Bank |
-| 7 | OECD_KR_CLI | 선행지수 | 한국 OECD CLI | OECD CLI Korea | M | Index | OECD |
-| 8 | OECD_US_CLI | 선행지수 | 미국 OECD CLI | OECD CLI USA | M | Index | OECD |
-| 9 | OECD_DEU_CLI | 선행지수 | 독일 OECD CLI | OECD CLI Germany | M | Index | OECD |
-| 10 | IMF_KR_CURRENT_ACCOUNT | 대외 | 한국 경상수지 | Korea Current Account Balance | Q | USD | IMF |
-| 11 | ECB_EURUSD | 금융 | EUR/USD | EUR/USD Exchange Rate | D | USD/EUR | ECB |
-| 12 | ECB_POLICY_RATE_MRO | 금융 | ECB MRO 금리 | ECB Main Refinancing Rate | M | % | ECB |
+| 7 | IMF_KR_CURRENT_ACCOUNT | 대외 | 한국 경상수지 | Korea Current Account Balance | Q | USD | IMF |
+| 8 | ECB_EURUSD | 금융 | EUR/USD | EUR/USD Exchange Rate | D | USD/EUR | ECB |
+| 9 | ECB_POLICY_RATE_MRO | 금융 | ECB MRO 금리 | ECB Main Refinancing Rate | M | % | ECB |
 
 ## 🌍 글로벌 거시 보조 팩트 테이블
 
-**기준일**: 2026-09-09
+**기준일**: 2026-09-10
 
 
 ### 성장
@@ -53,14 +50,6 @@ Series count: 12
 | 한국 실업률 | A | 2.68 | 2025-01-01 | -0.10 | +0.01 | - |
 | 미국 실업률 | A | 4.20 | 2025-01-01 | +0.18 | +0.56 | - |
 
-### 선행지수
-
-| 지표 | 주기 | 최신값 | 기준일 | 전기비 | 중기비 | YoY비 |
-| --- | --- | --- | --- | --- | --- | --- |
-| 한국 OECD CLI | M | 102.87 | 2026-08-01 | +0.06 | +0.49 | +3.32 |
-| 미국 OECD CLI | M | 100.96 | 2026-08-01 | +0.06 | +0.25 | +1.33 |
-| 독일 OECD CLI | M | 100.99 | 2026-08-01 | +0.14 | +0.31 | +0.56 |
-
 ### 대외
 
 | 지표 | 주기 | 최신값 | 기준일 | 전기비 | 중기비 | YoY비 |
@@ -71,8 +60,8 @@ Series count: 12
 
 | 지표 | 주기 | 최신값 | 기준일 | 전기비 | 중기비 | YoY비 |
 | --- | --- | --- | --- | --- | --- | --- |
-| EUR/USD | D | 1.17 | 2026-09-09 | +0.00 | +0.01 | -0.01 |
-| ECB MRO 금리 | M | 2.40 | 2026-06-17 | +0.25 | -0.25 | - |
+| EUR/USD | D | 1.16 | 2026-09-10 | -0.00 | +0.01 | -0.01 |
+| ECB MRO 금리 | M | 2.65 | 2026-09-16 | +0.25 | +0.25 | - |
 
 **비교 기간 범례**
 - **전기비**: D=전일, W=전주, M=전월, Q=전분기, A=전년
