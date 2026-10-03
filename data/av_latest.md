@@ -7,7 +7,7 @@
 > - 일 12 API calls / 12 series | Rate limit 5/min·25/day·1/sec 준수
 > - fetch 1 call이라도 실패 시 본 파일은 갱신되지 않음
 
-Generated at: 2026-10-03 00:36:55 UTC
+Generated at: 2026-10-03 23:59:02 UTC
 Source: Alpha Vantage | Rows: 12 (fixed)
 
 ### Included Series (12개)
@@ -54,7 +54,7 @@ Source: Alpha Vantage | Rows: 12 (fixed)
 | 지표 | 주기 | 최신값 | 기준일 | 전기비 | 4W전비 | YoY비 |
 | --- | --- | --- | --- | --- | --- | --- |
 | USD/KRW | D | 1,342.53 | 2026-10-02 | -16.25 | -1.67 | - |
-| USD/JPY | D | 158.07 | 2026-10-01 | +0.68 | +2.28 | - |
+| USD/JPY | D | 157.83 | 2026-10-02 | -0.24 | +1.59 | - |
 | USD/CNY | D | 6.71 | 2026-09-30 | -0.00 | -0.02 | - |
 
 ### 크립토
