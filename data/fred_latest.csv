@@ -67,7 +67,7 @@ RRPONTSYD,11_Fed유동성,역레포 잔액(ON RRP),Overnight Reverse Repo,D,Bil.
 WTREGEN,11_Fed유동성,재무부 일반계좌(TGA),Treasury General Account,W,Mil.USD,Fed,level,2026-10-07,880253.0,-68421.0,-3082.0,72825.0,재무부 일반계좌(TGA). TGA↑=유동성 흡수(국채 발행). TGA↓=유동성 공급
 TOTRESNS,11_Fed유동성,은행 지급준비금,Total Reserves,M,Bil.USD,Fed,level,2026-08-01,2936.0,-115.5,-142.8,-345.9,은행 지급준비금. $3T↓ 유동성 긴장 시작. 은행간 금리 변동성 확대
 BOGMBASE,11_Fed유동성,본원통화,Monetary Base,M,Bil.USD,Fed,yoy_pct,2026-08-01,5411.6,-2.03,-2.3,-4.83,본원통화 YoY. 통화 공급 기초. YoY 음수=긴축 기조. 인플레 장기 추세
-NASDAQQGLDI,12_원자재,"금 가격(NASDAQ 지수, USD/oz 아님)",Gold Price Index (NASDAQ Gold FLOWS103),D,Index (not USD/oz),Nasdaq,level,2026-10-08,2524.7,16.64,-126.06,-517.61,⚠ LBMA Fix(GOLDAMGBD228NLBM) API 오류로 대체. 지수단위(Index)이며 달러 현물가 아님. 절대값 비교 불가 — 추세·방향성만 참고
+NASDAQQGLDI,12_원자재,"금 가격(NASDAQ 지수, USD/oz 아님)",Gold Price Index (NASDAQ Gold FLOWS103),D,Index (not USD/oz),Nasdaq,level,2026-10-09,2554.51,29.81,-115.8,-497.15,⚠ LBMA Fix(GOLDAMGBD228NLBM) API 오류로 대체. 지수단위(Index)이며 달러 현물가 아님. 절대값 비교 불가 — 추세·방향성만 참고
 DCOILWTICO,12_원자재,WTI 원유,WTI Crude Oil,D,USD/Barrel,EIA,level,2026-10-06,96.24,0.11,2.03,33.65,WTI 원유. $60↓ 수요위축 우려. $80↑ 인플레 압력. $100↑ 스태그 리스크
 DHHNGSP,12_원자재,천연가스 현물,Henry Hub Natural Gas,D,$/MMBTU,EIA,level,2026-10-06,3.03,0.07,0.13,0.1,천연가스. 에너지 보조. 계절성 강함. $4↑ 유틸리티 비용 전가→CPI 영향
 PCOPPUSDM,12_원자재,구리 가격,Copper Price,M,USD/MT,IMF,level,2026-07-01,13542.82086956522,-9.22,652.1331,3772.2404,구리(Dr.Copper). 글로벌 경기 선행. 중국 수요 프록시. YoY↑=확장 기대
