@@ -14,7 +14,7 @@ SOFR,01_금리채권,SOFR(담보부 익일물),Secured Overnight Financing Rate,
 AAA,01_금리채권,Aaa 회사채 수익률,Moody's Aaa Corp Bond Yield,D,%,Moody's,level,2026-09-01,6.03,0.15,0.57,,최우량 기업 조달비용. 국채+신용 프리미엄. 장기 투자등급 벤치마크
 BAA,01_금리채권,Baa 회사채 수익률,Moody's Baa Corp Bond Yield,D,%,Moody's,level,2026-09-01,6.47,0.15,0.39,,투자등급 하한 조달비용. AAA 대비 스프레드=신용 리스크 프리미엄
 BAA10Y,01_금리채권,Baa-10Y 신용 스프레드,Baa-10Y Treasury Spread,D,%,Moody's/Fed,level,2026-10-08,1.48,0.02,-0.03,-0.18,기업 디폴트 프리미엄. 2%=정상. 3%↑ 경계. GFC 피크 6%
-VIXCLS,02_리스크신용,VIX 공포지수,CBOE VIX,D,Index,CBOE,level,2026-10-08,15.41,0.33,-2.43,-9.9,시장 공포 지수. 15↓ 과도 낙관. 20↑ 불안. 30↑ 위기. 40↑ 패닉
+VIXCLS,02_리스크신용,VIX 공포지수,CBOE VIX,D,Index,CBOE,level,2026-10-09,14.84,-0.57,-1.0,-5.94,시장 공포 지수. 15↓ 과도 낙관. 20↑ 불안. 30↑ 위기. 40↑ 패닉
 BAMLH0A0HYM2,02_리스크신용,하이일드 스프레드(OAS),ICE BofA US HY OAS,D,%,ICE/BofA,level,2026-10-08,3.15,0.06,0.45,0.19,하이일드 스프레드(OAS). 확대=신용 스트레스. 축소=리스크온. 급등은 디폴트 우려
 TOTBKCR,02_리스크신용,상업은행 총 대출,Bank Credit All Commercial Banks,W,Bil.USD,Fed,yoy_pct,2026-09-30,19883.1863,0.1,0.18,5.86,은행 총 대출. YoY 증가=경기 확장. YoY 감소=신용 긴축→경기 위축 선행
 NFCI,03_금융스트레스,시카고 금융여건지수,Chicago Fed NFCI,W,Index,Chicago Fed,level,2026-10-02,-0.494,0.016,0.051,0.029,시카고 금융여건. 0=평균. -=완화. +=긴축. +1.0↑ 시스템 위기 수준
@@ -78,7 +78,7 @@ PNICKUSDM,12_원자재,니켈,Nickel Price,M,USD/MT,IMF,level,2026-07-01,16632.3
 PWHEAMTUSDM,12_원자재,밀,Wheat Price,M,USD/MT,IMF,level,2026-07-01,228.73884495,29.0906,26.0973,63.4722,밀. 식량 안보 핵심. 흑해 지정학 민감. CPI 식품 구성요소
 PMAIZMTUSDM,12_원자재,옥수수,Corn Price,M,USD/MT,IMF,level,2026-07-01,213.1901539821428,17.4083,-1.3338,20.7376,옥수수. 식량/사료/바이오연료. 에탄올 수요=유가 연동. 기후 민감
 PALLFNFINDEXM,12_원자재,전체 원자재 가격지수,All Commodity Index,M,Index(2016=100),IMF,yoy_pct,2026-07-01,193.2044744461968,-0.73,-9.84,16.56,원자재 종합지수 YoY. 전체 원자재 동향. 30%↑ 인플레 경고. 음수=디플레 압력
-SP500,13_주가지수,S&P 500,S&P 500 Index,D,Index,S&P,level,2026-10-09,7811.54,46.18,154.56,1057.82,미국 대표 주가. 200일선 하회→기술적 약세. 고점 대비 -10%=조정. -20%=약세장
+SP500,13_주가지수,S&P 500,S&P 500 Index,D,Index,S&P,level,2026-10-12,7807.24,-4.3,187.26,1072.13,미국 대표 주가. 200일선 하회→기술적 약세. 고점 대비 -10%=조정. -20%=약세장
 COPPER_GOLD_RATIO,15_파생지표,구리/금 비율,Copper/Gold Ratio,M,Ratio,Calculated,calculated,2026-07-01,5.3049,0.259,1.0104,1.8803,"⚠ 구리(USD/MT)÷금NASDAQ지수(Index). 금이 지수단위이므로 비율 절대값 무의미 — 방향성(상승=경기낙관·위험선호, 하락=위험회피)만 유효. 장기금리 방향성과 높은 상관"
 KOR_US_10Y_SPREAD,15_파생지표,한미 10년물 금리차(한-미),KOR-US 10Y Yield Spread,M,%p,Calculated,calculated,2026-08-01,-0.3983,-0.0848,0.0107,1.0515,"한국 10Y(IRLTLT01KRM156N) - 미국 10Y(DGS10, 일간→월평균). 스프레드 축소/역전은 환율 압력 점검"
 KOR_US_POLICY_SPREAD,15_파생지표,한미 기준금리 스프레드(한-미),KOR-US Policy Rate Spread,M,%p,Calculated,calculated,2026-08-01,-0.821,0.1871,0.2697,1.003,"한국 콜금리(IRSTCI01KRM156N) - 미국 FFR(DFF, 일간→월평균). SIG17 한국 크로스 신호 입력"
