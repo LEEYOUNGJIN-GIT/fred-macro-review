@@ -78,7 +78,7 @@ PNICKUSDM,12_원자재,니켈,Nickel Price,M,USD/MT,IMF,level,2026-07-01,16632.3
 PWHEAMTUSDM,12_원자재,밀,Wheat Price,M,USD/MT,IMF,level,2026-07-01,228.73884495,29.0906,26.0973,63.4722,밀. 식량 안보 핵심. 흑해 지정학 민감. CPI 식품 구성요소
 PMAIZMTUSDM,12_원자재,옥수수,Corn Price,M,USD/MT,IMF,level,2026-07-01,213.1901539821428,17.4083,-1.3338,20.7376,옥수수. 식량/사료/바이오연료. 에탄올 수요=유가 연동. 기후 민감
 PALLFNFINDEXM,12_원자재,전체 원자재 가격지수,All Commodity Index,M,Index(2016=100),IMF,yoy_pct,2026-07-01,193.2044744461968,-0.73,-9.84,16.56,원자재 종합지수 YoY. 전체 원자재 동향. 30%↑ 인플레 경고. 음수=디플레 압력
-SP500,13_주가지수,S&P 500,S&P 500 Index,D,Index,S&P,level,2026-10-15,7744.06,25.12,106.3,1099.75,미국 대표 주가. 200일선 하회→기술적 약세. 고점 대비 -10%=조정. -20%=약세장
+SP500,13_주가지수,S&P 500,S&P 500 Index,D,Index,S&P,level,2026-10-16,7659.44,-84.62,8.94,988.38,미국 대표 주가. 200일선 하회→기술적 약세. 고점 대비 -10%=조정. -20%=약세장
 COPPER_GOLD_RATIO,15_파생지표,구리/금 비율,Copper/Gold Ratio,M,Ratio,Calculated,calculated,2026-07-01,5.3049,0.259,1.0104,1.8803,"⚠ 구리(USD/MT)÷금NASDAQ지수(Index). 금이 지수단위이므로 비율 절대값 무의미 — 방향성(상승=경기낙관·위험선호, 하락=위험회피)만 유효. 장기금리 방향성과 높은 상관"
 KOR_US_10Y_SPREAD,15_파생지표,한미 10년물 금리차(한-미),KOR-US 10Y Yield Spread,M,%p,Calculated,calculated,2026-09-01,-0.535,-0.1367,-0.2455,0.7365,"한국 10Y(IRLTLT01KRM156N) - 미국 10Y(DGS10, 일간→월평균). 스프레드 축소/역전은 환율 압력 점검"
 KOR_US_POLICY_SPREAD,15_파생지표,한미 기준금리 스프레드(한-미),KOR-US Policy Rate Spread,M,%p,Calculated,calculated,2026-09-01,-0.7027,0.1183,0.3856,0.996,"한국 콜금리(IRSTCI01KRM156N) - 미국 FFR(DFF, 일간→월평균). SIG17 한국 크로스 신호 입력"
