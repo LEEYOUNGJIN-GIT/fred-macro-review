@@ -1,0 +1,20 @@
+series_id,name_kr,freq,lag_days,roles,chg,start,expected_start,min_rows,max_ffill,known_limit,source,ecos
+DGS10,미국채 10년물,D,1,target|display,diff,1990-01-01,1990-01-02,9000,10,,fred,
+DGS2,미국채 2년물,D,1,display,diff,1990-01-01,1990-01-02,9000,10,,fred,
+T10Y2Y,장단기 스프레드(10Y-2Y),D,1,display,diff,1990-01-01,1990-01-02,9000,10,,fred,
+T10Y3M,10Y-3M 스프레드,D,1,feature|display,diff,1990-01-01,1990-01-02,9000,10,,fred,
+DFII10,10Y 실질금리(TIPS),D,1,display,diff,2003-01-01,2003-01-02,5800,10,,fred,
+T10YIE,10Y BEI(시장 내재 물가기대),D,1,feature|target|display,diff,2003-01-01,2003-01-02,5800,10,,fred,
+BAA10Y,Baa-10Y 신용 스프레드,D,1,feature|target|display,diff,1990-01-01,1990-01-02,9000,10,,fred,
+VIXCLS,VIX,D,1,feature|target|display,diff,1990-01-01,1990-01-02,9000,10,,fred,
+DEXKOUS,원/달러(H.10),D,8,target|display,pct,1990-01-01,1990-01-03,9000,15,,fred,
+DCOILWTICO,WTI 원유,D,4,display,pct,1990-01-01,1990-01-02,8000,10,,fred,
+DTWEXBGS,달러지수(광범위),D,8,display,pct,2006-01-01,2006-01-02,5000,15,,fred,
+BAMLH0A0HYM2,하이일드 OAS,D,1,display,diff,2023-10-01,2023-10-17,700,10,FRED가 최근 3년만 제공(라이선스) - 10년 백분위 불가,fred,
+NFCI,시카고 금융여건지수,W,5,display,diff,1990-01-01,1990-01-05,1800,40,,fred,
+STLFSI4,STL 금융스트레스,W,6,display,diff,1993-01-01,1993-12-31,1600,40,,fred,
+SP500,S&P 500,D,1,display,pct,2016-01-01,2016-10-17,2500,10,FRED가 최근 10년만 제공(라이선스),fred,
+KR3Y,국고채 3년(ECOS 일별),D,1,display,diff,1998-01-01,1998-11-13,6000,10,,ecos,817Y002|D|010200000|국고채(3년)
+KR10Y,국고채 10년(ECOS 일별),D,1,target|display,diff,2000-01-01,2000-12-18,6000,10,,ecos,817Y002|D|010210000|국고채(10년)
+KOSPI,KOSPI(ECOS 일별),D,1,target|display,pct,1995-01-01,1995-01-03,7000,10,,ecos,802Y001|D|0001000|KOSPI
+USDKRW_BOK,원/달러 매매기준율(ECOS 일별),D,1,target|display,pct,1990-03-01,1990-03-02,7000,10,,ecos,731Y001|D|0000001|미국달러

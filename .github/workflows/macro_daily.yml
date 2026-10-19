@@ -1,0 +1,80 @@
+# ═══════════════════════════════════════════════════════════
+# Macro Outlook — 지표 조합 방향 시나리오 파이프라인
+# ═══════════════════════════════════════════════════════════
+# Flow: fetch_history → checks → (월 1회 backtest) → forecast → build_outlook → push
+# 기존 FRED Daily Fetch(21:10 UTC)와 데이터 경로가 분리되어 있다 (data/macro/obs/).
+# 데이터 결함(checks ERROR)이 있으면 산출물을 만들지 않고 실패 처리한다.
+
+name: Macro Outlook Daily
+
+on:
+  schedule:
+    - cron: "40 21 * * *"          # UTC 21:40 = KST 06:40
+  workflow_dispatch:
+    inputs:
+      backtest:
+        description: "백테스트 요약 재생성 (약 수 분)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  outlook:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Unit tests
+        run: |
+          python tests/test_macro.py
+          python tests/test_governance.py
+
+      - name: Fetch history (증분, 개정 기록)
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}     # 한국 일별 4종(KR3Y·KR10Y·KOSPI·USDKRW_BOK). 없으면 해당 시리즈는 실패로 기록된다
+        run: python macro/fetch_history.py --source auto
+
+      - name: Data checks
+        run: python macro/checks.py
+
+      - name: Backtest summary (매월 1일 또는 수동)
+        run: |
+          if [ "${{ github.event.inputs.backtest }}" = "true" ] || [ "$(date -u +%d)" = "01" ]; then
+            python macro/backtest.py --n-perm 300 --save-summary
+          fi
+
+      - name: Forecast log (등록 · 채점 · 무결성)
+        run: |
+          python macro/forecast.py register
+          python macro/forecast.py grade
+          python macro/forecast.py verify
+
+      - name: Build outlook
+        run: python macro/build_outlook.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/macro data/macro_outlook.md
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          TIMESTAMP=$(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M KST')
+          git commit -m "Macro outlook update — ${TIMESTAMP}"
+          git pull --rebase origin main
+          git push
