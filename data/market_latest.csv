@@ -1,9 +1,9 @@
 ﻿series_id,category,korean_name,english_name,frequency,unit,source,transform,latest_date,latest_value,chg_prev,chg_mid,chg_yoy,note
-^KS11,M01_한국주식,KOSPI,KOSPI Index,D,Index,Yahoo Finance,level,2026-10-15,5554.22021484375,-454.5898,-1355.6899,2168.1702,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가(KRW). 한국 주식시장 벤치마크.
-^KQ11,M01_한국주식,KOSDAQ,KOSDAQ Index,D,Index,Yahoo Finance,level,2026-10-15,760.8200073242188,-63.06,-59.82,-74.37,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가(KRW). 성장주·벤처 중심.
-^NDX,M02_미국지수,나스닥 100,Nasdaq 100,D,Index,Yahoo Finance,level,2026-10-16,29187.548828125,-748.0508,-456.6211,4442.1895,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가. SP500(FRED) 보완 — 성장/기술.
-^RUT,M02_미국지수,러셀 2000,Russell 2000,D,Index,Yahoo Finance,level,2026-10-16,2721.3701171875,-45.8999,-139.0298,201.6201,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가. 소형주·내수 경기 프록시.
-^VIX3M,M03_변동성,VIX 3개월,VIX 3-Month,D,Index,Yahoo Finance,level,2026-10-16,20.5,2.01,2.26,-1.44,⚠ 보조지표. 공식 거시는 fred_latest.md. CBOE vol index. VIX 본체는 FRED VIXCLS.
+^KS11,M01_한국주식,KOSPI,KOSPI Index,D,Index,Yahoo Finance,level,2026-10-16,5668.0498046875,113.8296,-1016.3203,2236.8398,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가(KRW). 한국 주식시장 벤치마크.
+^KQ11,M01_한국주식,KOSDAQ,KOSDAQ Index,D,Index,Yahoo Finance,level,2026-10-16,794.780029296875,33.96,-12.0099,-51.93,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가(KRW). 성장주·벤처 중심.
+^NDX,M02_미국지수,나스닥 100,Nasdaq 100,D,Index,Yahoo Finance,level,2026-10-19,29529.34375,341.793,-953.0059,4872.1035,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가. SP500(FRED) 보완 — 성장/기술.
+^RUT,M02_미국지수,러셀 2000,Russell 2000,D,Index,Yahoo Finance,level,2026-10-19,2728.298095703125,6.928,-147.062,261.2781,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가. 소형주·내수 경기 프록시.
+^VIX3M,M03_변동성,VIX 3개월,VIX 3-Month,D,Index,Yahoo Finance,level,2026-10-19,19.600000381469727,-0.9,1.52,-5.27,⚠ 보조지표. 공식 거시는 fred_latest.md. CBOE vol index. VIX 본체는 FRED VIXCLS.
 RSP,M04_breadth,S&P 동일가중 ETF,S&P Equal Weight ETF,D,USD,Yahoo Finance,level,2026-10-16,214.08999633789062,-0.91,2.595,28.2112,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. 지수 레벨 아님.
 SPY,M04_breadth,S&P 500 ETF,SPDR S&P 500 ETF,D,USD,Yahoo Finance,level,2026-10-16,763.25,-8.54,1.56,105.1797,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. SP500(FRED)와 숫자 다를 수 있음.
 SPHB,M04_risk,S&P 고베타 ETF,S&P High Beta ETF,D,USD,Yahoo Finance,level,2026-10-16,139.3000030517578,-5.06,-8.031,27.7401,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. risk-on 프록시.
@@ -17,10 +17,10 @@ XLY,M05_섹터,섹터:경기소비,Sector: Discretionary,D,USD,Yahoo Finance,lev
 KRE,M06_신용,지역은행 ETF,Regional Banks ETF,D,USD,Yahoo Finance,level,2026-10-16,69.80999755859375,0.06,-2.528,9.2718,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. 은행 신용 스트레스 프록시.
 HYG,M06_신용,하이일드 ETF,HY Credit ETF,D,USD,Yahoo Finance,level,2026-10-16,76.86000061035156,-0.27,-1.3222,0.6758,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. OAS(bp) 아님 — HYG/LQD ratio용.
 LQD,M06_신용,IG 회사채 ETF,IG Credit ETF,D,USD,Yahoo Finance,level,2026-10-16,103.4000015258789,-0.1,-0.8502,-3.6054,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. OAS(bp) 아님 — HYG/LQD ratio용.
-^N225,M07_글로벌,닛케이 225,Nikkei 225,D,Index,Yahoo Finance,level,2026-10-15,64425.94921875,-3318.3398,414.6094,19493.3203,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가(JPY).
-^HSI,M07_글로벌,항셍,Hang Seng Index,D,Index,Yahoo Finance,level,2026-10-15,24062.720703125,-251.4492,-651.0586,-2895.0488,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가(HKD). 중국/홍콩 프록시.
+^N225,M07_글로벌,닛케이 225,Nikkei 225,D,Index,Yahoo Finance,level,2026-10-16,65324.2890625,898.3398,1831.3008,20773.4375,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가(JPY).
+^HSI,M07_글로벌,항셍,Hang Seng Index,D,Index,Yahoo Finance,level,2026-10-16,24186.830078125,124.1094,-417.459,-2642.6309,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가(HKD). 중국/홍콩 프록시.
 EEM,M07_글로벌,신흥국 ETF,Emerging Markets ETF,D,USD,Yahoo Finance,level,2026-10-16,62.849998474121094,-1.11,-4.18,10.0441,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. EM risk 프록시.
-AUDJPY=X,M08_FX,AUD/JPY,AUD/JPY FX,D,JPY_per_AUD,Yahoo Finance,level,2026-10-16,109.7509994506836,-0.477,-1.341,9.751,⚠ 보조지표. 공식 거시는 fred_latest.md. FX 일봉. risk sentiment — 상승=risk-on.
+AUDJPY=X,M08_FX,AUD/JPY,AUD/JPY FX,D,JPY_per_AUD,Yahoo Finance,level,2026-10-20,110.74800109863281,0.748,-1.275,10.839,⚠ 보조지표. 공식 거시는 fred_latest.md. FX 일봉. risk sentiment — 상승=risk-on.
 MARKET_BREADTH,M09_파생,시장 Breadth,RSP/SPY Ratio,D,Ratio,Calculated,calculated,2026-10-16,0.280498,0.0019,0.0028,-0.002,"⚠ 보조지표. 공식 거시는 fred_latest.md. RSP÷SPY. 무차원 — 절대값 해석 금지, 방향만."
 MARKET_RISK_ON,M09_파생,Risk-on/off,SPHB/SPLV Ratio,D,Ratio,Calculated,calculated,2026-10-16,1.870301,-0.0882,-0.1636,0.3035,⚠ 보조지표. 공식 거시는 fred_latest.md. SPHB÷SPLV. 무차원 — risk-on/off 방향만.
 HYG_LQD_RATIO,M09_파생,HY/IG 가격비,HYG/LQD Ratio,D,Ratio,Calculated,calculated,2026-10-16,0.743327,-0.0019,-0.0066,0.0314,⚠ 보조지표. 공식 거시는 fred_latest.md. HYG÷LQD. OAS(bp) 아님 — 신용 방향만.
