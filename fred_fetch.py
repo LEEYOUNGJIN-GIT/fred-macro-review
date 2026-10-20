@@ -545,13 +545,46 @@ def fetch_all_series(registry=REG):
     return data
 
 
+# 월/분기/연 시리즈의 한 기간 길이(개월). 비교 시점을 배열 위치가 아니라 달력으로 잡는 데 쓴다.
+_STEP_MONTHS = {"M": 1, "Q": 3, "A": 12}
+
+
+def _month_index(date_str):
+    """'YYYY-MM-DD' -> 연*12+월 정수. 파싱 불가면 None."""
+    try:
+        y, m = int(date_str[0:4]), int(date_str[5:7])
+        return y * 12 + (m - 1)
+    except (TypeError, ValueError, IndexError):
+        return None
+
+
 def get_comparisons(obs, freq):
-    """최신값 및 전기/중기/YoY 비교값을 추출한다."""
+    """최신값 및 전기/중기/YoY 비교값을 추출한다.
+
+    D/W: 배열 위치(영업일·주 수) 기준 - 휴장일이 있어 달력 정렬이 불가능하다.
+    M/Q/A: 달력 기준. 결측월(예: 2025-10 CPI, 정부 셧다운으로 미발표)이 있으면 배열 위치로 세면
+    비교 시점이 한 기간씩 밀려 '12개 전'이 실제로는 13개월 전이 된다(CPI YoY 3.72%가 4.02%로 보고됐다).
+    해당 월 관측이 없으면 None으로 둔다(근사값으로 메우지 않는다).
+    """
     if not obs:
         return {"val": None, "date": None, "prev": None, "mid": None, "yoy": None}
     cp = COMPARE_PERIODS.get(freq, COMPARE_PERIODS["M"])
-    def safe_get(idx):
-        return obs[idx]["value"] if len(obs) > idx else None
+    if freq in _STEP_MONTHS:
+        step = _STEP_MONTHS[freq]
+        by_month = {}
+        for o in obs:
+            k = _month_index(o["date"])
+            if k is not None and k not in by_month:
+                by_month[k] = o["value"]
+        base = _month_index(obs[0]["date"])
+
+        def safe_get(n):
+            if base is None:
+                return None
+            return by_month.get(base - n * step)
+    else:
+        def safe_get(idx):
+            return obs[idx]["value"] if len(obs) > idx else None
     return {
         "val":  obs[0]["value"],
         "date": obs[0]["date"],
