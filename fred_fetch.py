@@ -68,8 +68,8 @@ REG = {'T10Y2Y': {'cat': '01_금리채권', 'kr': '장단기 스프레드(10Y-2Y
           'src': 'NY Fed',
           'tf': 'level',
           'note': 'LIBOR 대체 단기 기준금리. 레포 시장 유동성 반영. DFF와 ±10bp 동행'},
- 'AAA': {'cat': '01_금리채권', 'kr': 'Aaa 회사채 수익률', 'en': "Moody's Aaa Corp Bond Yield", 'freq': 'D', 'unit': '%', 'src': "Moody's", 'tf': 'level', 'note': '최우량 기업 조달비용. 국채+신용 프리미엄. 장기 투자등급 벤치마크'},
- 'BAA': {'cat': '01_금리채권', 'kr': 'Baa 회사채 수익률', 'en': "Moody's Baa Corp Bond Yield", 'freq': 'D', 'unit': '%', 'src': "Moody's", 'tf': 'level', 'note': '투자등급 하한 조달비용. AAA 대비 스프레드=신용 리스크 프리미엄'},
+ 'AAA': {'cat': '01_금리채권', 'kr': 'Aaa 회사채 수익률', 'en': "Moody's Aaa Corp Bond Yield", 'freq': 'M', 'unit': '%', 'src': "Moody's", 'tf': 'level', 'note': '최우량 기업 조달비용. 국채+신용 프리미엄. 장기 투자등급 벤치마크'},
+ 'BAA': {'cat': '01_금리채권', 'kr': 'Baa 회사채 수익률', 'en': "Moody's Baa Corp Bond Yield", 'freq': 'M', 'unit': '%', 'src': "Moody's", 'tf': 'level', 'note': '투자등급 하한 조달비용. AAA 대비 스프레드=신용 리스크 프리미엄'},
  'BAA10Y': {'cat': '01_금리채권', 'kr': 'Baa-10Y 신용 스프레드', 'en': 'Baa-10Y Treasury Spread', 'freq': 'D', 'unit': '%', 'src': "Moody's/Fed", 'tf': 'level', 'note': '기업 디폴트 프리미엄. 2%=정상. 3%↑ 경계. GFC 피크 6%'},
  'VIXCLS': {'cat': '02_리스크신용', 'kr': 'VIX 공포지수', 'en': 'CBOE VIX', 'freq': 'D', 'unit': 'Index', 'src': 'CBOE', 'tf': 'level', 'note': '시장 공포 지수. 15↓ 과도 낙관. 20↑ 불안. 30↑ 위기. 40↑ 패닉'},
  'BAMLH0A0HYM2': {'cat': '02_리스크신용',
@@ -764,6 +764,32 @@ def write_markdown(fact_table_md, path):
 # 7. CSV 저장 함수
 # ═══════════════════════════════════════════════════════════
 
+def _age_days(date_str):
+    """관측일 -> 오늘(UTC)까지 경과일. 날짜가 없으면 빈 문자열."""
+    if not date_str:
+        return ""
+    try:
+        return (datetime.now(timezone.utc).date() - datetime.strptime(date_str[:10], "%Y-%m-%d").date()).days
+    except ValueError:
+        return ""
+
+
+def warn_stale_daily(registry, all_data, max_age=7):
+    """일별(D) 지표 중 관측일이 max_age일을 넘은 것을 GitHub Actions 경고로 남긴다 (중단하지 않음).
+    API 갱신이 늦어도 수집 작업은 성공 종료해 낡은 값이 새 파일로 커밋되기 때문이다."""
+    stale = []
+    for sid, m in registry.items():
+        if m["freq"] != "D" or m["tf"] == "calculated":
+            continue
+        comp = get_comparisons(get_series_obs(sid, m, all_data), m["freq"])
+        age = _age_days(comp["date"])
+        if age != "" and age > max_age:
+            stale.append(f"{sid}({comp['date']}, {age}일)")
+    if stale:
+        print(f"::warning::일별 지표 {len(stale)}개가 {max_age}일 넘게 갱신되지 않음: " + ", ".join(stale))
+    return stale
+
+
 def save_csv(all_data, registry, path):
     """전체 데이터를 CSV로 저장한다."""
     rows = []
@@ -784,6 +810,7 @@ def save_csv(all_data, registry, path):
             "source":       m["src"],
             "transform":    tf,
             "latest_date":  comp["date"] if comp["date"] else "",
+            "age_days":     _age_days(comp["date"]),   # 수집 시점(UTC) - 관측일. 신선도 판정용(파일 생성 시각이 아님)
             "latest_value": val if val is not None else "",
             "chg_prev":     _none_to_empty(calc_change(val, comp["prev"], tf)),
             "chg_mid":      _none_to_empty(calc_change(val, comp["mid"],  tf)),
@@ -828,6 +855,8 @@ def main():
     fact_md = generate_fact_table(all_data, REG)
     md_path = DATA_DIR / "fred_latest.md"
     write_markdown(fact_md, md_path)
+
+    warn_stale_daily(REG, all_data)
 
     print("\n[4/4] CSV 저장...")
     csv_path = DATA_DIR / "fred_latest.csv"
