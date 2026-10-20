@@ -327,6 +327,21 @@ def validate_all_data(all_data: dict) -> None:
             raise ValueError(f"derived calc failed: {sid}")
 
 
+def warn_date_dispersion(all_data: dict, max_spread_days: int = 3) -> None:
+    """티커별 마지막 관측일이 서로 크게 다르면 경고한다(중단하지 않음).
+    '100% 성공'이어도 Yahoo가 일부 티커만 늦게 갱신하면 한 파일 안에 기준일이 섞인다
+    (2026-10-20 실측: ^KS11·^KQ11·SPY 10-16, 나스닥 10-19)."""
+    last = {t: all_data[t][0]["date"] for t in RAW_TICKERS if all_data.get(t)}
+    if not last:
+        return
+    newest = max(last.values())
+    gap = lambda d: (datetime.strptime(newest, "%Y-%m-%d") - datetime.strptime(d, "%Y-%m-%d")).days
+    lag = {t: d for t, d in last.items() if gap(d) > max_spread_days - 1}
+    if lag:
+        print(f"::warning::market 기준일 불일치 (최신 {newest}): "
+              + ", ".join(f"{t}={d}" for t, d in sorted(lag.items())))
+
+
 def validate_csv_rows(rows: list[dict]) -> None:
     if len(rows) != EXPECTED_ROWS:
         raise ValueError(f"row count {len(rows)} != {EXPECTED_ROWS}")
@@ -474,6 +489,7 @@ def main() -> None:
         sys.exit(1)
 
     print(f"\n  -> {len(RAW_TICKERS)}/{len(RAW_TICKERS)} raw OK")
+    warn_date_dispersion(all_data)
 
     print("\n[2/3] Build outputs...")
     rows = build_csv_rows(all_data)
