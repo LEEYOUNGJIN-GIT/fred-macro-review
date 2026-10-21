@@ -1,0 +1,47 @@
+# ═══════════════════════════════════════════════════════════
+# Series Layer CI — fixture 테스트 + data/series 무결성 검사 (네트워크 불필요)
+# ═══════════════════════════════════════════════════════════
+
+name: Series Layer CI
+
+on:
+  pull_request:
+    paths:
+      - "fred_fetch.py"
+      - "scripts/**"
+      - "tests/**"
+      - "data/series/**"
+      - "requirements*.txt"
+      - ".github/workflows/fred_series_daily.yml"
+      - ".github/workflows/series_ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Run tests
+        run: python -m pytest -q tests
+
+      - name: Validate data/series
+        run: python scripts/validate_series.py
