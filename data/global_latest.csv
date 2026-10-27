@@ -6,5 +6,5 @@ WB_US_CPI,G02_물가,미국 CPI 인플레이션,US CPI Inflation,A,%,World Bank,
 WB_KR_UNEMP,G03_노동,한국 실업률,Korea Unemployment Rate,A,%,World Bank,level,2025-01-01,2.683,-0.101,0.008,,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 연간. World Bank SL.UEM.TOTL.ZS.
 WB_US_UNEMP,G03_노동,미국 실업률,US Unemployment Rate,A,%,World Bank,level,2025-01-01,4.198,0.176,0.56,,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 연간. World Bank SL.UEM.TOTL.ZS.
 IMF_KR_CURRENT_ACCOUNT,G05_대외,한국 경상수지,Korea Current Account Balance,Q,USD,IMF,level,2026-04-01,116630100000.0,42249900000.0,77461900000.0,88244300000.0,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 분기 USD. IMF BOP CAB. KOR.NETCD_T.CAB.USD.Q.
-ECB_EURUSD,G06_금융,EUR/USD,EUR/USD Exchange Rate,D,USD/EUR,ECB,level,2026-10-23,1.1193,-0.0012,-0.021,-0.0437,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 일간. ECB EXR. FRED DEXUSEU와 단위 확인.
+ECB_EURUSD,G06_금융,EUR/USD,EUR/USD Exchange Rate,D,USD/EUR,ECB,level,2026-10-26,1.1188,-0.0005,-0.019,-0.0448,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 일간. ECB EXR. FRED DEXUSEU와 단위 확인.
 ECB_POLICY_RATE_MRO,G06_금융,ECB MRO 금리,ECB Main Refinancing Rate,M,%,ECB,level,2026-09-16,2.65,0.25,0.25,,⚠ 글로벌 보조지표. 공식 거시는 fred_latest.md. 월간. ECB FM MRR.
