@@ -8,7 +8,8 @@ name: Global Daily Fetch
 
 on:
   schedule:
-    - cron: "20 21 * * *"
+    - cron: "23 15 * * *"          # UTC 15:23 = KST 00:23 (06:30 브리핑 전 도착 목적)
+    - cron: "20 21 * * *"          # 보강 실행
   workflow_dispatch:
 
 permissions:
