@@ -9,5 +9,5 @@ AV_BRENT,AV02_원자재,브렌트유,Brent Crude,M,USD/Barrel,Alpha Vantage,yoy_
 AV_USDKRW,AV03_FX,USD/KRW,USD/KRW,D,KRW/USD,Alpha Vantage,level,2026-10-30,1333.46,-5.82,-9.07,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. FX_DAILY. FRED DEXKOUS 교차확인. 단위·기준일 다를 수 있음.
 AV_USDJPY,AV03_FX,USD/JPY,USD/JPY,D,JPY/USD,Alpha Vantage,level,2026-10-30,157.53,-0.16,-0.3,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. FX_DAILY. FRED DEXJPUS 교차확인.
 AV_USDCNY,AV03_FX,USD/CNY,USD/CNY,D,CNY/USD,Alpha Vantage,level,2026-10-30,6.655,-0.0062,-0.0575,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. FX_DAILY. FRED DEXCHUS 교차확인.
-AV_BTCUSD,AV04_크립토,비트코인(USD),Bitcoin USD,D,USD,Alpha Vantage,yoy_pct,2026-10-31,77105.12,-0.1,-7.86,13.46,⚠ AV 보조지표. 공식 거시는 fred_latest.md. DIGITAL_CURRENCY_DAILY BTC. 공식 거시 아님 risk-on/off 보조.
-AV_ETHUSD,AV04_크립토,이더리움(USD),Ethereum USD,D,USD,Alpha Vantage,yoy_pct,2026-10-31,2240.81,-0.01,-11.58,13.57,⚠ AV 보조지표. 공식 거시는 fred_latest.md. DIGITAL_CURRENCY_DAILY ETH. 공식 거시 아님 risk-on/off 보조.
+AV_BTCUSD,AV04_크립토,비트코인(USD),Bitcoin USD,D,USD,Alpha Vantage,yoy_pct,2026-11-01,77509.14,0.11,-5.18,14.63,⚠ AV 보조지표. 공식 거시는 fred_latest.md. DIGITAL_CURRENCY_DAILY BTC. 공식 거시 아님 risk-on/off 보조.
+AV_ETHUSD,AV04_크립토,이더리움(USD),Ethereum USD,D,USD,Alpha Vantage,yoy_pct,2026-11-01,2254.95,0.1,-7.75,15.23,⚠ AV 보조지표. 공식 거시는 fred_latest.md. DIGITAL_CURRENCY_DAILY ETH. 공식 거시 아님 risk-on/off 보조.
