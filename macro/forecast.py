@@ -48,8 +48,16 @@ def log_path(cfg: dict, root: Path | None = None) -> Path:
     return (root or L.ROOT) / cfg["forecast"]["log_file"]
 
 
+def _canon(x: float) -> str:
+    """저장 포맷(%.10g)으로 먼저 정규화한 뒤 8자리로 쓴다.
+    등록 시점의 메모리 값과 CSV를 다시 읽은 값이 같은 문자열을 내도록 한다.
+    (정규화 없이 .8g만 쓰면 9번째 자리가 5인 값에서 반올림 방향이 달라져 해시가 어긋난다. 2026-11-02 id 37)
+    기존 행의 해시와는 호환된다: 경계값이 아닌 한 .8g(x) == .8g(round10(x))."""
+    return f"{float(f'{x:.10g}'):.8g}"
+
+
 def row_hash(row: dict) -> str:
-    s = "|".join(f"{row[k]:.8g}" if isinstance(row[k], float) else str(row[k]) for k in REG_FIELDS)
+    s = "|".join(_canon(row[k]) if isinstance(row[k], float) else str(row[k]) for k in REG_FIELDS)
     return hashlib.sha256(s.encode("utf-8")).hexdigest()[:12]
 
 
