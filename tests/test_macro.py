@@ -259,6 +259,18 @@ def test_log_keeps_numeric_looking_strings():
         assert back.loc[0, "config_hash"] == "12345e6789" and back.loc[0, "row_hash"] == "1e5"
 
 
+def test_row_hash_survives_csv_roundtrip_at_rounding_boundary():
+    """9번째 유효숫자가 5인 값은 .8g 반올림 방향이 저장(%.10g) 왕복 뒤 달라진다 (2026-11-02 macro_daily 실패, id 37).
+    등록 시점의 메모리 값과 CSV에서 다시 읽은 값이 같은 해시를 내야 한다."""
+    x = 0.3338059550000001  # 메모리 .8g -> 0.33380596, 저장(%.10g) 후 다시 읽으면 -> 0.33380595 (id 37과 같은 방향)
+    assert f"{x:.8g}" != f"{float(f'{x:.10g}'):.8g}", "경계값 전제가 깨졌다 — 테스트 값을 다시 고른다"
+    base = {k: 0.25 for k in F.REG_FIELDS}
+    base.update(registered_on="2026-11-02", series="KR10Y", horizon=21, resolve_on="2026-12-01", config_hash="ccd5a9c2fd")
+    mem = dict(base, base_flat=x)
+    back = dict(base, base_flat=float(f"{x:.10g}"))
+    assert F.row_hash(mem) == F.row_hash(back)
+
+
 def test_config_hash_ignores_comments_but_not_model():
     base = L.config_hash()
     assert base == L.config_hash()
