@@ -1,0 +1,26 @@
+﻿series_id,category,korean_name,english_name,frequency,unit,source,transform,latest_date,latest_value,chg_prev,chg_mid,chg_yoy,note
+^KS11,M01_한국주식,KOSPI,KOSPI Index,D,Index,Yahoo Finance,level,2026-11-04,5713.6298828125,-145.4502,-1290.1104,1829.95,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가(KRW). 한국 주식시장 벤치마크.
+^KQ11,M01_한국주식,KOSDAQ,KOSDAQ Index,D,Index,Yahoo Finance,level,2026-11-04,702.0800170898438,-32.28,-191.21,-177.07,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가(KRW). 성장주·벤처 중심.
+^NDX,M02_미국지수,나스닥 100,Nasdaq 100,D,Index,Yahoo Finance,level,2026-11-03,28180.263671875,190.4434,-3044.207,2322.1328,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가. SP500(FRED) 보완 — 성장/기술.
+^RUT,M02_미국지수,러셀 2000,Russell 2000,D,Index,Yahoo Finance,level,2026-11-03,2812.447265625,6.5674,-17.8528,333.0674,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가. 소형주·내수 경기 프록시.
+^VIX3M,M03_변동성,VIX 3개월,VIX 3-Month,D,Index,Yahoo Finance,level,2026-11-03,21.270000457763672,-0.33,3.63,0.78,⚠ 보조지표. 공식 거시는 fred_latest.md. CBOE vol index. VIX 본체는 FRED VIXCLS.
+RSP,M04_breadth,S&P 동일가중 ETF,S&P Equal Weight ETF,D,USD,Yahoo Finance,level,2026-11-03,219.25999450683594,-0.72,6.93,34.2867,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. 지수 레벨 아님.
+SPY,M04_breadth,S&P 500 ETF,SPDR S&P 500 ETF,D,USD,Yahoo Finance,level,2026-11-03,754.3499755859375,2.25,-24.7401,79.5699,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. SP500(FRED)와 숫자 다를 수 있음.
+SPHB,M04_risk,S&P 고베타 ETF,S&P High Beta ETF,D,USD,Yahoo Finance,level,2026-11-03,137.10000610351562,2.11,-19.67,22.6668,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. risk-on 프록시.
+SPLV,M04_risk,S&P 저변동 ETF,S&P Low Vol ETF,D,USD,Yahoo Finance,level,2026-11-03,76.87999725341797,-0.57,5.2906,7.8303,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. risk-off/방어 프록시.
+XLK,M05_섹터,섹터:기술,Sector: Technology,D,USD,Yahoo Finance,level,2026-11-03,176.50999450683594,2.29,-25.49,26.9372,⚠ 보조지표. 공식 거시는 fred_latest.md. SPDR sector ETF adjusted close.
+XLF,M05_섹터,섹터:금융,Sector: Financials,D,USD,Yahoo Finance,level,2026-11-03,57.189998626708984,-0.37,3.18,5.633,⚠ 보조지표. 공식 거시는 fred_latest.md. SPDR sector ETF adjusted close.
+XLE,M05_섹터,섹터:에너지,Sector: Energy,D,USD,Yahoo Finance,level,2026-11-03,66.68000030517578,-0.57,2.93,23.8366,⚠ 보조지표. 공식 거시는 fred_latest.md. SPDR sector ETF adjusted close.
+XLP,M05_섹터,섹터:필수소비,Sector: Staples,D,USD,Yahoo Finance,level,2026-11-03,88.94999694824219,-1.88,7.15,14.7075,⚠ 보조지표. 공식 거시는 fred_latest.md. SPDR sector ETF adjusted close. 방어 섹터.
+XLU,M05_섹터,섹터:유틸리티,Sector: Utilities,D,USD,Yahoo Finance,level,2026-11-03,43.41999816894531,-0.25,2.26,0.1054,⚠ 보조지표. 공식 거시는 fred_latest.md. SPDR sector ETF adjusted close. 방어 섹터.
+XLY,M05_섹터,섹터:경기소비,Sector: Discretionary,D,USD,Yahoo Finance,level,2026-11-03,117.33000183105469,-0.83,5.61,-1.658,⚠ 보조지표. 공식 거시는 fred_latest.md. SPDR sector ETF adjusted close. 경기민감.
+KRE,M06_신용,지역은행 ETF,Regional Banks ETF,D,USD,Yahoo Finance,level,2026-11-03,72.87999725341797,-0.85,2.81,14.2757,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. 은행 신용 스트레스 프록시.
+HYG,M06_신용,하이일드 ETF,HY Credit ETF,D,USD,Yahoo Finance,level,2026-11-03,76.9800033569336,0.09,-0.29,0.4568,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. OAS(bp) 아님 — HYG/LQD ratio용.
+LQD,M06_신용,IG 회사채 ETF,IG Credit ETF,D,USD,Yahoo Finance,level,2026-11-03,103.72000122070312,0.01,1.58,-2.9131,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. OAS(bp) 아님 — HYG/LQD ratio용.
+^N225,M07_글로벌,닛케이 225,Nikkei 225,D,Index,Yahoo Finance,level,2026-11-04,62008.078125,-1073.7812,-7938.7812,12822.5781,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가(JPY).
+^HSI,M07_글로벌,항셍,Hang Seng Index,D,Index,Yahoo Finance,level,2026-11-02,23393.3203125,98.9004,-578.9688,-2388.4492,⚠ 보조지표. 공식 거시는 fred_latest.md. 지수 종가(HKD). 중국/홍콩 프록시.
+EEM,M07_글로벌,신흥국 ETF,Emerging Markets ETF,D,USD,Yahoo Finance,level,2026-11-03,61.099998474121094,-0.01,-7.17,6.8621,⚠ 보조지표. 공식 거시는 fred_latest.md. ETF adjusted close. EM risk 프록시.
+AUDJPY=X,M08_FX,AUD/JPY,AUD/JPY FX,D,JPY_per_AUD,Yahoo Finance,level,2026-11-04,110.42500305175781,-0.11,-0.059,9.306,⚠ 보조지표. 공식 거시는 fred_latest.md. FX 일봉. risk sentiment — 상승=risk-on.
+MARKET_BREADTH,M09_파생,시장 Breadth,RSP/SPY Ratio,D,Ratio,Calculated,calculated,2026-11-03,0.290661,-0.0018,0.0181,0.0165,"⚠ 보조지표. 공식 거시는 fred_latest.md. RSP÷SPY. 무차원 — 절대값 해석 금지, 방향만."
+MARKET_RISK_ON,M09_파생,Risk-on/off,SPHB/SPLV Ratio,D,Ratio,Calculated,calculated,2026-11-03,1.783299,0.0404,-0.4066,0.126,⚠ 보조지표. 공식 거시는 fred_latest.md. SPHB÷SPLV. 무차원 — risk-on/off 방향만.
+HYG_LQD_RATIO,M09_파생,HY/IG 가격비,HYG/LQD Ratio,D,Ratio,Calculated,calculated,2026-11-03,0.742191,0.0008,-0.0143,0.0246,⚠ 보조지표. 공식 거시는 fred_latest.md. HYG÷LQD. OAS(bp) 아님 — 신용 방향만.
