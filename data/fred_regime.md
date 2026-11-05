@@ -1,5 +1,5 @@
 # 🏛️ FRED Macro Regime Report
-> Generated: 2026-11-04 21:21:59 UTC
+> Generated: 2026-11-05 01:28:14 UTC
 
 ## 📊 현재 레짐
 
@@ -61,7 +61,7 @@
 | CPI YoY% | CPIAUCSL | +3.72 | +0.50 |
 | PPI YoY% | PPIFIS | +6.35 | +1.00 |
 | 인플레기대(미시간) | MICH | +4.60 | +1.00 |
-| 5Y5Y 선도 인플레 | T5YIFR | +2.21 | 0.00 |
+| 5Y5Y 선도 인플레 | T5YIFR | +2.22 | 0.00 |
 | 임금 YoY% | CES0500000003 | +3.02 | 0.00 |
 | 원자재 YoY% | PALLFNFINDEXM | +32.82 | +1.00 |
 | WTI 유가($/bbl) | DCOILWTICO | +99.64 | +0.25 |
