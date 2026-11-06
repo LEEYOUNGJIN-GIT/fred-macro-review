@@ -1,5 +1,5 @@
 # 🏛️ FRED Macro Regime Report
-> Generated: 2026-11-05 21:29:41 UTC
+> Generated: 2026-11-06 01:31:49 UTC
 
 ## 📊 현재 레짐
 
