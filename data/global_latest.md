@@ -6,9 +6,9 @@
 > - FRED·Market 레이어와 merge 없음. 충돌 시 **항상 FRED 우선**
 > - 한국 CLI는 FRED `KORLOLITOAASTSAM`과 중복 가능 — 교차 확인용
 
-Generated at: 2026-11-07 19:30:18 UTC
-Data range: 2023-11-08 ~ 2026-11-07
-Series count: 9
+Generated at: 2026-11-08 00:43:42 UTC
+Data range: 2023-11-09 ~ 2026-11-08
+Series count: 8
 
 ### Included Series
 
@@ -21,12 +21,11 @@ Series count: 9
 | 5 | WB_KR_UNEMP | 노동 | 한국 실업률 | Korea Unemployment Rate | A | % | World Bank |
 | 6 | WB_US_UNEMP | 노동 | 미국 실업률 | US Unemployment Rate | A | % | World Bank |
 | 7 | IMF_KR_CURRENT_ACCOUNT | 대외 | 한국 경상수지 | Korea Current Account Balance | Q | USD | IMF |
-| 8 | ECB_EURUSD | 금융 | EUR/USD | EUR/USD Exchange Rate | D | USD/EUR | ECB |
-| 9 | ECB_POLICY_RATE_MRO | 금융 | ECB MRO 금리 | ECB Main Refinancing Rate | M | % | ECB |
+| 8 | ECB_POLICY_RATE_MRO | 금융 | ECB MRO 금리 | ECB Main Refinancing Rate | M | % | ECB |
 
 ## 🌍 글로벌 거시 보조 팩트 테이블
 
-**기준일**: 2026-11-07
+**기준일**: 2026-11-08
 
 
 ### 성장
@@ -60,7 +59,6 @@ Series count: 9
 
 | 지표 | 주기 | 최신값 | 기준일 | 전기비 | 중기비 | YoY비 |
 | --- | --- | --- | --- | --- | --- | --- |
-| EUR/USD | D | 1.12 | 2026-11-06 | -0.01 | -0.00 | -0.04 |
 | ECB MRO 금리 | M | 2.65 | 2026-09-16 | +0.25 | +0.25 | - |
 
 **비교 기간 범례**
