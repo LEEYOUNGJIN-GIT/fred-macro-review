@@ -1,0 +1,96 @@
+# ═══════════════════════════════════════════════════════════
+# FRED Series History Layer — 시리즈별 전체 이력 저장
+# ═══════════════════════════════════════════════════════════
+# Schedule: 매일 KST 06:40 (UTC 21:40) — 기존 06:00~06:25 워크플로 이후
+# Flow: scripts/fred_series_collect.py → scripts/validate_series.py → git push
+# 커밋 경로: data/series/ 한정 (기존 data/fred_* 경로는 건드리지 않음)
+# 별도 워크플로로 분리한 이유: docs/AUDIT_fred.md §6 참조
+#  - fred_daily.yml 에 넣으면 이 단계 실패 시 'FRED Daily Fetch' 가 failure 가 되어
+#    sync_claude_project.yml(conclusion == success 조건)이 실행되지 않는다.
+#  - 최초 백필은 fred_daily.yml 의 timeout(15분)을 넘길 수 있다.
+
+name: FRED Series History
+
+on:
+  schedule:
+    - cron: "40 21 * * *"          # UTC 21:40 = KST 06:40
+  workflow_dispatch:
+    inputs:
+      vintages:
+        description: "개정 이력(vintage) 수집 (2단계, 기본 off)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+# 이 워크플로 자기 중첩 실행 방지 (스케줄 + 수동 실행 겹침)
+concurrency:
+  group: fred-series-history
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 부분 실패(종료코드 1)여도 성공한 시리즈는 커밋한다. 실패는 마지막 단계에서 보고.
+      - name: Collect FRED series history
+        id: collect
+        continue-on-error: true
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: |
+          ARGS=""
+          if [ "${{ github.event.inputs.vintages }}" = "true" ]; then ARGS="--vintages"; fi
+          python scripts/fred_series_collect.py $ARGS
+
+      # 무결성 검사 실패 시 커밋하지 않는다.
+      - name: Validate series files
+        run: python scripts/validate_series.py --short-report
+
+      - name: Commit and push (data/series only)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data/series/ || true
+
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+
+          TIMESTAMP=$(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M KST')
+          git commit -m "FRED series history update — ${TIMESTAMP}"
+
+          # 다른 워크플로의 push 와 경합 시 재시도 (경로가 겹치지 않아 rebase 충돌은 없음)
+          for i in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            echo "push 재시도 ${i}/5"
+            sleep $((i * 15))
+          done
+          echo "push 실패"
+          exit 1
+
+      - name: Report partial failure
+        if: steps.collect.outcome == 'failure'
+        run: |
+          echo "일부 시리즈 수집 실패 — 위 'Collect' 단계의 실패표 참조"
+          exit 1
