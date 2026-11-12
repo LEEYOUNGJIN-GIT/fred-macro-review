@@ -1,13 +1,13 @@
 ﻿series_id,category,korean_name,english_name,frequency,unit,source,transform,latest_date,latest_value,chg_prev,chg_mid,chg_yoy,note
-AV_GOLD_SPOT,AV01_금속,금 프록시(GLD ETF),Gold Proxy GLD ETF,D,USD/oz,Alpha Vantage,level,2026-11-10,369.36,-10.17,-12.31,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. GLD ETF daily (금 프록시). FRED NASDAQQGLDI 교차확인. 현물 아님 ETF.
-AV_SILVER_SPOT,AV01_금속,은 프록시(SLV ETF),Silver Proxy SLV ETF,D,USD,Alpha Vantage,level,2026-11-10,46.48,-1.66,-7.01,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. SLV ETF daily. 귀금속 보조 ETF.
+AV_GOLD_SPOT,AV01_금속,금 프록시(GLD ETF),Gold Proxy GLD ETF,D,USD/oz,Alpha Vantage,level,2026-11-11,365.17,-4.19,-10.82,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. GLD ETF daily (금 프록시). FRED NASDAQQGLDI 교차확인. 현물 아님 ETF.
+AV_SILVER_SPOT,AV01_금속,은 프록시(SLV ETF),Silver Proxy SLV ETF,D,USD,Alpha Vantage,level,2026-11-11,46.65,0.17,-3.57,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. SLV ETF daily. 귀금속 보조 ETF.
 AV_COPPER,AV02_원자재,구리,Copper,M,USD/MT,Alpha Vantage,yoy_pct,2026-09-01,14473.05590909091,0.99,6.8,44.81,⚠ AV 보조지표. 공식 거시는 fred_latest.md. COPPER monthly. FRED PCOPPUSDM 교차확인.
 AV_ALUMINUM,AV02_원자재,알루미늄,Aluminum,M,USD/MT,Alpha Vantage,yoy_pct,2026-09-01,3283.054285714286,1.01,-4.53,23.68,⚠ AV 보조지표. 공식 거시는 fred_latest.md. ALUMINUM monthly. FRED PALUMUSDM 교차확인.
 AV_WHEAT,AV02_원자재,밀,Wheat,M,USD/MT,Alpha Vantage,yoy_pct,2026-09-01,246.85180245,3.78,23.64,59.14,⚠ AV 보조지표. 공식 거시는 fred_latest.md. WHEAT monthly. FRED PWHEAMTUSDM 교차확인.
 AV_CORN,AV02_원자재,옥수수,Corn,M,USD/MT,Alpha Vantage,yoy_pct,2026-09-01,236.9161241071429,7.05,21.01,20.79,⚠ AV 보조지표. 공식 거시는 fred_latest.md. CORN monthly. FRED PMAIZMTUSDM 교차확인.
 AV_BRENT,AV02_원자재,브렌트유,Brent Crude,M,USD/Barrel,Alpha Vantage,yoy_pct,2026-10-01,123.93,8.56,47.96,92.02,⚠ AV 보조지표. 공식 거시는 fred_latest.md. BRENT monthly. FRED DCOILWTICO 교차확인. WTI와 괴리 참고.
-AV_USDKRW,AV03_FX,USD/KRW,USD/KRW,D,KRW/USD,Alpha Vantage,level,2026-11-10,1342.15,1.95,1.13,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. FX_DAILY. FRED DEXKOUS 교차확인. 단위·기준일 다를 수 있음.
-AV_USDJPY,AV03_FX,USD/JPY,USD/JPY,D,JPY/USD,Alpha Vantage,level,2026-11-10,158.73,0.83,0.44,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. FX_DAILY. FRED DEXJPUS 교차확인.
-AV_USDCNY,AV03_FX,USD/CNY,USD/CNY,D,CNY/USD,Alpha Vantage,level,2026-11-10,6.68,0.0076,-0.0128,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. FX_DAILY. FRED DEXCHUS 교차확인.
-AV_BTCUSD,AV04_크립토,비트코인(USD),Bitcoin USD,D,USD,Alpha Vantage,yoy_pct,2026-11-10,74958.41,-0.4,-10.79,9.69,⚠ AV 보조지표. 공식 거시는 fred_latest.md. DIGITAL_CURRENCY_DAILY BTC. 공식 거시 아님 risk-on/off 보조.
-AV_ETHUSD,AV04_크립토,이더리움(USD),Ethereum USD,D,USD,Alpha Vantage,yoy_pct,2026-11-10,2123.15,-0.42,-14.1,7.07,⚠ AV 보조지표. 공식 거시는 fred_latest.md. DIGITAL_CURRENCY_DAILY ETH. 공식 거시 아님 risk-on/off 보조.
+AV_USDKRW,AV03_FX,USD/KRW,USD/KRW,D,KRW/USD,Alpha Vantage,level,2026-11-11,1338.64,-3.51,0.47,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. FX_DAILY. FRED DEXKOUS 교차확인. 단위·기준일 다를 수 있음.
+AV_USDJPY,AV03_FX,USD/JPY,USD/JPY,D,JPY/USD,Alpha Vantage,level,2026-11-11,159.77,1.04,1.46,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. FX_DAILY. FRED DEXJPUS 교차확인.
+AV_USDCNY,AV03_FX,USD/CNY,USD/CNY,D,CNY/USD,Alpha Vantage,level,2026-11-11,6.674,-0.0065,-0.0238,,⚠ AV 보조지표. 공식 거시는 fred_latest.md. FX_DAILY. FRED DEXCHUS 교차확인.
+AV_BTCUSD,AV04_크립토,비트코인(USD),Bitcoin USD,D,USD,Alpha Vantage,yoy_pct,2026-11-12,73607.74,-0.43,-9.21,3.84,⚠ AV 보조지표. 공식 거시는 fred_latest.md. DIGITAL_CURRENCY_DAILY BTC. 공식 거시 아님 risk-on/off 보조.
+AV_ETHUSD,AV04_크립토,이더리움(USD),Ethereum USD,D,USD,Alpha Vantage,yoy_pct,2026-11-12,2050.65,-0.15,-14.0,-1.08,⚠ AV 보조지표. 공식 거시는 fred_latest.md. DIGITAL_CURRENCY_DAILY ETH. 공식 거시 아님 risk-on/off 보조.
