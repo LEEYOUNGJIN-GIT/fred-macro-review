@@ -704,6 +704,19 @@ def fmt_chg(chg, tf="level"):
 # 5. 팩트 테이블 생성 (Fact Table Generation)
 # ═══════════════════════════════════════════════════════════
 
+def _chg_or_gap(chg, tf, val, date_str, freq, key):
+    """변화율이 비었는데 최신값은 있는 월·분기·연 자료면, 비교 시점 관측이 없어서다.
+    '-'로 두면 '수집 실패(N/A)'로 오독되므로 결측 월을 밝혀 적는다(예: 2025-10 CPI 미발표)."""
+    if chg is not None or val is None or freq not in _STEP_MONTHS:
+        return fmt_chg(chg, tf)
+    base = _month_index(date_str)
+    if base is None:
+        return fmt_chg(chg, tf)
+    n = COMPARE_PERIODS.get(freq, COMPARE_PERIODS["M"])[key] * _STEP_MONTHS[freq]
+    k = base - n
+    return f"산출불가({k // 12}-{k % 12 + 1:02d} 결측)"
+
+
 def generate_fact_table(all_data, registry=REG):
     """전체 데이터로 팩트 테이블을 생성한다 (시그널 판단 없음)."""
     report = []
@@ -741,9 +754,9 @@ def generate_fact_table(all_data, registry=REG):
                 f"| {m['freq']} "
                 f"| {fmt_val(val)} "
                 f"| {date_str} "
-                f"| {fmt_chg(chg_prev, tf)} "
-                f"| {fmt_chg(chg_mid, tf)} "
-                f"| {fmt_chg(chg_yoy, tf)} |"
+                f"| {_chg_or_gap(chg_prev, tf, val, comp['date'], m['freq'], 'prev')} "
+                f"| {_chg_or_gap(chg_mid, tf, val, comp['date'], m['freq'], 'mid')} "
+                f"| {_chg_or_gap(chg_yoy, tf, val, comp['date'], m['freq'], 'yoy')} |"
             )
 
     return "\n".join(report)

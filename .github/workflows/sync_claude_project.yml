@@ -2,7 +2,7 @@ name: Sync Macro to Claude Project
 
 on:
   workflow_run:
-    workflows: ["FRED Daily Fetch", "Market Daily Fetch", "Global Daily Fetch", "Macro Outlook Daily"]
+    workflows: ["FRED Daily Fetch", "Market Daily Fetch", "Global Daily Fetch", "Macro Outlook Daily", "State Daily"]
     types: [completed]
     branches: [main]
   workflow_dispatch:
@@ -48,6 +48,7 @@ jobs:
               ("market_latest.md",  "data/market_latest.md"),
               ("global_latest.md",  "data/global_latest.md"),
               ("macro_outlook.md",  "data/macro_outlook.md"),
+              ("state_latest.md",   "data/state_latest.md"),
           ]
           # Claude Project로 보내지 않을 파일.
           # 이미 업로드된 사본이 있으면 삭제만 하고, 다시 업로드하지 않는다.
