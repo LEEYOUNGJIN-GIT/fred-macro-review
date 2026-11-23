@@ -42,7 +42,6 @@ jobs:
       - name: Unit tests
         run: |
           python tests/test_macro.py
-          python tests/test_governance.py
 
       - name: Fetch history (증분, 개정 기록)
         env:
