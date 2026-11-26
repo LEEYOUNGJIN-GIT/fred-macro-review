@@ -6,9 +6,9 @@
 > - FRED·Market 레이어와 merge 없음. 충돌 시 **항상 FRED 우선**
 > - 한국 CLI는 FRED `KORLOLITOAASTSAM`과 중복 가능 — 교차 확인용
 
-Generated at: 2026-11-25 23:45:27 UTC
-Data range: 2023-11-26 ~ 2026-11-25
-Series count: 8
+Generated at: 2026-11-26 03:36:34 UTC
+Data range: 2023-11-27 ~ 2026-11-26
+Series count: 9
 
 ### Included Series
 
@@ -18,14 +18,15 @@ Series count: 8
 | 2 | WB_US_GDP_GROWTH | 성장 | 미국 실질 GDP 성장률 | US Real GDP Growth | A | % | World Bank |
 | 3 | WB_KR_CPI | 물가 | 한국 CPI 인플레이션 | Korea CPI Inflation | A | % | World Bank |
 | 4 | WB_US_CPI | 물가 | 미국 CPI 인플레이션 | US CPI Inflation | A | % | World Bank |
-| 5 | WB_US_UNEMP | 노동 | 미국 실업률 | US Unemployment Rate | A | % | World Bank |
-| 6 | IMF_KR_CURRENT_ACCOUNT | 대외 | 한국 경상수지 | Korea Current Account Balance | Q | USD | IMF |
-| 7 | ECB_EURUSD | 금융 | EUR/USD | EUR/USD Exchange Rate | D | USD/EUR | ECB |
-| 8 | ECB_POLICY_RATE_MRO | 금융 | ECB MRO 금리 | ECB Main Refinancing Rate | M | % | ECB |
+| 5 | WB_KR_UNEMP | 노동 | 한국 실업률 | Korea Unemployment Rate | A | % | World Bank |
+| 6 | WB_US_UNEMP | 노동 | 미국 실업률 | US Unemployment Rate | A | % | World Bank |
+| 7 | IMF_KR_CURRENT_ACCOUNT | 대외 | 한국 경상수지 | Korea Current Account Balance | Q | USD | IMF |
+| 8 | ECB_EURUSD | 금융 | EUR/USD | EUR/USD Exchange Rate | D | USD/EUR | ECB |
+| 9 | ECB_POLICY_RATE_MRO | 금융 | ECB MRO 금리 | ECB Main Refinancing Rate | M | % | ECB |
 
 ## 🌍 글로벌 거시 보조 팩트 테이블
 
-**기준일**: 2026-11-25
+**기준일**: 2026-11-26
 
 
 ### 성장
@@ -46,6 +47,7 @@ Series count: 8
 
 | 지표 | 주기 | 최신값 | 기준일 | 전기비 | 중기비 | YoY비 |
 | --- | --- | --- | --- | --- | --- | --- |
+| 한국 실업률 | A | 2.68 | 2025-01-01 | -0.10 | +0.01 | - |
 | 미국 실업률 | A | 4.20 | 2025-01-01 | +0.18 | +0.56 | - |
 
 ### 대외
